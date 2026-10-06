@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Object Detection - Plant Disease Detection</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Plant Disease Detection Using Mobile Images and Video</h1>
+        <p>Computer Vision Research Tutorial</p>
+        <p>By Mahitha Rangineni</p>
+    </header>
+
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="capture.html">Capture & Preprocessing</a>
+        <a href="classification.html">Classification</a>
+        <a href="detection.html">Object Detection</a>
+        <a href="segmentation.html">Segmentation</a>
+        <a href="video.html">Video Analysis</a>
+        <a href="case-study.html">Case Study</a>
+        <a href="deployment.html">Deployment</a>
+        <a href="references.html">References</a>
+    </nav>
+
+
+    <main>
+
+        <section>
+
+            <h2>Object Detection for Plant Diseases</h2>
+
+            <p>
+                Object detection goes beyond classification by identifying both
+                <strong>what</strong> is present in an image and
+                <strong>where</strong> it is located.
+                Instead of assigning one label to the entire image, an object
+                detection model places bounding boxes around leaves or diseased
+                regions and assigns a class label to each detected area.
+            </p>
+
+
+            <h3>Why Object Detection Is Useful</h3>
+
+            <p>
+                In real-world mobile images, a scene may contain several leaves,
+                overlapping plants, soil, branches, or other background objects.
+                Object detection can first locate individual leaves or visible
+                disease regions before further analysis is performed.
+            </p>
+
+
+            <h3>YOLO-Based Detection</h3>
+
+            <p>
+                YOLO, which stands for <em>You Only Look Once</em>, is a popular
+                object detection approach because it can detect multiple objects
+                in a single image quickly. The model processes the image and
+                predicts bounding boxes, class labels, and confidence scores.
+                <a href="references.html">[1]</a>
+            </p>
+
+            <p>
+                For plant disease analysis, a YOLO-based model can be trained to
+                detect symptoms such as spots, lesions, discoloration, or damaged
+                regions. Because YOLO models are designed for fast inference,
+                they are useful for real-time or mobile applications.
+            </p>
+
+
+            <h3>Typical Detection Output</h3>
+
+            <ul>
+                <li>
+                    <strong>Bounding box:</strong>
+                    Shows where the leaf or disease region is located.
+                </li>
+
+                <li>
+                    <strong>Class label:</strong>
+                    Identifies the detected disease category.
+                </li>
+
+                <li>
+                    <strong>Confidence score:</strong>
+                    Indicates how confident the model is in its prediction.
+                </li>
+            </ul>
+
+
+            <img src="object-detection-system.png"
+                 alt="YOLO-based plant disease object detection system"
+                 style="width:100%; max-width:900px; display:block; margin:20px auto;">
+
+            <p>
+                <em>
+                    Figure: YOLO-based plant disease detection showing bounding boxes,
+                    disease labels, confidence scores, and comparison with image classification.
+                </em>
+            </p>
+
+
+            <h3>Advantages Over Classification</h3>
+
+            <p>
+                Object detection is more suitable for complex real-world scenes
+                because it can handle multiple leaves in one image and identify
+                where disease symptoms occur.
+            </p>
+
+            <p>
+                However, a bounding box still covers a rectangular area and does
+                not precisely show the exact shape of the damaged region.
+                For that reason, segmentation can be used when more detailed
+                disease localization is required.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Classification vs Object Detection</h2>
+
+            <p>
+                Classification provides one prediction for the complete image.
+                Object detection provides both a disease class and the location
+                of one or more detected regions.
+            </p>
+
+            <p>
+                This makes object detection more useful when an image contains
+                several leaves or when disease symptoms occupy only a small part
+                of the scene.
+            </p>
+
+        </section>
+
+
+        <!-- Audio summary will be added later -->
+
+    </main>
+
+
+    <footer>
+        <p>CS 663 Computer Vision - Project 1</p>
+    </footer>
+
+</body>
+
+</html>
