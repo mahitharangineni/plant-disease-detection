@@ -54,3 +54,21 @@ nav a {
 nav a:hover {
     text-decoration: underline;
 }
+#quiz button {
+    background-color: #2f6b3b;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#quiz button:hover {
+    background-color: #244f2c;
+}
+
+#quizResult {
+    font-weight: bold;
+    margin-top: 15px;
+}
