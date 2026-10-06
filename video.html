@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Video and Multi-View Analysis - Plant Disease Detection</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Plant Disease Detection Using Mobile Images and Video</h1>
+        <p>Computer Vision Research Tutorial</p>
+        <p>By Mahitha Rangineni</p>
+    </header>
+
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="capture.html">Capture & Preprocessing</a>
+        <a href="classification.html">Classification</a>
+        <a href="detection.html">Object Detection</a>
+        <a href="segmentation.html">Segmentation</a>
+        <a href="video.html">Video Analysis</a>
+        <a href="case-study.html">Case Study</a>
+        <a href="deployment.html">Deployment</a>
+        <a href="references.html">References</a>
+    </nav>
+
+
+    <main>
+
+        <section>
+
+            <h2>Video and Multi-View Plant Disease Analysis</h2>
+
+            <p>
+                Single-image analysis uses only one view of a leaf. In real-world
+                conditions, however, disease symptoms may be partially hidden,
+                affected by lighting, or visible only from certain angles.
+                Video provides multiple frames and views of the same plant,
+                giving the system more visual information.
+            </p>
+
+
+            <h3>Processing Video Frames</h3>
+
+            <p>
+                A video can be divided into individual frames. Each frame can be
+                processed using object detection or segmentation to identify
+                leaves and diseased regions.
+            </p>
+
+            <p>
+                Instead of making a decision from only one image, the system can
+                compare predictions across several frames.
+            </p>
+
+
+            <h3>Tracking Leaves Across Frames</h3>
+
+            <p>
+                Object tracking can be used to follow the same leaf as the camera
+                moves. Tracking helps prevent the system from treating the same
+                leaf as a completely new object in every frame.
+            </p>
+
+            <p>
+                Tracking methods such as DeepSORT can associate detections across
+                consecutive frames and assign an identity to each tracked leaf.
+                <a href="references.html">[5]</a>
+            </p>
+
+
+            <h3>Multi-View Analysis</h3>
+
+            <p>
+                Different frames may show different portions of the same leaf.
+                One frame may contain glare or blur, while another may provide
+                a clearer view of the disease symptoms.
+            </p>
+
+            <p>
+                Combining predictions from several frames can make the final
+                result more reliable than relying on a single image.
+            </p>
+
+
+            <h3>Example Video Pipeline</h3>
+
+            <p>
+                A possible real-world pipeline is:
+            </p>
+
+            <p>
+                <strong>
+                    Mobile Video → Frame Extraction → Leaf or Disease Detection
+                    → Tracking Across Frames → Disease Classification or Segmentation
+                    → Combine Multi-Frame Predictions → Final Result
+                </strong>
+                <a href="references.html">[5]</a>
+            </p>
+
+
+            <img src="video-pipeline.png"
+                 alt="Video-based plant disease analysis pipeline"
+                 style="width:100%; max-width:900px; display:block; margin:20px auto;">
+
+            <p>
+                <em>
+                    Figure: Example pipeline for plant disease analysis using mobile
+                    video, object detection, tracking, segmentation, and final diagnosis.
+                </em>
+            </p>
+
+
+            <h3>Benefits and Challenges</h3>
+
+            <ul>
+                <li>
+                    <strong>Benefit:</strong>
+                    More views of the same plant can improve disease visibility.
+                </li>
+
+                <li>
+                    <strong>Benefit:</strong>
+                    Tracking can maintain information about the same leaf over time.
+                </li>
+
+                <li>
+                    <strong>Challenge:</strong>
+                    Video requires more computation than processing one image.
+                </li>
+
+                <li>
+                    <strong>Challenge:</strong>
+                    Fast camera movement can introduce motion blur.
+                </li>
+
+                <li>
+                    <strong>Challenge:</strong>
+                    Leaves may become hidden behind other leaves or objects.
+                </li>
+
+                <li>
+                    <strong>Challenge:</strong>
+                    Mobile devices have limited processing power and battery capacity.
+                </li>
+            </ul>
+
+        </section>
+
+
+        <section id="majority-voting">
+
+            <h2>Example Algorithm: Majority Voting Across Video Frames</h2>
+
+            <p>
+                A simple way to combine multiple video-frame predictions is to
+                collect the predicted disease label from several frames and
+                choose the label that appears most often.
+            </p>
+
+            <p>
+                This helps reduce the effect of one blurry or incorrect frame.
+                For example, if most frames predict <strong>Leaf Spot</strong>,
+                the system can use that as the final diagnosis.
+            </p>
+
+
+            <h3>Python Example</h3>
+
+            <pre><code>from collections import Counter
+
+predictions = [
+    "Leaf Spot",
+    "Leaf Spot",
+    "Healthy",
+    "Leaf Spot",
+    "Leaf Spot",
+    "Healthy",
+    "Leaf Spot",
+    "Leaf Spot",
+    "Leaf Spot",
+    "Healthy"
+]
+
+counts = Counter(predictions)
+
+final_prediction = counts.most_common(1)[0][0]
+
+print("Frame predictions:", predictions)
+print("Vote counts:", counts)
+print("Final prediction:", final_prediction)</code></pre>
+
+
+            <h3>How It Works</h3>
+
+            <ol>
+                <li>Extract several frames from the video.</li>
+                <li>Run the disease model on each frame.</li>
+                <li>Store the predicted label from each frame.</li>
+                <li>Count how many times each disease label appears.</li>
+                <li>Select the label with the highest number of votes.</li>
+            </ol>
+
+
+            <p>
+                In this example, <strong>Leaf Spot</strong> appears in 7 out of
+                10 frames, while <strong>Healthy</strong> appears in 3 frames.
+                Therefore, the final multi-frame prediction is
+                <strong>Leaf Spot</strong>.
+            </p>
+
+
+            <h3>Why This Helps</h3>
+
+            <p>
+                A single frame may be affected by lighting, camera angle, blur,
+                or partial occlusion. Majority voting uses information from
+                multiple views of the same leaf instead of trusting one frame.
+            </p>
+
+            <p>
+                More advanced systems can also combine confidence scores or use
+                temporal deep-learning models, but majority voting provides a
+                simple demonstration of multi-view decision making.
+            </p>
+
+        </section>
+
+
+        <!-- Audio summary will be added later -->
+
+    </main>
+
+
+    <footer>
+        <p>CS 663 Computer Vision - Project 1</p>
+    </footer>
+
+</body>
+
+</html>
