@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Case Study - Plant Doctor</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Plant Disease Detection Using Mobile Images and Video</h1>
+        <p>Computer Vision Research Tutorial</p>
+        <p>By Mahitha Rangineni</p>
+    </header>
+
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="capture.html">Capture & Preprocessing</a>
+        <a href="classification.html">Classification</a>
+        <a href="detection.html">Object Detection</a>
+        <a href="segmentation.html">Segmentation</a>
+        <a href="video.html">Video Analysis</a>
+        <a href="case-study.html">Case Study</a>
+        <a href="deployment.html">Deployment</a>
+        <a href="references.html">References</a>
+    </nav>
+
+
+    <main>
+
+        <section>
+
+            <h2>Case Study: Plant Doctor</h2>
+
+            <p>
+                Plant Doctor is a hybrid computer vision system developed for
+                automatic plant health monitoring using video footage.
+                The system was designed to identify, track, and analyze individual
+                leaves without requiring physical collection of plant samples.
+                <a href="references.html">[5]</a>
+            </p>
+
+            <p>
+                The researchers focused on urban plant monitoring and tested the
+                system using video and image data that included plants in Tokyo.
+                The goal was to create a scalable and non-invasive system that
+                could support repeated monitoring of plant health over time.
+                <a href="references.html">[5]</a>
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>System Architecture</h2>
+
+            <p>
+                Plant Doctor combines three major computer vision components:
+                YOLOv8, DeepSORT, and DeepLabV3Plus.
+            </p>
+
+
+            <h3>1. YOLOv8 - Leaf Detection</h3>
+
+            <p>
+                YOLOv8 is used to locate leaves inside each video frame.
+                The model generates bounding boxes around visible leaves.
+                The authors selected YOLOv8 because of its balance between
+                processing speed and computational efficiency, which makes it
+                suitable for video-based monitoring.
+            </p>
+
+
+            <h3>2. DeepSORT - Leaf Tracking</h3>
+
+            <p>
+                After leaves are detected, DeepSORT tracks each leaf across
+                consecutive video frames.
+            </p>
+
+            <p>
+                Each tracked leaf can receive a unique identity so that the
+                system knows when the same leaf appears in multiple frames.
+                This prevents the system from repeatedly treating the same leaf
+                as a different object.
+            </p>
+
+
+            <h3>3. DeepLabV3Plus - Damage Segmentation</h3>
+
+            <p>
+                Once a useful image of a tracked leaf is selected,
+                DeepLabV3Plus performs semantic segmentation.
+            </p>
+
+            <p>
+                The segmentation model identifies damaged areas caused by
+                bacteria, pests, or fungi and allows the system to estimate
+                how much of the leaf is affected.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Plant Doctor Processing Pipeline</h2>
+
+            <p>
+                The complete workflow can be summarized as:
+            </p>
+
+            <p>
+                <strong>
+                    Video Input → YOLOv8 Leaf Detection → DeepSORT Tracking
+                    → Best Frame Selection → DeepLabV3Plus Segmentation
+                    → Damage Quantification → Plant Health Result
+                </strong>
+            </p>
+
+            <p>
+                This pipeline is important because it combines detection,
+                temporal tracking, and pixel-level segmentation instead of
+                relying on only one still image.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Dataset and Data Collection</h2>
+
+            <p>
+                The Plant Doctor system was trained and validated using a
+                diverse collection of plant images and video footage,
+                including urban plants in Tokyo.
+            </p>
+
+            <p>
+                The dataset was designed to represent more realistic conditions
+                than laboratory-only datasets. Real-world video can contain
+                changing lighting, complex backgrounds, leaf movement,
+                overlapping leaves, and different camera angles.
+            </p>
+
+            <p>
+                This is important because many plant disease systems perform
+                well on clean, centered leaf images but may become less reliable
+                when deployed outdoors.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Reported Results</h2>
+
+            <p>
+                The study reports that the optimized DeepLabV3Plus-based
+                damage quantification model achieved better agreement with
+                manual annotation than the non-optimized comparison models.
+            </p>
+
+            <p>
+                The full Plant Doctor pipeline also demonstrated that
+                combining detection, tracking, and segmentation can support
+                reliable leaf-damage analysis across different urban plants.
+            </p>
+
+            <p>
+                Rather than reporting only a single classification accuracy,
+                the system evaluates how accurately damaged leaf regions can
+                be identified and quantified.
+            </p>
+
+            <p>
+                The authors describe the resulting system as robust enough for
+                automated monitoring of urban flora and suitable for scalable
+                plant-health assessment.
+                <a href="references.html">[5]</a>
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Where the System Can Fail</h2>
+
+            <p>
+                Plant Doctor still faces several real-world computer vision
+                challenges.
+            </p>
+
+            <ul>
+
+                <li>
+                    <strong>Complex backgrounds:</strong>
+                    Other plants, branches, soil, and urban objects may make
+                    leaf detection more difficult.
+                </li>
+
+                <li>
+                    <strong>Lighting variation:</strong>
+                    Bright sunlight, shadows, and low-light conditions can
+                    change leaf appearance.
+                </li>
+
+                <li>
+                    <strong>Motion and blur:</strong>
+                    Camera movement or wind can reduce frame quality.
+                </li>
+
+                <li>
+                    <strong>Occlusion:</strong>
+                    Leaves can overlap or become partially hidden.
+                </li>
+
+                <li>
+                    <strong>Subtle symptoms:</strong>
+                    Small or low-contrast disease regions can be difficult
+                    for detection models to identify.
+                </li>
+
+                <li>
+                    <strong>Training-data limitations:</strong>
+                    Models trained under ideal conditions may not generalize
+                    equally well to every plant species or environment.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+        <section>
+
+            <h2>Why This Case Study Matters for This Tutorial</h2>
+
+            <p>
+                Plant Doctor directly supports the main idea of this tutorial:
+                using mobile or accessible video instead of relying only on
+                a single leaf image.
+            </p>
+
+            <p>
+                The system demonstrates how multiple computer vision methods
+                can work together:
+            </p>
+
+            <ul>
+                <li>YOLOv8 locates leaves.</li>
+                <li>DeepSORT follows the same leaf across frames.</li>
+                <li>DeepLabV3Plus identifies the damaged region.</li>
+                <li>Multiple video frames provide more information than one image.</li>
+            </ul>
+
+            <p>
+                This makes Plant Doctor a useful real-world example of
+                multi-view plant disease monitoring.
+                <a href="references.html">[5]</a>
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Potential Real-World Use</h2>
+
+            <p>
+                One interesting application proposed for Plant Doctor is the
+                use of ordinary cameras mounted on drones or city maintenance
+                vehicles. These cameras could collect plant video while
+                performing normal activities.
+            </p>
+
+            <p>
+                This could make large-scale plant monitoring less expensive
+                and reduce the need to physically collect leaves for analysis.
+            </p>
+
+        </section>
+
+
+        <!-- Audio summary will be added later -->
+
+    </main>
+
+
+    <footer>
+        <p>CS 663 Computer Vision - Project 1</p>
+    </footer>
+
+</body>
+
+</html>
