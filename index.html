@@ -337,6 +337,71 @@
         computation than classification or basic object detection.
     </p>
 </section>
+        <section id="video">
+    <h2>Video and Multi-View Plant Disease Analysis</h2>
+
+    <p>
+        Single-image analysis uses only one view of a leaf. In real-world conditions,
+        however, disease symptoms may be partially hidden, affected by lighting, or visible
+        only from certain angles. Video provides multiple frames and views of the same plant,
+        giving the system more visual information.
+    </p>
+
+    <h3>Processing Video Frames</h3>
+
+    <p>
+        A video can be divided into individual frames. Each frame can be processed using
+        object detection or segmentation to identify leaves and diseased regions. Instead of
+        making a decision from one image, the system can compare results across several frames.
+    </p>
+
+    <h3>Tracking Leaves Across Frames</h3>
+
+    <p>
+        Object tracking can be used to follow the same leaf as the camera moves. Tracking
+        helps prevent the system from treating the same leaf as a completely new object in
+        every frame.
+    </p>
+
+    <p>
+        Tracking methods such as DeepSORT can associate detections across consecutive frames
+        and assign an identity to each tracked leaf.
+    </p>
+
+    <h3>Multi-View Analysis</h3>
+
+    <p>
+        Different frames may show different portions of the same leaf. One frame may contain
+        glare or blur, while another may provide a clearer view of the disease symptoms.
+        Combining predictions from several frames can make the final result more reliable than
+        relying on a single image.
+    </p>
+
+    <h3>Example Video Pipeline</h3>
+
+    <p>
+        A possible real-world pipeline is:
+    </p>
+
+    <p>
+        <strong>
+        Mobile Video → Frame Extraction → Leaf or Disease Detection →
+        Tracking Across Frames → Disease Classification or Segmentation →
+        Combine Multi-Frame Predictions → Final Result
+        </strong>
+    </p>
+
+    <h3>Benefits and Challenges</h3>
+
+    <ul>
+        <li><strong>Benefit:</strong> More views of the same plant can improve disease visibility.</li>
+        <li><strong>Benefit:</strong> Tracking can maintain information about the same leaf over time.</li>
+        <li><strong>Challenge:</strong> Video requires more computation than processing one image.</li>
+        <li><strong>Challenge:</strong> Fast camera movement can introduce motion blur.</li>
+        <li><strong>Challenge:</strong> Leaves may become hidden behind other leaves or objects.</li>
+        <li><strong>Challenge:</strong> Mobile devices have limited processing power and battery capacity.</li>
+    </ul>
+</section>
 
     </main>
 
