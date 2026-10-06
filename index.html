@@ -220,6 +220,61 @@
         returning only one label for the whole image.
     </p>
 </section>
+        <section id="detection">
+    <h2>Object Detection for Plant Diseases</h2>
+
+    <p>
+        Object detection goes beyond classification by identifying both
+        <strong>what</strong> is present in an image and <strong>where</strong>
+        it is located. Instead of assigning one label to the entire image,
+        an object detection model places bounding boxes around leaves or
+        diseased regions and assigns a class label to each detected area.
+    </p>
+
+    <h3>Why Object Detection Is Useful</h3>
+
+    <p>
+        In real-world mobile images, a scene may contain several leaves,
+        overlapping plants, soil, branches, or other background objects.
+        Object detection can first locate individual leaves or visible disease
+        regions before further analysis is performed.
+    </p>
+
+    <h3>YOLO-Based Detection</h3>
+
+    <p>
+        YOLO, which stands for <em>You Only Look Once</em>, is a popular
+        object detection approach because it can detect multiple objects in a
+        single image quickly. The model processes the image and predicts
+        bounding boxes, class labels, and confidence scores.
+    </p>
+
+    <p>
+        For plant disease analysis, a YOLO-based model can be trained to detect
+        symptoms such as spots, lesions, discoloration, or damaged regions.
+        Because YOLO models are designed for fast inference, they are useful
+        for real-time or mobile applications.
+    </p>
+
+    <h3>Typical Detection Output</h3>
+
+    <ul>
+        <li><strong>Bounding box:</strong> Shows where the leaf or disease region is located.</li>
+        <li><strong>Class label:</strong> Identifies the detected disease category.</li>
+        <li><strong>Confidence score:</strong> Indicates how confident the model is in its prediction.</li>
+    </ul>
+
+    <h3>Advantages Over Classification</h3>
+
+    <p>
+        Object detection is more suitable for complex real-world scenes because
+        it can handle multiple leaves in one image and identify where disease
+        symptoms occur. However, a bounding box still covers a rectangular area
+        and does not precisely show the exact shape of the damaged region.
+        For that reason, segmentation can be used when more detailed disease
+        localization is required.
+    </p>
+</section>
 
     </main>
 
