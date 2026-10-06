@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Plant Disease Classification</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Plant Disease Detection Using Mobile Images and Video</h1>
+        <p>Computer Vision Research Tutorial</p>
+        <p>By Mahitha Rangineni</p>
+    </header>
+
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="capture.html">Capture & Preprocessing</a>
+        <a href="classification.html">Classification</a>
+        <a href="detection.html">Object Detection</a>
+        <a href="segmentation.html">Segmentation</a>
+        <a href="video.html">Video Analysis</a>
+        <a href="case-study.html">Case Study</a>
+        <a href="deployment.html">Deployment</a>
+        <a href="references.html">References</a>
+    </nav>
+
+
+    <main>
+
+        <section>
+
+            <h2>Plant Disease Classification</h2>
+
+            <p>
+                Classification assigns an entire leaf image to a disease category.
+                For example, a model may predict that a leaf is healthy or that it
+                belongs to a specific disease class such as early blight, late blight,
+                or leaf spot.
+            </p>
+
+
+            <h3>How CNN-Based Classification Works</h3>
+
+            <p>
+                Convolutional Neural Networks, or CNNs, are widely used for image
+                classification because they can automatically learn visual patterns
+                from training images. Early layers usually learn simple features such
+                as edges and color changes, while deeper layers learn more complex
+                patterns such as lesions, texture changes, and disease-specific shapes.
+            </p>
+
+            <p>
+                During training, the model is shown many labeled examples of healthy
+                and diseased leaves. The network adjusts its internal weights so that
+                the output probability for the correct class becomes higher.
+            </p>
+
+
+            <h3>Transfer Learning</h3>
+
+            <p>
+                Instead of training a deep model completely from scratch, many plant
+                disease systems use transfer learning. A model that was already trained
+                on a large image dataset can be adapted to plant disease images.
+                This is useful when the plant dataset is smaller and can reduce training
+                time.
+                <a href="references.html">[2]</a>
+            </p>
+
+
+            <img src="classification-system.png"
+                 alt="CNN-based plant disease classification system"
+                 style="width:100%; max-width:900px; display:block; margin:20px auto;">
+
+            <p>
+                <em>
+                    Figure: CNN-based plant disease classification showing feature
+                    extraction, transfer learning, classification output, and limitations
+                    in real-world field images.
+                </em>
+            </p>
+
+
+            <h3>Limitation of Classification</h3>
+
+            <p>
+                Classification is useful when the image already contains a clear view
+                of a single leaf, but it does not show where the disease is located.
+                It also becomes less reliable when an image contains multiple leaves,
+                complex backgrounds, overlapping plants, or only a small diseased region.
+            </p>
+
+            <p>
+                For real-world mobile images, object detection and segmentation can
+                provide more detailed information by locating the leaf or diseased area
+                instead of returning only one label for the whole image.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Why Classification Is Still Useful</h2>
+
+            <p>
+                Classification remains an important baseline because it is simpler than
+                object detection or segmentation and can often be trained and deployed
+                with less computational cost.
+            </p>
+
+            <p>
+                It is especially useful when the input already contains a single,
+                clearly visible leaf and the goal is only to determine the most likely
+                disease category.
+            </p>
+
+        </section>
+
+
+        <!-- Audio will be added later -->
+
+    </main>
+
+
+    <footer>
+        <p>CS 663 Computer Vision - Project 1</p>
+    </footer>
+
+</body>
+
+</html>
