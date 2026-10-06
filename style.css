@@ -38,3 +38,19 @@ footer {
     padding: 20px;
     background-color: #e7eee8;
 }
+nav {
+    background-color: #244f2c;
+    padding: 12px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
