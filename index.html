@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Graduate-level computer vision research tutorial on plant disease detection using mobile images and video analysis.">
+    <meta name="description" content="Computer vision research tutorial on plant disease detection using mobile images and video analysis.">
     <title>Plant Disease Detection Using Mobile Images and Video - Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -37,117 +37,108 @@
         <section id="overview">
             <h2>Project Overview</h2>
             <p>
-                Plant diseases represent a persistent threat to global food security, crop yield, and agricultural sustainability.
-                While early diagnosis is crucial for mitigating crop loss, visual inspection by human agronomists is labor-intensive,
-                expensive, and often inaccessible to smallholder farmers in remote regions.
+                Plant diseases can significantly reduce crop yields and hurt agricultural productivity.
+                While inspecting plants visually is important for early diagnosis, having experts check every field manually is time-consuming and expensive.
             </p>
             <p>
-                Recent advances in computer vision have made automated leaf inspection feasible using consumer smartphones.
-                However, moving from pristine laboratory datasets (such as static, centered leaves on plain backgrounds) to
-                uncontrolled field environments introduces profound computer vision challenges: dynamic lighting, complex foliage backgrounds,
-                partial occlusions, camera motion blur, and subtle inter-class visual similarities between disease symptoms <a href="references.html#ref-1">[1]</a>.
+                Recent advances in computer vision make it possible to detect plant diseases using smartphone cameras.
+                However, moving from clean laboratory photos to outdoor fields brings real challenges: changing sunlight, cluttered backgrounds with soil and weeds, overlapping leaves, and motion blur <a href="references.html#ref-1">[1]</a>.
             </p>
             <div class="callout">
-                <h4>Tutorial Objective</h4>
+                <h4>Tutorial Goal</h4>
                 <p>
-                    This tutorial bridges the gap between basic single-image classification and robust, real-world field systems.
-                    It provides an in-depth investigation into end-to-end computer vision pipelines incorporating mobile capture,
-                    convolutional neural networks (CNNs), YOLO-based object detection, pixel-level semantic segmentation for severity quantification,
-                    DeepSORT temporal tracking, multi-view frame fusion, and edge deployment trade-offs.
+                    This tutorial explores how computer vision can go beyond basic single-image classification.
+                    We will look at mobile data capture, CNN classification, YOLO object detection, pixel-level segmentation for calculating disease severity, DeepSORT video tracking, and practical mobile deployment trade-offs.
                 </p>
             </div>
         </section>
 
         <section id="why-video">
-            <h2>Why Video and Multi-View Analysis Matters</h2>
+            <h2>Why Use Video and Multi-View Analysis?</h2>
             <p>
-                Traditional automated inspection systems rely primarily on single isolated leaf images. In real-world agricultural conditions,
-                this single-view assumption frequently fails:
+                Most plant disease projects rely on a single photo of a leaf. In real-world conditions, that single image can easily fail:
             </p>
             <ul>
-                <li><strong>Overcoming Occlusion and Glare:</strong> A specular reflection, dew drop, or shadow in a single frame can obscure characteristic lesions or trigger false positives. Video streams provide dozens of views from varying angles, allowing genuine pathological patterns to emerge.</li>
-                <li><strong>Temporal Redundancy:</strong> Instead of trusting an isolated, potentially blurry snapshot, temporal multi-frame aggregation (such as majority voting or confidence fusion) produces significantly higher diagnostic reliability.</li>
-                <li><strong>Spatial Context and Plant Tracking:</strong> Tracking algorithms like DeepSORT enable systems to monitor specific leaves or canopies across camera passes (e.g., handheld walk-throughs or drone sweeps), preventing duplicate counts and providing longitudinal health tracking <a href="references.html#ref-5">[5]</a>.</li>
+                <li><strong>Overcoming glare and shadows:</strong> Bright sunlight or shadows can hide disease spots or make healthy leaves look sick. Video captures multiple angles, helping find clearer views.</li>
+                <li><strong>Combining predictions across frames:</strong> Using techniques like majority voting across multiple video frames helps filter out occasional blurry or incorrect predictions.</li>
+                <li><strong>Tracking individual leaves:</strong> Tracking algorithms like DeepSORT can follow a specific leaf as the camera moves, preventing the system from counting the same leaf multiple times <a href="references.html#ref-5">[5]</a>.</li>
             </ul>
         </section>
 
         <section id="learning-objectives">
             <h2>What You Will Learn</h2>
             <p>
-                By working through this research tutorial, you will gain hands-on theoretical and practical understanding of:
+                In this tutorial, you will explore:
             </p>
             <ul>
-                <li><strong>Mobile Data Capture &amp; Preprocessing:</strong> Strategies for handling adverse field illuminations, color constancy, normalization, and noise suppression in smartphone imagery <a href="references.html#ref-2">[2]</a>, <a href="references.html#ref-3">[3]</a>.</li>
-                <li><strong>CNN Feature Extraction &amp; Transfer Learning:</strong> How deep convolutional backbones extract visual patterns (lesions, chlorosis, necrosis) and adapt from ImageNet pretraining to specialized agricultural datasets.</li>
-                <li><strong>YOLO Object Detection:</strong> Formulating bounding-box localization to detect multiple infected leaves and disease centers within cluttered foliage <a href="references.html#ref-1">[1]</a>.</li>
-                <li><strong>Pixel-Level Segmentation &amp; Severity Estimation:</strong> Utilizing architectures such as U-Net and DeepLabV3+ to isolate diseased tissue and mathematically compute percentage severity indices <a href="references.html#ref-4">[4]</a>.</li>
-                <li><strong>Video Tracking &amp; Multi-View Aggregation:</strong> Implementing DeepSORT object tracking alongside temporal consensus algorithms (such as frame-wise majority voting).</li>
-                <li><strong>Empirical Case Study Analysis:</strong> Dissecting the peer-reviewed <em>Plant Doctor</em> architecture <a href="references.html#ref-5">[5]</a>, its verified metrics, and its critical 50-minute video latency bottleneck.</li>
-                <li><strong>Mobile Edge vs. Cloud Deployment:</strong> Evaluating on-device inference latency, memory footprint, model quantization, and hybrid cloud architectures.</li>
+                <li><strong>Mobile Capture &amp; Preprocessing:</strong> How lighting, blur, and color adjustments affect model inputs <a href="references.html#ref-2">[2]</a>, <a href="references.html#ref-3">[3]</a>.</li>
+                <li><strong>CNN Classification &amp; Transfer Learning:</strong> How convolutional networks identify disease categories and why transfer learning is essential for smaller datasets.</li>
+                <li><strong>YOLO Object Detection:</strong> How bounding boxes locate multiple infected leaves in cluttered outdoor scenes <a href="references.html#ref-1">[1]</a>.</li>
+                <li><strong>Segmentation &amp; Severity Estimation:</strong> Using U-Net and DeepLabV3+ to measure the exact percentage of diseased leaf area <a href="references.html#ref-4">[4]</a>.</li>
+                <li><strong>Video Analysis &amp; Tracking:</strong> How DeepSORT tracks leaves over time and how majority voting combines multi-frame predictions.</li>
+                <li><strong>Plant Doctor Case Study:</strong> Examining real experimental results from Montagut Marques et al. (2025) and discussing why real-time video processing remains challenging <a href="references.html#ref-5">[5]</a>.</li>
+                <li><strong>Deployment Trade-Offs:</strong> Comparing on-device mobile processing with cloud-based options.</li>
             </ul>
         </section>
 
         <section id="roadmap">
             <h2>Tutorial Roadmap</h2>
-            <p>
-                The tutorial is structured into a logical, cumulative pipeline reflecting an authentic computer vision engineering workflow:
-            </p>
             <div class="roadmap-container">
                 <div class="roadmap-steps">
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">1</div>
                         <div class="roadmap-content">
                             <h4>Mobile Capture &amp; Preprocessing</h4>
-                            <p>Sensors, optical factors, illumination challenges, and color space transformations.</p>
+                            <p>Outdoor lighting factors, camera angles, color spaces, and noise reduction.</p>
                         </div>
                     </div>
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">2</div>
                         <div class="roadmap-content">
                             <h4>Plant Disease Classification</h4>
-                            <p>Global CNN architectures, transfer learning techniques, and classification limitations.</p>
+                            <p>CNN architectures, transfer learning, and the limitations of single global labels.</p>
                         </div>
                     </div>
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">3</div>
                         <div class="roadmap-content">
-                            <h4>Object Detection (YOLO)</h4>
-                            <p>Spatial bounding-box localization of leaves and lesions in multi-object scenes.</p>
+                            <h4>Object Detection with YOLO</h4>
+                            <p>Locating multiple leaves with bounding boxes in natural foliage.</p>
                         </div>
                     </div>
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">4</div>
                         <div class="roadmap-content">
-                            <h4>Semantic Segmentation &amp; Severity Estimation</h4>
-                            <p>Pixel-level masking with DeepLabV3+/U-Net and mathematical severity percentage calculation.</p>
+                            <h4>Segmentation &amp; Severity Estimation</h4>
+                            <p>Measuring pixel-level damage with DeepLabV3+ and a Python severity calculation example.</p>
                         </div>
                     </div>
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">5</div>
                         <div class="roadmap-content">
                             <h4>Video &amp; Multi-View Analysis</h4>
-                            <p>Temporal frame extraction, DeepSORT tracking, and multi-frame majority voting.</p>
+                            <p>DeepSORT leaf tracking and majority voting across 10 video frames.</p>
                         </div>
                     </div>
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">6</div>
                         <div class="roadmap-content">
                             <h4>Case Study: Plant Doctor</h4>
-                            <p>In-depth examination of the Montagut Marques et al. (2025) hybrid system and its real-world latency bottleneck.</p>
+                            <p>Analyzing the hybrid YOLOv8 + DeepSORT + DeepLabV3+ system and its 50-minute processing time.</p>
                         </div>
                     </div>
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">7</div>
                         <div class="roadmap-content">
-                            <h4>Deployment, Evaluation, Challenges &amp; Quiz</h4>
-                            <p>Edge vs. cloud benchmarks, research lab survey, expert interview, and knowledge check quiz.</p>
+                            <h4>Deployment, Evaluation &amp; Quiz</h4>
+                            <p>Edge vs. cloud architectures, research labs, an author interview, and a 5-question quiz.</p>
                         </div>
                     </div>
                     <div class="roadmap-step-item">
                         <div class="roadmap-badge">8</div>
                         <div class="roadmap-content">
-                            <h4>Annotated Bibliography</h4>
-                            <p>Formal academic references [1]–[5] with synopses, methodological utility, and DOI links.</p>
+                            <h4>Annotated References</h4>
+                            <p>5 annotated research papers with synopses, methodology, and direct links.</p>
                         </div>
                     </div>
                 </div>
@@ -155,14 +146,14 @@
         </section>
 
         <section id="tutorial-modules">
-            <h2>Explore Tutorial Modules</h2>
+            <h2>Tutorial Modules</h2>
             <div class="card-grid">
 
                 <div class="tutorial-card">
                     <div>
                         <span class="card-step">Module 1</span>
                         <h3>Capture &amp; Preprocessing</h3>
-                        <p>Analyze how environmental factors, illumination, shadows, and blur affect smartphone capture, and review preprocessing solutions.</p>
+                        <p>Explore how lighting, angles, and background clutter affect field photos and how preprocessing helps.</p>
                     </div>
                     <a href="capture.html" class="card-link">Start Module &rarr;</a>
                 </div>
@@ -171,7 +162,7 @@
                     <div>
                         <span class="card-step">Module 2</span>
                         <h3>CNN Classification</h3>
-                        <p>Learn how convolutional neural networks and transfer learning categorize diseased leaves, and identify where classification falls short.</p>
+                        <p>Learn how convolutional networks and transfer learning categorize diseased leaves.</p>
                     </div>
                     <a href="classification.html" class="card-link">Explore Classification &rarr;</a>
                 </div>
@@ -180,7 +171,7 @@
                     <div>
                         <span class="card-step">Module 3</span>
                         <h3>YOLO Object Detection</h3>
-                        <p>Discover real-time bounding-box detection with YOLO to locate multiple symptomatic leaves simultaneously in cluttered foliage.</p>
+                        <p>Find out how YOLO locates multiple leaves with bounding boxes in cluttered natural scenes.</p>
                     </div>
                     <a href="detection.html" class="card-link">Explore Detection &rarr;</a>
                 </div>
@@ -189,7 +180,7 @@
                     <div>
                         <span class="card-step">Module 4</span>
                         <h3>Segmentation &amp; Severity</h3>
-                        <p>Extract pixel-level disease masks with semantic segmentation and compute quantitative leaf damage percentages in Python.</p>
+                        <p>Delineate pixel-level disease masks and calculate quantitative damage percentages with Python.</p>
                     </div>
                     <a href="segmentation.html" class="card-link">Explore Segmentation &rarr;</a>
                 </div>
@@ -197,8 +188,8 @@
                 <div class="tutorial-card">
                     <div>
                         <span class="card-step">Module 5</span>
-                        <h3>Video &amp; Multi-View Analysis</h3>
-                        <p>Examine temporal frame processing, DeepSORT leaf tracking, and multi-frame majority voting algorithms for robust field diagnosis.</p>
+                        <h3>Video Analysis &amp; Tracking</h3>
+                        <p>Examine how DeepSORT tracks leaves over time and how majority voting combines frame predictions.</p>
                     </div>
                     <a href="video.html" class="card-link">Explore Video Analysis &rarr;</a>
                 </div>
@@ -207,7 +198,7 @@
                     <div>
                         <span class="card-step">Module 6</span>
                         <h3>Case Study: Plant Doctor</h3>
-                        <p>Deep-dive into the hybrid YOLOv8 + DeepSORT + DeepLabV3+ video pipeline and analyze its critical 50-minute processing limitation.</p>
+                        <p>Review real results from Montagut Marques et al. (2025) and its 50-minute processing time limitation.</p>
                     </div>
                     <a href="case-study.html" class="card-link">Read Case Study &rarr;</a>
                 </div>
@@ -216,7 +207,7 @@
                     <div>
                         <span class="card-step">Module 7</span>
                         <h3>Deployment &amp; Quiz</h3>
-                        <p>Evaluate mobile on-device vs. cloud architectures, review research labs and the Umezu interview, and test your knowledge.</p>
+                        <p>Compare edge and cloud processing, read the expert interview, and test your knowledge with a quiz.</p>
                     </div>
                     <a href="deployment.html" class="card-link">View Deployment &rarr;</a>
                 </div>
@@ -225,7 +216,7 @@
                     <div>
                         <span class="card-step">Module 8</span>
                         <h3>Annotated References</h3>
-                        <p>Review the 5 foundational academic papers underpinning this tutorial with detailed annotations, synopses, and DOI sources.</p>
+                        <p>Review the 5 academic research papers supporting this tutorial with summaries and DOI links.</p>
                     </div>
                     <a href="references.html" class="card-link">View References &rarr;</a>
                 </div>

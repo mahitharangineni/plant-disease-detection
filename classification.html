@@ -4,9 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Detailed analysis of CNN classification and transfer learning for foliar plant disease identification.">
+    <meta name="description" content="CNN classification and transfer learning for foliar plant disease identification.">
     <title>Plant Disease Classification - Computer Vision Tutorial</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 </head>
 
 <body>
@@ -35,106 +43,62 @@
     <main>
 
         <section id="classification-principles">
-            <h2>Plant Disease Classification Principles</h2>
+            <h2>Plant Disease Classification</h2>
             <p>
-                Image-level classification is the classical formulation of computer vision for plant pathology. In this paradigm, an input image
-                containing a leaf is mapped onto a discrete categorical label from a predefined set of botanical conditions (e.g.,
-                <em>Healthy</em>, <em>Early Blight</em>, <em>Late Blight</em>, <em>Bacterial Spot</em>, or <em>Powdery Mildew</em>).
-            </p>
-            <p>
-                Early agricultural computer vision depended on handcrafted color and texture extraction algorithms paired with classical classifiers
-                (such as Support Vector Machines or Random Forests). In contrast, modern agricultural systems employ deep Convolutional Neural Networks (CNNs)
-                to learn visual feature hierarchies directly from raw RGB pixel tensors <a href="references.html#ref-1">[1]</a>, <a href="references.html#ref-2">[2]</a>.
+                Image classification assigns an entire leaf photo to a single category, such as <em>Healthy</em>, <em>Early Blight</em>, <em>Late Blight</em>, or <em>Leaf Spot</em>.
+                In modern computer vision, Convolutional Neural Networks (CNNs) are the standard choice because they automatically learn visual patterns from training images <a href="references.html#ref-1">[1]</a>, <a href="references.html#ref-2">[2]</a>.
             </p>
 
-            <h3>How Convolutional Neural Networks Extract Disease Features</h3>
+            <h3>How CNNs Learn Disease Patterns</h3>
             <p>
-                A standard deep CNN architecture operates through an alternating sequence of parameterized convolutions, non-linear activation functions (e.g., ReLU),
-                and spatial pooling operations:
+                A CNN processes the image through multiple convolutional layers:
             </p>
             <ul>
-                <li>
-                    <strong>Shallow Layers (Low-Level Features):</strong>
-                    Initial convolutional kernels function as spatial edge detectors, color opponent filters, and gradient extractors.
-                    They capture leaf margins, primary vein structures, and localized color contrasts.
-                </li>
-                <li>
-                    <strong>Intermediate Layers (Mid-Level Patterns):</strong>
-                    Deeper kernels combine elementary edges into characteristic textural motifs—identifying circular lesion boundaries,
-                    pustule clusters, and concentric ring patterns typical of target-spot fungi.
-                </li>
-                <li>
-                    <strong>Deep Layers (High-Level Semantic Features):</strong>
-                    The deepest convolutional layers aggregate complex spatial relationships, distinguishing overall disease syndromes such as severe chlorotic halos,
-                    leaf margin curling, and diffuse necrotic rot.
-                </li>
-                <li>
-                    <strong>Classification Head:</strong>
-                    Global Average Pooling (GAP) condenses spatial feature maps into a 1D embedding vector, followed by dense fully connected layers
-                    and a Softmax function that outputs posterior probabilities across all target disease categories:
+                <li><strong>Early layers:</strong> Learn simple patterns like lines, edges, and color changes along leaf borders.</li>
+                <li><strong>Middle layers:</strong> Combine edges into textures and shapes, recognizing spots, lesions, and concentric rings.</li>
+                <li><strong>Deep layers:</strong> Detect complex disease symptoms across the leaf surface.</li>
+                <li><strong>Softmax layer:</strong> Converts final feature numbers into probabilities for each disease class:
                     $$P(y = k \mid \mathbf{x}) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}$$
                 </li>
             </ul>
 
-            <h3>Transfer Learning in Agricultural Diagnostics</h3>
+            <h3>Transfer Learning</h3>
             <p>
-                Training deep convolutional architectures from random initialization requires hundreds of thousands of meticulously annotated images.
-                In precision agriculture, acquiring expert-labeled datasets across diverse crop species and pathology stages is notoriously expensive.
-                Transfer learning resolves this limitation by utilizing deep backbones (such as ResNet, MobileNet, or EfficientNet) pre-trained on massive computer vision benchmarks (e.g., ImageNet) <a href="references.html#ref-2">[2]</a>.
+                Training a deep CNN from scratch requires thousands of labeled images. In agriculture, collecting huge datasets of rare diseases is difficult and expensive.
+                Transfer learning solves this by starting with a model already trained on a large dataset (like ImageNet) and fine-tuning it on plant disease images <a href="references.html#ref-2">[2]</a>.
+                This speeds up training and achieves good accuracy even with smaller datasets.
             </p>
-            <div class="callout">
-                <h4>Transfer Learning Methodology</h4>
-                <p>
-                    The low- and mid-level feature representations learned from general computer vision tasks transfer readily to natural vegetation.
-                    By freezing early convolutional layers and fine-tuning deeper layers alongside a newly initialized agricultural classification head,
-                    models converge rapidly while achieving high diagnostic accuracy even on limited botanical training samples <a href="references.html#ref-2">[2]</a>.
-                </p>
-            </div>
 
-            <!-- Semantic Figure with Figure Caption & AI Credit -->
             <figure class="figure-container">
                 <img src="images/classification-system.png"
                      alt="CNN-based plant disease classification system architecture showing feature extraction, transfer learning, and field limitations">
                 <figcaption>
-                    <span class="figure-title">Figure 1: Convolutional Neural Network Plant Disease Classification Pipeline</span>
-                    End-to-end representation of CNN-based disease categorization: input acquisition, multi-stage convolutional feature extraction,
-                    transfer learning adaptation, and categorical Softmax probability distribution, alongside real-world field limitations.
+                    <span class="figure-title">Figure 1: CNN Plant Disease Classification Pipeline</span>
+                    How CNNs extract features from leaf images, adapt through transfer learning, and output disease category probabilities.
                     <br>
                     <span class="author-credit">Image created by the author with AI-assisted visualization.</span>
                 </figcaption>
             </figure>
 
-            <h3>Inherent Limitations of Image-Level Classification</h3>
+            <h3>Limitations of Classification</h3>
             <p>
-                Despite its popularity, standard image classification suffers from severe architectural constraints when deployed in uncontrolled outdoor environments:
+                While classification is straightforward to set up, it has important limitations when used in real fields:
             </p>
             <ul>
-                <li>
-                    <strong>Lack of Spatial Localization:</strong>
-                    Classification produces a single global label for the entire image. It cannot inform the agronomist <em>where</em> the disease is located,
-                    how many leaves are infected, or what proportion of the foliage is compromised.
-                </li>
-                <li>
-                    <strong>Multi-Leaf and Multi-Pathology Failures:</strong>
-                    In real fields, a smartphone snapshot frequently captures multiple overlapping leaves—some completely healthy and others exhibiting co-infections
-                    (e.g., both bacterial spot and powdery mildew). Standard classification architectures are forced to collapse this multi-pathology complexity into a single class.
-                </li>
-                <li>
-                    <strong>Vulnerability to Confounding Backgrounds:</strong>
-                    Global CNNs aggregate features across the entire frame. If training data correlates diseased samples with dark greenhouse trays or dry weed-filled soil,
-                    the classifier frequently relies on background artifacts rather than true foliar symptoms ("Clever Hans" effect).
-                </li>
+                <li><strong>No location information:</strong> It gives only one label for the whole image and cannot point to where the disease is.</li>
+                <li><strong>Multiple leaves:</strong> In field photos with several leaves—some healthy, some sick—classification is forced to pick just one label.</li>
+                <li><strong>Background confusion:</strong> The model can mistakenly rely on soil color or background weeds instead of the leaf itself.</li>
             </ul>
         </section>
 
         <section id="practical-utility">
-            <h2>Why Classification Remains an Essential Baseline</h2>
+            <h2>Why Classification Is Still Useful</h2>
             <p>
-                Despite spatial localization limits, classification remains an indispensable component of precision agriculture architectures:
+                Despite these limitations, classification is still useful:
             </p>
             <ul>
-                <li><strong>Extremely Low Computational Overhead:</strong> Classification networks require significantly fewer FLOPs and parameters than object detection or pixel-level segmentation networks, making them ideal for battery-constrained mobile and microcontroller deployment.</li>
-                <li><strong>Rapid Hierarchical Filtering:</strong> Complex systems frequently deploy lightweight classification models as an initial fast filter to distinguish plant vs. non-plant frames before invoking computationally expensive localization and segmentation pipelines.</li>
+                <li>It is fast and requires less computing power than detection or segmentation.</li>
+                <li>It works well as a quick initial filter before running more complex models.</li>
             </ul>
         </section>
 

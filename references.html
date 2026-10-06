@@ -7,6 +7,14 @@
     <meta name="description" content="Annotated bibliography of foundational computer vision research papers on plant disease monitoring, mobile deployment, and video tracking.">
     <title>Annotated Bibliography &amp; References - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 </head>
 
 <body>
@@ -37,9 +45,8 @@
         <section id="references-intro">
             <h2>Annotated Bibliography</h2>
             <p>
-                The theoretical foundations, experimental architectures, and empirical benchmarks presented in this tutorial
-                are derived from peer-reviewed computer vision literature. Below is the annotated bibliography detailing the five
-                core references, their methodological contributions, and their specific utility to agricultural computer vision systems.
+                The concepts, methods, and results discussed in this tutorial are based on the following five peer-reviewed papers.
+                Each entry includes the full citation, a brief synopsis, why it is useful for this project, and a direct link to the published paper.
             </p>
         </section>
 
@@ -54,8 +61,8 @@
                     <em>Information Sciences</em>, vol. 665, article 120338, 2024.
                 </p>
                 <div class="reference-meta">
-                    <p><strong>Synopsis:</strong> This survey provides a comprehensive contemporary taxonomy of modern computer vision techniques applied to precision agriculture, examining deep convolutional neural networks, YOLO object detection models, vision transformers (ViTs), and lightweight edge networks. It discusses key real-world challenges including extreme illumination changes, background foliage clutter, and low-latency edge deployment.</p>
-                    <p><strong>Why this source is useful:</strong> Establishes the foundational computer vision taxonomy and framing for this tutorial, justifying the transition from standard image classification to spatial object detection and lightweight edge deployment in agricultural settings.</p>
+                    <p><strong>Synopsis:</strong> This survey provides a comprehensive overview of modern computer vision techniques in precision agriculture, covering CNNs, YOLO object detectors, vision transformers, and lightweight models for edge deployment. It also discusses practical challenges like outdoor lighting, background clutter, and edge computing.</p>
+                    <p><strong>Why this source is useful:</strong> Provides the overall computer vision background for the tutorial and explains the transition from basic classification to real-time object detection in agriculture.</p>
                 </div>
                 <a href="https://doi.org/10.1016/j.ins.2024.120338" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
                     View Journal Source (DOI: 10.1016/j.ins.2024.120338) &rarr;
@@ -71,8 +78,8 @@
                     <em>Artificial Intelligence Review</em>, vol. 57, article 167, 2024.
                 </p>
                 <div class="reference-meta">
-                    <p><strong>Synopsis:</strong> This study develops a fine-tuned convolutional neural network architecture coupled with transfer learning for automated crop disease diagnosis, integrated into a functional smartphone application. The authors evaluate real-world crop pathologies (apple, corn, and potato) and analyze edge inference efficiency.</p>
-                    <p><strong>Why this source is useful:</strong> Directly informs the mobile image capture, CNN transfer learning, and on-device deployment modules of this tutorial, validating practical smartphone integration for field farmers.</p>
+                    <p><strong>Synopsis:</strong> This study develops a fine-tuned CNN model with transfer learning for crop disease identification and integrates it into a working smartphone app, testing on apple, corn, and potato leaf diseases.</p>
+                    <p><strong>Why this source is useful:</strong> Supports the mobile image capture, CNN classification, and on-device deployment sections of this tutorial.</p>
                 </div>
                 <a href="https://doi.org/10.1007/s10462-024-10809-z" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
                     View Journal Source (DOI: 10.1007/s10462-024-10809-z) &rarr;
@@ -88,8 +95,8 @@
                     <em>Smart Agricultural Technology</em>, vol. 8, article 100480, 2024.
                 </p>
                 <div class="reference-meta">
-                    <p><strong>Synopsis:</strong> A comprehensive technical investigation into morphological, textural (GLCM), and chromatic feature representations used to identify foliar plant diseases. The paper details image preprocessing routines, color space transformations (HSV, CIE $L^*a^*b^*$), and disease-area segmentation methodologies.</p>
-                    <p><strong>Why this source is useful:</strong> Underpins the image preprocessing, color space conversion, and visual feature extraction sections of this tutorial, providing the mathematical rationale for decoupling luminance from chrominance in outdoor photography.</p>
+                    <p><strong>Synopsis:</strong> A detailed review of color, texture (GLCM), and shape features used in plant pathology. The paper explains preprocessing steps, color spaces (such as HSV and CIE $L^*a^*b^*$), and disease segmentation methods.</p>
+                    <p><strong>Why this source is useful:</strong> Directly supports the preprocessing, color space conversion, and visual feature extraction sections of this tutorial.</p>
                 </div>
                 <a href="https://doi.org/10.1016/j.atech.2024.100480" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
                     View Journal Source (DOI: 10.1016/j.atech.2024.100480) &rarr;
@@ -105,8 +112,8 @@
                     <em>Smart Agricultural Technology</em>, vol. 9, article 100573, 2024.
                 </p>
                 <div class="reference-meta">
-                    <p><strong>Synopsis:</strong> This review examines how deep learning and semantic segmentation models transcend categorical disease classification to perform quantitative disease severity assessment. It analyzes mathematical severity indices, pixel-level loss functions, and automated phenotyping benchmarks.</p>
-                    <p><strong>Why this source is useful:</strong> Formulates the theoretical foundation for Module 4 (Segmentation &amp; Severity Estimation), justifying the quantitative percentage severity formula: $\text{Severity} = (\text{Diseased Pixels} / \text{Total Leaf Pixels}) \times 100$.</p>
+                    <p><strong>Synopsis:</strong> This review explores how deep learning can estimate disease severity rather than just assigning a disease label. It discusses pixel-level segmentation, mathematical severity indices, and automated plant phenotyping.</p>
+                    <p><strong>Why this source is useful:</strong> Provides the theoretical backing for Module 4 (Segmentation &amp; Severity Estimation) and the percentage severity formula: $\text{Severity} = (\text{Diseased Pixels} / \text{Total Leaf Pixels}) \times 100$.</p>
                 </div>
                 <a href="https://doi.org/10.1016/j.atech.2024.100573" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
                     View Journal Source (DOI: 10.1016/j.atech.2024.100573) &rarr;
@@ -122,8 +129,8 @@
                     <em>Measurement</em>, vol. 249, article 117094, 2025.
                 </p>
                 <div class="reference-meta">
-                    <p><strong>Synopsis:</strong> Introduces the <em>Plant Doctor</em> framework—a multi-stage computer vision system combining YOLOv8 for spatial leaf detection, DeepSORT for multi-frame temporal leaf tracking, and DeepLabV3+ for pixel-level damage segmentation across continuous video. The authors report experimental benchmarks ($0.99$ mAP@0.5 for YOLO, $0.96$ leaf IoU, $0.76$ damage IoU) alongside the critical limitation that a 1-minute video required approximately 50 minutes of processing time.</p>
-                    <p><strong>Why this source is useful:</strong> Serves as the central case study (Module 6) and primary motivation for multi-view video tracking (Module 5), providing concrete real-world empirical performance numbers and highlighting current computational bottlenecks in video-based precision agriculture.</p>
+                    <p><strong>Synopsis:</strong> Introduces the <em>Plant Doctor</em> system, combining YOLOv8 for leaf detection, DeepSORT for tracking leaves across video frames, and DeepLabV3+ for damage segmentation. It reports verified results (0.99 mAP@0.5 for YOLO, 0.96 leaf IoU, 0.76 damage IoU) and documents the key finding that processing a 1-minute video required about 50 minutes.</p>
+                    <p><strong>Why this source is useful:</strong> Serves as the primary case study (Module 6) and motivation for multi-view video tracking (Module 5), providing concrete real-world numbers and highlighting processing time bottlenecks.</p>
                 </div>
                 <a href="https://doi.org/10.1016/j.measurement.2025.117094" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
                     View Journal Source (DOI: 10.1016/j.measurement.2025.117094) &rarr;

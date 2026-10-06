@@ -7,6 +7,14 @@
     <meta name="description" content="Video and multi-view plant disease analysis using DeepSORT tracking and multi-frame temporal voting algorithms.">
     <title>Video &amp; Multi-View Analysis - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 </head>
 
 <body>
@@ -37,95 +45,80 @@
         <section id="video-motivation">
             <h2>Video and Multi-View Plant Disease Analysis</h2>
             <p>
-                Single-image diagnostics are inherently fragile when deployed in uncontrolled outdoor environments.
-                A fleeting gust of wind inducing motion blur, a transient shadow cast by an operator, or a direct specular glare
-                can cause an otherwise accurate deep neural network to misclassify a healthy leaf as diseased or miss early-stage fungal pustules entirely.
+                Relying on a single photo can be risky in outdoor conditions.
+                A temporary shadow, wind blur, or sunlight glare can make an otherwise healthy leaf look diseased, or cause the model to miss subtle symptoms.
             </p>
             <p>
-                Continuous video captures the temporal evolution of foliage across dozens of successive frames from slightly varying viewing angles.
-                This multi-view redundancy provides the computer vision system with rich complementary perspectives, enabling noise suppression,
-                glare rejection, and high-confidence temporal consensus <a href="references.html#ref-5">[5]</a>.
+                A video records multiple frames from slightly different angles as the user moves around the plant.
+                Combining observations across several frames makes the final diagnosis much more reliable <a href="references.html#ref-5">[5]</a>.
             </p>
 
-            <h3>Key Stages in Video-Based Plant Monitoring</h3>
+            <h3>Key Steps in Video-Based Monitoring</h3>
             <ul>
                 <li>
-                    <strong>Frame Extraction &amp; Keyframe Sampling:</strong>
-                    Continuous video captured at 30 or 60 frames per second (FPS) contains immense temporal redundancy.
-                    Systems apply motion-based keyframe extraction (e.g., using structural similarity index [SSIM] or optical flow magnitude)
-                    to discard redundant or blurred frames and select sharp, maximally informative viewpoints.
+                    <strong>Frame extraction:</strong>
+                    Instead of analyzing every single frame at 30 or 60 FPS, the system extracts keyframes, discarding blurred or repetitive frames.
                 </li>
                 <li>
-                    <strong>Leaf Tracking Across Frames (DeepSORT):</strong>
-                    When an agronomist or drone pans across a row of crops, individual leaves traverse the field of view over multiple seconds.
-                    Without tracking, the system would treat each bounding box in each frame as a distinct leaf, artificially inflating disease incidence counts.
-                    DeepSORT associates detections across consecutive frames by combining:
-                    <ul>
-                        <li><em>Kalman Filtering:</em> Predicts the spatial bounding-box trajectory and velocity of each leaf across frame steps.</li>
-                        <li><em>Deep Visual Embeddings:</em> A specialized convolutional re-identification network extracts a 128D appearance embedding vector for each detected leaf, ensuring the system maintains identity even during erratic camera pans or brief occlusions <a href="references.html#ref-5">[5]</a>.</li>
-                    </ul>
+                    <strong>Tracking leaves with DeepSORT:</strong>
+                    When moving a phone or drone across a plant, the same leaf appears in many frames.
+                    Without tracking, the system would count that leaf repeatedly.
+                    DeepSORT combines a Kalman filter (predicting position) and deep appearance features (leaf re-identification) to assign a consistent ID to each leaf <a href="references.html#ref-5">[5]</a>.
                 </li>
                 <li>
-                    <strong>Multi-View Decision Fusion:</strong>
-                    By aggregating observations across all frames in which a specific tracked leaf appears, the system computes a consolidated diagnosis.
-                    Instead of relying on a single fallible snapshot, the diagnostic decision represents a robust temporal consensus.
+                    <strong>Combining predictions:</strong>
+                    By grouping predictions for the same leaf across multiple frames, the system can use consensus methods (like majority voting) to produce a confident final result.
                 </li>
             </ul>
 
             <div class="callout">
-                <h4>End-to-End Real-World Video Pipeline</h4>
+                <h4>Pipeline Overview</h4>
                 <p>
-                    <strong>Mobile Video Stream &rarr; Keyframe Extraction &rarr; YOLO Leaf Detection &rarr; DeepSORT Temporal Tracking &rarr; Best-View Selection &rarr; DeepLabV3+ Segmentation &rarr; Temporal Consensus Diagnosis</strong> <a href="references.html#ref-5">[5]</a>.
+                    <strong>Video &rarr; Frame Extraction &rarr; YOLO Leaf Detection &rarr; DeepSORT Tracking &rarr; Best View Selection &rarr; Segmentation &rarr; Consensus Diagnosis</strong> <a href="references.html#ref-5">[5]</a>.
                 </p>
             </div>
 
-            <!-- Semantic Figure with Figure Caption & AI Credit -->
             <figure class="figure-container">
                 <img src="images/video-pipeline.png"
                      alt="Video-based plant disease analysis pipeline showing frame extraction, tracking, segmentation, and diagnosis">
                 <figcaption>
-                    <span class="figure-title">Figure 4: Multi-View Video Processing and Leaf Tracking Architecture</span>
-                    Architectural workflow depicting mobile video capture, frame extraction, DeepSORT leaf tracking, best-view selection, segmentation, and multi-frame diagnosis.
+                    <span class="figure-title">Figure 4: Video Processing and Leaf Tracking Architecture</span>
+                    How mobile video, DeepSORT tracking, and multi-frame decision making work together in field plant monitoring.
                     <br>
                     <span class="author-credit">Image created by the author with AI-assisted visualization.</span>
                 </figcaption>
             </figure>
 
-            <h3>Benefits and Computational Trade-Offs</h3>
+            <h3>Single-Image vs. Video Analysis</h3>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Dimension</th>
+                            <th>Feature</th>
                             <th>Single-Image Analysis</th>
-                            <th>Video &amp; Multi-View Analysis</th>
+                            <th>Video &amp; Multi-View</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Diagnostic Reliability</strong></td>
-                            <td>Sensitive to single-frame blur, glare, and poor angles</td>
-                            <td>High reliability through multi-frame temporal voting</td>
+                            <td><strong>Reliability</strong></td>
+                            <td>Can fail due to single-frame blur or glare</td>
+                            <td>Robust; uses consensus across multiple frames</td>
                         </tr>
                         <tr>
-                            <td><strong>Occlusion Handling</strong></td>
-                            <td>Fails if symptom is partially hidden behind other leaves</td>
-                            <td>Camera movement uncovers occluded areas across frames</td>
+                            <td><strong>Occlusion</strong></td>
+                            <td>Hidden symptoms stay hidden</td>
+                            <td>Camera movement reveals different angles</td>
                         </tr>
                         <tr>
-                            <td><strong>Spatial Tracking</strong></td>
-                            <td>None (no temporal identity)</td>
-                            <td>DeepSORT assigns unique persistent IDs to each leaf</td>
+                            <td><strong>Leaf Tracking</strong></td>
+                            <td>No tracking across time</td>
+                            <td>DeepSORT assigns unique leaf IDs</td>
                         </tr>
                         <tr>
-                            <td><strong>Computational Cost</strong></td>
-                            <td>Very low (processes single image once)</td>
-                            <td>Substantially higher (processes hundreds of frames sequentially)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Battery &amp; Thermal Impact</strong></td>
-                            <td>Negligible</td>
-                            <td>High continuous GPU/NPU utilization on edge devices</td>
+                            <td><strong>Computation</strong></td>
+                            <td>Low (one-time inference)</td>
+                            <td>Higher (processes multiple frames)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -135,82 +128,64 @@
         <section id="majority-voting">
             <h2>Algorithm 2: Multi-Frame Majority Voting</h2>
             <p>
-                A fundamental technique for temporal consensus is <strong>majority voting</strong>.
-                When a tracked leaf is observed across $N$ consecutive video frames, the computer vision model predicts a classification label for each frame.
-                The final diagnosis is assigned to the modal category—the disease class receiving the highest frequency of votes across the temporal sequence.
+                A simple and effective way to combine predictions across video frames is <strong>majority voting</strong>.
+                When a tracked leaf is seen across several frames, the model predicts a label for each frame.
+                The final diagnosis is simply the label that appears most often.
             </p>
 
-            <!-- Code Block with Meta Header -->
             <div class="code-wrapper">
                 <div class="code-header">
                     <span class="code-lang">Python 3</span>
                     <span class="code-title">multi_frame_voting.py</span>
                 </div>
-                <pre><code># Multi-Frame Majority Voting Consensus Algorithm
-# Input: Temporal sequence of 10 frame-wise predictions for a tracked leaf
+                <pre><code># Multi-Frame Majority Voting Algorithm
+# Input: List of predictions across 10 video frames for a single tracked leaf
 
 from collections import Counter
-from typing import List, Tuple
 
-def multi_frame_majority_voting(predictions: List[str]) -> Tuple[str, Counter]:
-    """
-    Determines the final disease diagnosis from multi-frame video observations
-    using majority voting consensus.
-    
-    Parameters:
-        predictions (List[str]): Sequence of frame-level categorical predictions.
-        
-    Returns:
-        Tuple[str, Counter]: Final consensus label and vote distribution tally.
-    """
-    if not predictions:
-        raise ValueError("Prediction list cannot be empty.")
-        
-    vote_counts = Counter(predictions)
-    # Extract the modal class (most frequent prediction)
-    final_prediction = vote_counts.most_common(1)[0][0]
-    return final_prediction, vote_counts
-
-# Empirical simulation: 10 consecutive video frames of a tracked leaf
+# Simulated 10 frame predictions for a tracked leaf:
 frame_predictions = [
     "Leaf Spot",
     "Leaf Spot",
-    "Healthy",      # Frame corrupted by direct solar specular reflection
+    "Healthy",      # Frame affected by sunlight glare
     "Leaf Spot",
     "Leaf Spot",
-    "Healthy",      # Frame affected by severe wind motion blur
+    "Healthy",      # Frame blurred by wind motion
     "Leaf Spot",
     "Leaf Spot",
     "Leaf Spot",
-    "Healthy"       # Frame captured at an extreme steep angle
+    "Healthy"       # Frame taken at a steep angle
 ]
 
-final_label, counts = multi_frame_majority_voting(frame_predictions)
+# Count the frequency of each predicted label
+vote_counts = Counter(frame_predictions)
+
+# Select the label with the highest vote count
+final_prediction = vote_counts.most_common(1)[0][0]
 
 print("Frame predictions:", frame_predictions)
-print("Vote counts:", dict(counts))
-print("Final prediction:", final_label)</code></pre>
+print("Vote counts:", dict(vote_counts))
+print("Final prediction:", final_prediction)</code></pre>
             </div>
 
             <div class="code-annotation-grid">
                 <div class="annotation-card">
-                    <h4>Algorithm Inputs &amp; Outputs</h4>
-                    <p><strong>Input:</strong> 10 sequential frame predictions containing transient corruptions.</p>
+                    <h4>Inputs &amp; Outputs</h4>
+                    <p><strong>Input:</strong> 10 sequential frame predictions with 3 noisy frames.</p>
                     <p><strong>Output:</strong> <code>Vote counts: {'Leaf Spot': 7, 'Healthy': 3}</code> &rarr; <code>Final prediction: Leaf Spot</code></p>
                 </div>
                 <div class="annotation-card">
-                    <h4>Why This Matters in Practice</h4>
-                    <p>Outlier frames caused by sunlight glare or motion blur are successfully overruled by the temporal consensus, preventing false-negative diagnoses.</p>
+                    <h4>Practical Value</h4>
+                    <p>Noisy frames caused by glare or blur are outvoted by the majority, preventing false diagnoses.</p>
                 </div>
             </div>
 
-            <h3>Algorithmic Workflow</h3>
+            <h3>How It Works</h3>
             <ol>
-                <li><strong>Frame Extraction:</strong> Extract a temporal sequence of $N = 10$ frames corresponding to a specific tracked leaf ID.</li>
-                <li><strong>Per-Frame Inference:</strong> Execute the disease classification or detection model independently on each frame.</li>
-                <li><strong>Vote Accumulation:</strong> Construct a frequency histogram of the predicted classes over the sequence window.</li>
-                <li><strong>Modal Selection:</strong> Select the class with the maximum vote tally $\hat{C} = \arg\max_{c} \sum_{t=1}^{N} \mathbb{I}(y_t = c)$.</li>
-                <li><strong>Confidence Validation:</strong> Verify that the winner exceeds a pre-set consensus threshold (e.g., $\ge 60\%$) before issuing the diagnostic report.</li>
+                <li>Extract frames for a tracked leaf.</li>
+                <li>Run the disease model on each frame.</li>
+                <li>Tally how many times each class was predicted.</li>
+                <li>Select the disease class with the most votes.</li>
             </ol>
         </section>
 

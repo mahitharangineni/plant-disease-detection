@@ -4,9 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pixel-level semantic segmentation using U-Net and DeepLabV3+ for quantitative plant disease severity assessment and practical Python implementations.">
+    <meta name="description" content="Semantic segmentation using U-Net and DeepLabV3+ for quantitative plant disease severity assessment and practical Python implementations.">
     <title>Segmentation &amp; Severity Estimation - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 </head>
 
 <body>
@@ -37,56 +45,42 @@
         <section id="segmentation-principles">
             <h2>Pixel-Level Semantic Segmentation</h2>
             <p>
-                Object detection provides spatial bounding boxes, but bounding boxes are rectangular approximations that cannot model the intricate,
-                irregular contours of biological decay. <strong>Semantic segmentation</strong> solves this limitation by assigning a dense categorical label
-                to every individual pixel in the image tensor:
-                $$\hat{Y}_{i,j} \in \{\text{Background}, \text{Healthy Leaf Tissue}, \text{Diseased Lesion}\}$$
-            </p>
-            <p>
-                By classifying pixels individually, segmentation enables computer vision systems to precisely delineate lesion boundaries,
-                distinguish multiple coalescing disease spots, and quantify leaf health with anatomical accuracy <a href="references.html#ref-3">[3]</a>, <a href="references.html#ref-4">[4]</a>.
+                Bounding boxes give rectangular regions, but plant disease spots have irregular, curved shapes.
+                <strong>Semantic segmentation</strong> classifies every pixel in the image individually:
+                is this pixel healthy leaf tissue, diseased lesion, or background? <a href="references.html#ref-3">[3]</a>, <a href="references.html#ref-4">[4]</a>.
             </p>
 
-            <h3>Key Deep Segmentation Architectures</h3>
+            <h3>Common Segmentation Models</h3>
             <ul>
                 <li>
                     <strong>U-Net:</strong>
-                    Originally developed for biomedical segmentation, U-Net features a symmetric contracting path (encoder) to capture contextual semantics
-                    and an expanding path (decoder) to restore fine spatial localization. Essential <em>skip connections</em> transfer high-resolution feature maps
-                    directly from encoder stages to corresponding decoder stages, preserving delicate lesion edges and fine veinal boundaries.
+                    Features an encoder-decoder architecture with skip connections that pass fine detail from the downsampling path to the upsampling path, helping preserve precise lesion boundaries.
                 </li>
                 <li>
                     <strong>DeepLabV3+:</strong>
-                    A state-of-the-art semantic segmentation architecture that utilizes <em>Atrous Spatial Pyramid Pooling (ASPP)</em>.
-                    By employing dilated convolutions at multiple sample rates, ASPP captures multi-scale contextual information without losing spatial resolution.
-                    DeepLabV3+ incorporates an effective decoder module that refines boundary reconstruction along jagged leaf and lesion margins <a href="references.html#ref-4">[4]</a>, <a href="references.html#ref-5">[5]</a>.
+                    Uses Atrous Spatial Pyramid Pooling (ASPP) to capture patterns at multiple scales without losing resolution, making it effective for complex leaf and spot outlines <a href="references.html#ref-4">[4]</a>, <a href="references.html#ref-5">[5]</a>.
                 </li>
             </ul>
 
-            <h3>Quantitative Disease Severity Estimation</h3>
+            <h3>Disease Severity Estimation</h3>
             <p>
-                In agronomy, merely identifying disease presence is insufficient. Two leaves may both test positive for early blight, but a leaf with 1% surface damage
-                requires minimal intervention, whereas a leaf with 45% necrotic damage signals systemic crop infection requiring immediate fungicide application.
-                Semantic segmentation enables direct, objective calculation of the <strong>Disease Severity Index</strong>:
+                In farming, knowing that a leaf has a disease is only part of the story.
+                A leaf with 2% damage might only need monitoring, whereas 40% damage might require immediate treatment.
+                With segmentation, we can calculate the exact severity percentage:
             </p>
             <div class="callout">
-                <h4>Mathematical Formulation</h4>
+                <h4>Severity Formula</h4>
                 <p>
-                    $$\text{Disease Severity (\%)} = \left(\frac{\text{Diseased Leaf Area}}{\text{Total Leaf Area}}\right) \times 100 = \left(\frac{\sum_{(i,j) \in \Omega_{\text{leaf}}} \mathbb{I}(P_{i,j} = \text{Lesion})}{\sum_{(i,j)} \mathbb{I}(P_{i,j} \in \Omega_{\text{leaf}})}\right) \times 100$$
-                    where $\Omega_{\text{leaf}}$ represents the set of all segmented leaf pixels (healthy + diseased), and $\mathbb{I}(\cdot)$ is the binary indicator function.
+                    $$\text{Disease Severity (\%)} = \left(\frac{\text{Diseased Leaf Pixels}}{\text{Total Leaf Pixels}}\right) \times 100$$
                 </p>
             </div>
-            <p>
-                This automated metric replaces subjective human visual scoring charts (e.g., Horsfall-Barratt scale), eliminating observer bias and enabling high-throughput plant phenotyping <a href="references.html#ref-4">[4]</a>.
-            </p>
 
-            <!-- Semantic Figure with Figure Caption & AI Credit -->
             <figure class="figure-container">
                 <img src="images/segmentation-severity.png"
                      alt="Plant disease segmentation and severity estimation showing pixel-level masks and percentage calculation">
                 <figcaption>
-                    <span class="figure-title">Figure 3: Semantic Segmentation and Pixel-Level Disease Severity Quantification</span>
-                    Segmentation pipeline showing extraction of binary leaf masks, diseased lesion isolation, and automated percentage calculation of affected foliage area.
+                    <span class="figure-title">Figure 3: Semantic Segmentation and Disease Severity</span>
+                    Segmenting healthy leaf area and diseased spots to calculate quantitative leaf damage percentage.
                     <br>
                     <span class="author-credit">Image created by the author with AI-assisted visualization.</span>
                 </figcaption>
@@ -94,40 +88,28 @@
         </section>
 
         <section id="severity-algorithm">
-            <h2>Algorithm 1: Quantitative Disease Severity Calculation</h2>
+            <h2>Algorithm 1: Disease Severity Calculation</h2>
             <p>
-                Once a semantic segmentation model predicts dense masks for both the entire leaf blade and the infected lesion regions,
-                the severity percentage is computed deterministically.
+                Once the segmentation model outputs the pixel counts for the diseased area and the total leaf, the severity percentage is calculated:
             </p>
 
-            <!-- Code Block with Meta Header -->
             <div class="code-wrapper">
                 <div class="code-header">
                     <span class="code-lang">Python 3</span>
                     <span class="code-title">disease_severity_calculator.py</span>
                 </div>
                 <pre><code># Disease Severity Estimation Algorithm
-# Inputs: Segmented binary masks or pixel counts from DeepLabV3+ / U-Net
+# Inputs: Segmented pixel counts from DeepLabV3+ or U-Net
 
 def calculate_disease_severity(diseased_pixels: int, total_leaf_pixels: int) -> float:
-    """
-    Computes the percentage of diseased leaf tissue relative to total leaf area.
-    
-    Parameters:
-        diseased_pixels (int): Count of pixels classified as necrotic or chlorotic lesions.
-        total_leaf_pixels (int): Total count of pixels within the segmented leaf boundary.
-        
-    Returns:
-        float: Calculated disease severity percentage [0.0% - 100.0%].
-    """
+    """Calculates the percentage of leaf area affected by disease."""
     if total_leaf_pixels <= 0:
         raise ValueError("Total leaf area must be greater than zero.")
     
-    # Mathematical calculation
     severity_percentage = (diseased_pixels / total_leaf_pixels) * 100.0
     return severity_percentage
 
-# Demonstration with empirical segmented pixel counts:
+# Example with segmented pixel counts:
 diseased_pixels = 2340
 total_leaf_pixels = 10000
 
@@ -137,23 +119,22 @@ print(f"Disease Severity: {severity:.2f}%")</code></pre>
 
             <div class="code-annotation-grid">
                 <div class="annotation-card">
-                    <h4>Algorithm Inputs &amp; Outputs</h4>
-                    <p><strong>Inputs:</strong> Segmented lesion count ($2,340$ px), total segmented leaf blade area ($10,000$ px).</p>
+                    <h4>Inputs &amp; Outputs</h4>
+                    <p><strong>Inputs:</strong> 2,340 diseased pixels, 10,000 total leaf pixels.</p>
                     <p><strong>Output:</strong> <code>Disease Severity: 23.40%</code></p>
                 </div>
                 <div class="annotation-card">
-                    <h4>Why This Matters in Practice</h4>
-                    <p>Enables variable-rate spraying equipment to dynamically adjust chemical dosage based on quantitative infection severity rather than uniform blanket application.</p>
+                    <h4>Practical Use</h4>
+                    <p>Allows automated sprayers or farmers to apply treatments based on measured damage rather than spraying whole fields equally.</p>
                 </div>
             </div>
 
-            <h3>Algorithmic Pipeline Steps</h3>
+            <h3>Algorithm Steps</h3>
             <ol>
-                <li><strong>Leaf Extraction:</strong> Segment the entire leaf blade from the complex background soil and mulch using the primary segmentation channel.</li>
-                <li><strong>Lesion Masking:</strong> Classify symptomatic regions (chlorotic yellow halos, necrotic brown spots) using the lesion segmentation head.</li>
-                <li><strong>Pixel Summation:</strong> Count the total number of non-zero leaf pixels ($N_{\text{leaf}}$) and non-zero lesion pixels ($N_{\text{lesion}}$).</li>
-                <li><strong>Ratio Normalization:</strong> Compute the fractional quotient $\frac{N_{\text{lesion}}}{N_{\text{leaf}}}$.</li>
-                <li><strong>Severity Scaling:</strong> Multiply the quotient by $100$ to output the calibrated agronomic severity percentage.</li>
+                <li>Segment the complete leaf from the background.</li>
+                <li>Segment the diseased spots (chlorosis or necrosis).</li>
+                <li>Count total leaf pixels and diseased pixels.</li>
+                <li>Divide diseased pixels by total leaf pixels and multiply by 100.</li>
             </ol>
         </section>
 

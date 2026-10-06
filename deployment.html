@@ -7,6 +7,14 @@
     <meta name="description" content="Mobile edge vs cloud deployment, computer vision evaluation metrics, real-world challenges, expert interview request, research labs, and interactive quiz.">
     <title>Deployment, Evaluation &amp; Quiz - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 </head>
 
 <body>
@@ -35,46 +43,43 @@
     <main>
 
         <section id="mobile-deployment">
-            <h2>Mobile and Edge Deployment Architectures</h2>
+            <h2>Mobile and Edge Deployment</h2>
             <p>
-                Translating computer vision algorithms from research GPUs to real-world agricultural practice requires effective deployment engineering.
-                In precision farming, agronomists and growers operate in remote rural fields where cellular data connectivity is often intermittent or entirely unavailable.
-                System designers must balance computational capacity, latency, battery consumption, and connectivity through two primary architectural paradigms <a href="references.html#ref-2">[2]</a>:
+                To make plant disease detection useful for farmers and agronomists, the vision model must run reliably in field conditions.
+                In rural agricultural areas, internet connections can be weak or unavailable. System designers choose between two main architectures <a href="references.html#ref-2">[2]</a>:
             </p>
 
             <h3>On-Device (Edge) Processing</h3>
             <p>
-                In edge deployment, the neural network executes locally on the smartphone's Neural Processing Unit (NPU) or embedded GPU (e.g., Apple Neural Engine, Qualcomm Snapdragon NPU, or NVIDIA Jetson on agricultural rovers).
+                The model runs directly on the smartphone or edge processor (such as an embedded GPU on an agricultural robot).
             </p>
             <ul>
-                <li><strong>Advantages:</strong> Instant inference (zero network latency), 100% offline operability in remote rural zones, and complete data privacy (raw images remain on the device).</li>
-                <li><strong>Constraints:</strong> Constrained RAM, strict thermal envelopes, battery depletion during sustained video analysis, and limitations on model parameter size.</li>
+                <li><strong>Pros:</strong> Immediate predictions (no network delay), works offline in remote fields, and protects image privacy.</li>
+                <li><strong>Cons:</strong> Limited memory and battery, phone heating during continuous video processing, and constraints on model size.</li>
             </ul>
 
             <h3>Cloud-Based Processing</h3>
             <p>
-                In cloud architectures, the mobile client simply captures imagery or video streams and transmits the data over 4G/5G or satellite uplink to a high-performance datacenter equipped with enterprise GPUs.
+                The phone captures images or video and sends them to a remote cloud server for processing.
             </p>
             <ul>
-                <li><strong>Advantages:</strong> Ability to run state-of-the-art multi-gigabyte foundation models (such as ViTs and high-capacity DeepLabV3+ ensembles) without draining mobile battery.</li>
-                <li><strong>Constraints:</strong> Complete vulnerability to rural network dropouts, high bandwidth consumption for streaming 4K/HD video, and transmission latency (often 500 ms&ndash;3000 ms roundtrip).</li>
+                <li><strong>Pros:</strong> Can run larger, high-accuracy models without draining mobile battery.</li>
+                <li><strong>Cons:</strong> Requires reliable cellular or Wi-Fi connectivity, uses data bandwidth, and introduces upload latency.</li>
             </ul>
 
-            <h3>Lightweight Architectures and Edge Optimization</h3>
+            <h3>Lightweight Models and Optimization</h3>
             <p>
-                To enable on-device mobile execution, computer vision engineers utilize lightweight backbones such as MobileNetV3, ShuffleNet, and YOLOv8n (nano).
-                These architectures replace standard 2D convolutions with <em>depthwise separable convolutions</em>, reducing computational floating point operations (FLOPs)
-                and parameter count by 80&ndash;90% with minimal loss in diagnostic accuracy <a href="references.html#ref-2">[2]</a>.
-                Furthermore, post-training quantization (converting FP32 weights to INT8 precision) decreases memory footprints by up to 75% and accelerates edge NPU inference dramatically.
+                For on-device mobile use, lightweight models such as MobileNet and small YOLO variants are preferred.
+                These architectures use depthwise separable convolutions to significantly reduce computations and parameter count with minimal drop in accuracy <a href="references.html#ref-2">[2]</a>.
+                Techniques such as INT8 quantization also lower memory usage and speed up mobile inference.
             </p>
 
-            <!-- Semantic Figure with Figure Caption & AI Credit -->
             <figure class="figure-container">
                 <img src="images/mobile-deployment.png"
                      alt="Comparison of on-device and cloud-based plant disease detection including speed, connectivity, computation, and deployment trade-offs">
                 <figcaption>
-                    <span class="figure-title">Figure 5: Architectural Trade-Offs in Agricultural Computer Vision Deployment</span>
-                    Systematic comparison between on-device edge execution and cloud-server processing across latency, bandwidth, computational power, and connectivity constraints.
+                    <span class="figure-title">Figure 5: Deployment Trade-Offs in Agricultural Computer Vision</span>
+                    Comparison between on-device edge processing and cloud server architectures across latency, connectivity, and hardware constraints.
                     <br>
                     <span class="author-credit">Image created by the author with AI-assisted visualization.</span>
                 </figcaption>
@@ -82,105 +87,101 @@
         </section>
 
         <section id="evaluation-metrics">
-            <h2>Evaluation Metrics Across Computer Vision Tasks</h2>
+            <h2>Evaluation Metrics</h2>
             <p>
-                Evaluating an end-to-end plant disease system requires task-specific mathematical metrics tailored to each stage of the pipeline:
+                Different computer vision tasks require specific evaluation metrics:
             </p>
 
             <h3>1. Classification Metrics</h3>
             <ul>
-                <li><strong>Accuracy:</strong> $\frac{TP + TN}{TP + TN + FP + FN}$. Effective only on balanced test sets.</li>
-                <li><strong>Precision:</strong> $\frac{TP}{TP + FP}$. Measures reliability of positive disease predictions (avoiding false alarms).</li>
-                <li><strong>Recall (Sensitivity):</strong> $\frac{TP}{TP + FN}$. Critical in agriculture—measures the proportion of actual diseased crops successfully flagged.</li>
-                <li><strong>F1-Score:</strong> Harmonic mean $\frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$, balancing precision and recall under class imbalance.</li>
+                <li><strong>Accuracy:</strong> $\frac{TP + TN}{TP + TN + FP + FN}$ &mdash; Overall percentage of correct predictions.</li>
+                <li><strong>Precision:</strong> $\frac{TP}{TP + FP}$ &mdash; How many predicted disease cases are actually diseased.</li>
+                <li><strong>Recall (Sensitivity):</strong> $\frac{TP}{TP + FN}$ &mdash; How many actual diseased leaves were successfully detected.</li>
+                <li><strong>F1-Score:</strong> $\frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$ &mdash; Harmonic mean balancing precision and recall.</li>
             </ul>
 
             <h3>2. Object Detection Metrics</h3>
             <ul>
-                <li><strong>Intersection over Union (IoU):</strong> $\frac{\text{Area of Overlap}}{\text{Area of Union}}$ between predicted box $B_p$ and ground truth $B_{gt}$.</li>
-                <li><strong>Mean Average Precision (mAP@0.5):</strong> Area under the Precision-Recall curve evaluated at an IoU threshold of 0.50 across all disease categories.</li>
-                <li><strong>mAP@0.5:0.95:</strong> The stringent COCO benchmark averaging mAP across 10 IoU thresholds from 0.50 to 0.95 in steps of 0.05.</li>
+                <li><strong>IoU (Intersection over Union):</strong> $\frac{\text{Area of Overlap}}{\text{Area of Union}}$ between predicted box and ground-truth box.</li>
+                <li><strong>mAP@0.5:</strong> Mean Average Precision evaluated at an IoU threshold of 0.50.</li>
+                <li><strong>mAP@0.5:0.95:</strong> Average mAP across 10 IoU thresholds from 0.50 to 0.95.</li>
             </ul>
 
             <h3>3. Segmentation Metrics</h3>
             <ul>
-                <li><strong>Pixel-Level IoU (Jaccard Index):</strong> $\frac{|Y \cap \hat{Y}|}{|Y \cup \hat{Y}|}$, quantifying overlap between predicted lesion masks and ground truth.</li>
-                <li><strong>Dice Coefficient:</strong> $\frac{2 |Y \cap \hat{Y}|}{|Y| + |\hat{Y}|}$, weighting spatial intersection twice as heavily to evaluate fine lesion contours.</li>
+                <li><strong>Pixel IoU:</strong> Overlap between predicted lesion pixels and ground-truth mask.</li>
+                <li><strong>Dice Score:</strong> Similar to IoU, measures pixel-level mask overlap.</li>
             </ul>
 
-            <h3>4. Operational Video &amp; Hardware Benchmarks</h3>
+            <h3>4. Operational Speed</h3>
             <ul>
-                <li><strong>Inference Latency:</strong> Milliseconds per frame ($ms/\text{frame}$) on target hardware.</li>
-                <li><strong>Throughput (FPS):</strong> Frames processed per second. Real-time video demands $\ge 30 \text{ FPS}$.</li>
-                <li><strong>Model Footprint:</strong> Disk size (MB) and peak runtime RAM allocation.</li>
+                <li><strong>Inference Latency:</strong> Time in milliseconds to process one frame.</li>
+                <li><strong>Frames Per Second (FPS):</strong> Real-time video generally requires roughly 30 FPS.</li>
             </ul>
         </section>
 
         <section id="challenges">
-            <h2>Real-World Field Challenges and Limitations</h2>
+            <h2>Real-World Challenges</h2>
             <p>
-                Despite high reported benchmark accuracies, commercial agricultural deployments confront persistent practical hurdles:
+                Real-world agricultural conditions present several practical difficulties:
             </p>
             <ul>
-                <li><strong>Extreme Illumination Dynamics:</strong> Moving from cloudy morning light to harsh midday direct sun alters perceived chromaticity and washes out early chlorotic signs.</li>
-                <li><strong>Background Foliage Clutter:</strong> Weeds, neighboring canopies, and organic mulch create visual distractors that can cause false positive detections.</li>
-                <li><strong>Dynamic Occlusion and Foliage Density:</strong> Up to 60% of lower canopy leaves are occluded by upper foliage in dense crops such as tomatoes and grapes.</li>
-                <li><strong>Inter-Class Symptom Similarity:</strong> Disparate biological pathogens often manifest near-identical necrotic brown spots (e.g., fungal leaf spot vs. bacterial blight vs. nutrient deficiency).</li>
-                <li><strong>Domain Shift Across Cultivars &amp; Geography:</strong> Models trained on crops in one geographic zone or soil type frequently suffer degradation when tested in another climate.</li>
+                <li><strong>Lighting changes:</strong> Direct sun, shadows, and overcast skies change leaf color and hide symptoms.</li>
+                <li><strong>Background clutter:</strong> Soil, weeds, and nearby leaves can confuse detectors.</li>
+                <li><strong>Occlusion:</strong> Leaves often overlap, hiding diseased spots.</li>
+                <li><strong>Similar symptoms:</strong> Different diseases can produce very similar yellowing or brown spots.</li>
+                <li><strong>Motion blur:</strong> Phone movement or wind can blur high-frequency lesion textures.</li>
             </ul>
         </section>
 
         <section id="interview-request">
             <h2>Researcher Interview Request</h2>
             <p>
-                To incorporate firsthand academic insights into the engineering realities of video-based foliar monitoring,
-                an interview inquiry was submitted to <strong>Professor Shinjiro Umezu</strong> of Waseda University, senior author of the foundational <em>Plant Doctor</em> study <a href="references.html#ref-5">[5]</a>.
+                To learn more about the practical challenges of video monitoring, I contacted <strong>Professor Shinjiro Umezu</strong> of Waseda University, co-author of the <em>Plant Doctor</em> paper <a href="references.html#ref-5">[5]</a>.
             </p>
 
             <div class="interview-box">
                 <span class="interview-status-tag">Response Status: Response Pending</span>
-                <p><strong>Contacted Scholar:</strong> Professor Shinjiro Umezu (Faculty of Science and Engineering, Waseda University, Tokyo, Japan)</p>
-                <p><strong>Formal Questions Submitted:</strong></p>
+                <p><strong>Contacted:</strong> Professor Shinjiro Umezu (Faculty of Science and Engineering, Waseda University, Tokyo, Japan)</p>
+                <p><strong>Questions Sent:</strong></p>
                 <ol class="interview-question-list">
                     <li>
-                        <strong>Damage Segmentation Discrepancy:</strong>
+                        <strong>Damage Segmentation:</strong>
                         <em>&ldquo;Your segmentation model achieved high IoU for leaves (0.96) but lower IoU for damaged regions (0.76). What do you think is the main reason for this difference, and how could damage segmentation be improved?&rdquo;</em>
                     </li>
                     <li>
-                        <strong>Real-Time Video Latency:</strong>
+                        <strong>Video Processing Speed:</strong>
                         <em>&ldquo;Video processing currently takes much longer than real time (approx. 50 minutes for a 1-minute video). Do you see a realistic path toward running a system like Plant Doctor on a smartphone or drone in real time?&rdquo;</em>
                     </li>
                     <li>
-                        <strong>Field Deployment Bottlenecks:</strong>
+                        <strong>Field Challenges:</strong>
                         <em>&ldquo;What do you think is the biggest challenge for plant disease detection in real-world environments today: limited data, lighting and complex backgrounds, or computational requirements?&rdquo;</em>
                     </li>
                 </ol>
-                <p><em>Note: Response pending as of submission date. The interview section will be updated upon receipt of Dr. Umezu's response.</em></p>
+                <p><em>Interview request sent to Professor Shinjiro Umezu. Response pending.</em></p>
             </div>
         </section>
 
         <section id="research-labs">
-            <h2>Leading Research Laboratories and Groups</h2>
+            <h2>Research Labs and Groups</h2>
             <p>
-                Advancing computer vision for agricultural resilience requires interdisciplinary collaboration between machine learning researchers, plant pathologists, and roboticists. Key academic groups pioneering this field include:
+                Several active research groups are combining computer vision with agriculture:
             </p>
 
             <div class="lab-card">
                 <h4>Umezu Laboratory &bull; Waseda University</h4>
-                <div class="lab-location">Department of Modern Mechanical Engineering, Tokyo, Japan</div>
+                <div class="lab-location">Integrative Bioengineering, Tokyo, Japan</div>
                 <p>
-                    The research group led by Prof. Shinjiro Umezu specializes in micro-electro-mechanical systems (MEMS), bioengineering, functional 3D printing, and automated sensing systems.
-                    In agricultural computer vision, the lab developed the <em>Plant Doctor</em> architecture <a href="references.html#ref-5">[5]</a>, focusing on automated non-invasive video monitoring,
-                    robotic sensor integration, and practical urban plant health assessment.
+                    The research group led by Prof. Shinjiro Umezu works on bioengineering, sensing, and plant-monitoring systems.
+                    The group developed the <em>Plant Doctor</em> system <a href="references.html#ref-5">[5]</a>, exploring how video footage, YOLO detection, and segmentation can be used for non-invasive urban plant health monitoring.
                 </p>
             </div>
 
             <div class="lab-card">
                 <h4>Precision Agriculture Laboratory &bull; University of Florida</h4>
-                <div class="lab-location">Agricultural and Biological Engineering Department, Immokalee / Gainesville, FL</div>
+                <div class="lab-location">Immokalee / Gainesville, Florida</div>
                 <p>
-                    Led by Dr. Yiannis Ampatzidis (co-author of the seminal feature engineering survey <a href="references.html#ref-3">[3]</a>), this laboratory pioneers artificial intelligence,
-                    UAV multispectral remote sensing, and smartphone computer vision applications for precision citrus, vegetable, and specialty crop disease management.
+                    Led by Dr. Yiannis Ampatzidis (co-author of the feature engineering survey <a href="references.html#ref-3">[3]</a>), this lab works on artificial intelligence, drone imaging, and smartphone apps for disease detection in citrus, tomato, and strawberry crops.
                 </p>
             </div>
         </section>
@@ -188,122 +189,120 @@
         <section id="future-research">
             <h2>Future Research Directions</h2>
             <p>
-                The frontier of agricultural computer vision is moving rapidly toward:
+                Key directions for future work include:
             </p>
             <ul>
-                <li><strong>Vision Transformers (ViTs) and Foundation Models:</strong> Utilizing self-attention mechanisms to capture global canopy context and fine lesion details simultaneously <a href="references.html#ref-1">[1]</a>.</li>
-                <li><strong>Multi-Modal Sensor Fusion:</strong> Combining RGB smartphone imagery with thermal imaging and near-infrared (NIR) sensors to detect physiological water stress and fungal incubation <em>before</em> visible necrosis appears.</li>
-                <li><strong>Temporal 3D Neural Radiance Fields (NeRFs):</strong> Reconstructing full 3D plant canopies from multi-view video sweeps to inspect leaves from all orientations and compute true volumetric foliage damage.</li>
+                <li><strong>Vision Transformers:</strong> Exploring transformer backbones for better feature attention in complex canopies <a href="references.html#ref-1">[1]</a>.</li>
+                <li><strong>Multi-Modal Imaging:</strong> Combining regular RGB cameras with near-infrared or thermal imaging to detect infection before symptoms become visible.</li>
+                <li><strong>Larger Field Datasets:</strong> Gathering training images across more crops, geographic locations, and disease stages.</li>
             </ul>
         </section>
 
         <section id="conclusion">
             <h2>Conclusion</h2>
             <p>
-                Mobile plant disease detection has evolved from isolated single-image classification into sophisticated multi-stage computer vision systems.
-                While CNN classification offers a rapid computational baseline, object detection provides spatial awareness across multi-leaf canopies,
-                and semantic segmentation enables quantitative severity estimation.
+                Computer vision has great potential to assist plant disease detection using mobile cameras and video.
+                Classification provides a quick initial diagnosis, object detection finds individual leaves, and segmentation allows us to measure disease severity accurately.
             </p>
             <p>
-                Crucially, as demonstrated by the Plant Doctor case study, moving to temporal video streams overcomes environmental noise and specular glares
-                through multi-view consensus and DeepSORT tracking. While real-time edge latency remains an ongoing engineering challenge,
-                the convergence of lightweight deep networks, edge hardware accelerators, and multi-frame fusion represents the definitive future of digital agriculture.
+                Using video gives the model multiple views of the same plant, helping overcome lighting and camera angle problems.
+                While real-time video processing remains a challenge on mobile devices, combining efficient models, tracking, and multi-frame analysis is an important direction for practical agricultural tools.
             </p>
         </section>
 
         <!-- Interactive 5-Question Quiz Section -->
         <section id="quiz">
-            <h2>Interactive Knowledge Check</h2>
-            <p>Test your mastery of the concepts covered throughout this computer vision research tutorial:</p>
+            <h2>Quick Knowledge Check</h2>
+            <p>Test your understanding of the concepts covered in this tutorial:</p>
 
             <form id="quizForm">
 
                 <div class="quiz-question-card" id="card-q1">
-                    <p class="quiz-question-title">1. What is the fundamental architectural limitation of image classification in plant disease monitoring?</p>
+                    <p class="quiz-question-title">1. What is the main limitation of image classification in plant disease monitoring?</p>
                     <div class="quiz-options">
                         <label class="quiz-option-label">
                             <input type="radio" name="q1" value="a">
-                            <span>It cannot process color RGB image tensors</span>
+                            <span>It cannot process color RGB images</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q1" value="b">
-                            <span>It predicts only one global label for the entire image without spatial localization</span>
+                            <span>It gives only one label for the whole image without showing where symptoms are</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q1" value="c">
-                            <span>It always requires continuous video streams to generate a prediction</span>
+                            <span>It always requires video instead of still images</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="quiz-question-card" id="card-q2">
-                    <p class="quiz-question-title">2. What specific output does a YOLO object detection model provide?</p>
+                    <p class="quiz-question-title">2. What does an object detection model like YOLO provide?</p>
                     <div class="quiz-options">
                         <label class="quiz-option-label">
                             <input type="radio" name="q2" value="a">
-                            <span>Spatial bounding boxes, categorical labels, and confidence scores</span>
+                            <span>Bounding boxes, disease labels, and confidence scores</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q2" value="b">
-                            <span>Only image resizing and color normalization parameters</span>
+                            <span>Only image resizing</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q2" value="c">
-                            <span>Dense pixel-by-pixel binary segmentation masks</span>
+                            <span>Only pixel-by-pixel mask outlines</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="quiz-question-card" id="card-q3">
-                    <p class="quiz-question-title">3. Why is pixel-level semantic segmentation (e.g., DeepLabV3+ or U-Net) critical for severity estimation?</p>
+                    <p class="quiz-question-title">3. Why is semantic segmentation useful for disease severity estimation?</p>
                     <div class="quiz-options">
                         <label class="quiz-option-label">
                             <input type="radio" name="q3" value="a">
-                            <span>It accurately delineates irregular lesion boundaries, enabling quantitative calculation of diseased-to-leaf pixel ratios</span>
+                            <span>It identifies exact lesion boundaries, allowing calculation of diseased leaf area percentage</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q3" value="b">
-                            <span>It accelerates edge processing by bypassing the camera sensor</span>
+                            <span>It makes mobile internet connections faster</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q3" value="c">
-                            <span>It reduces camera resolution to conserve mobile data bandwidth</span>
+                            <span>It reduces camera resolution</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="quiz-question-card" id="card-q4">
-                    <p class="quiz-question-title">4. What is the primary advantage of utilizing multi-view video over single-image capture?</p>
+                    <p class="quiz-question-title">4. Why is video analysis helpful compared to a single photo?</p>
                     <div class="quiz-options">
                         <label class="quiz-option-label">
                             <input type="radio" name="q4" value="a">
-                            <span>It captures multiple viewing angles and temporal frames, mitigating single-frame occlusions, motion blur, and glare</span>
+                            <span>It provides multiple angles and frames, reducing the effect of glare, blur, and occlusions</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q4" value="b">
-                            <span>It completely eliminates the need for deep neural network architectures</span>
+                            <span>It removes the need for machine learning</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q4" value="c">
-                            <span>It guarantees 100% test accuracy across all plant species</span>
+                            <span>It guarantees 100% accuracy every time</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="quiz-question-card" id="card-q5">
-                    <p class="quiz-question-title">5. What is the key operational advantage of on-device (edge) mobile inference in precision agriculture?</p>
+                    <p class="quiz-question-title">5. What is an advantage of on-device processing?</p>
                     <div class="quiz-options">
                         <label class="quiz-option-label">
                             <input type="radio" name="q5" value="a">
-                            <span>It allows the mobile phone to run larger models than enterprise cloud clusters</span>
+                            <span>Phones can run bigger models than cloud clusters</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q5" value="b">
-                            <span>It functions reliably in remote fields without requiring an active internet connection</span>
+                            <span>It works in remote fields without requiring an active internet connection</span>
                         </label>
                         <label class="quiz-option-label">
                             <input type="radio" name="q5" value="c">
-                            <span>It requires continuous cellular uplink for server-side processing</span>
+                            <span>It requires more network data transmission</span>
                         </label>
                     </div>
                 </div>

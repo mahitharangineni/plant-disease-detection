@@ -4,9 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="In-depth analysis of mobile image and video capture factors and preprocessing techniques for plant disease detection.">
+    <meta name="description" content="Mobile image and video capture factors and preprocessing techniques for plant disease detection.">
     <title>Mobile Capture &amp; Preprocessing - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 </head>
 
 <body>
@@ -37,127 +45,113 @@
         <section id="mobile-capture">
             <h2>Mobile Image and Video Capture in the Field</h2>
             <p>
-                Mobile devices have democratized precision agriculture by providing farmers and agronomists with high-resolution digital cameras,
-                onboard GPU/NPU acceleration, and internet connectivity right at the field edge. Recent literature emphasizes the potential of
-                integrating deep learning models into accessible smartphone applications for early diagnosis of foliar diseases <a href="references.html#ref-2">[2]</a>.
+                Smartphones make plant disease detection accessible to farmers and gardeners because images can be captured directly in the field.
+                Recent research shows that running deep learning models on mobile apps can help with early disease identification <a href="references.html#ref-2">[2]</a>.
             </p>
             <p>
-                However, moving computer vision models from pristine laboratory environments to outdoor agricultural fields introduces severe domain shift.
-                Laboratory datasets (such as standard subsets of PlantVillage) typically depict excised single leaves flattened on uniform gray or black backgrounds
-                under diffuse artificial lighting. In contrast, in-situ smartphone photography exhibits extreme visual variability.
+                However, real-world photos taken outside are much harder to process than clean lab images.
+                In a laboratory (like in parts of the PlantVillage dataset), leaves are typically picked, laid flat against a plain gray or black background, and photographed under even lighting.
+                In a real field or garden, many environmental factors affect how leaves look.
             </p>
 
             <div class="callout">
-                <h4>Core Acquisition Challenges</h4>
+                <h4>Core Takeaway</h4>
                 <p>
-                    A real-world mobile plant pathology system must be robust against uncontrolled natural illumination, complex canopy clutter, and variable camera handling
-                    rather than expecting studio-quality captures.
+                    A real-world plant disease system needs to handle unpredictable sunlight, busy backgrounds, and natural camera movement rather than expecting perfect photos.
                 </p>
             </div>
 
-            <h3>Critical Field Acquisition Factors</h3>
+            <h3>Key Field Capture Factors</h3>
             <ul>
                 <li>
-                    <strong>Dynamic Lighting &amp; Direct Sunlight:</strong>
-                    Direct solar illumination produces harsh specular highlights, washed-out highlights, and deep shadows across leaf surfaces.
-                    These non-uniform lighting conditions can alter perceived leaf pigmentation, mask chlorotic halos, or cause healthy shiny leaves to be misclassified as necrotic.
+                    <strong>Lighting and sunlight:</strong>
+                    Direct sunlight creates bright glare, washed-out spots, and dark shadows. This can change apparent leaf colors and make healthy leaves look damaged or hide real disease spots.
                 </li>
                 <li>
-                    <strong>Viewing Angle &amp; Leaf Pose:</strong>
-                    Leaves naturally curl, droop, and orient themselves unpredictably relative to the sun. Off-angle perspectives introduce perspective distortion,
-                    compressing lesions into narrow slivers and concealing symptoms present on the abaxial (underside) leaf surface.
+                    <strong>Camera angle and leaf position:</strong>
+                    Leaves curl, droop, and overlap. A steep angle can distort the shape of spots or hide symptoms on the underside of the leaf.
                 </li>
                 <li>
-                    <strong>Sensor Distance &amp; Spatial Resolution:</strong>
-                    Capturing imagery from too far away results in tiny symptomatic lesions occupying only a handful of pixels, precluding reliable feature extraction.
-                    Conversely, extreme macro close-ups lose spatial context such as leaf margin boundaries and distribution of lesions across the blade.
+                    <strong>Distance from the leaf:</strong>
+                    If the photo is taken from too far away, small spots only cover a few pixels and are hard to detect. If taken too close, the overall leaf shape is lost.
                 </li>
                 <li>
-                    <strong>Complex Background Clutter:</strong>
-                    Natural scenes feature fertile soil, weed growth, overlapping canopies, trellis wires, and mulch. Without effective background isolation,
-                    deep networks can easily suffer from "shortcut learning"—mistakenly associating soil color or background texture with disease presence.
+                    <strong>Background clutter:</strong>
+                    Soil, weeds, branches, and mulch can confuse models. The network might accidentally learn to associate soil type with disease instead of looking at the leaf itself.
                 </li>
                 <li>
-                    <strong>Camera Motion Blur &amp; Wind:</strong>
-                    Hand tremor and wind gusts induce severe motion blur in field captures, smoothing out high-frequency texture details (e.g., fungal pustules and fine veinal chlorosis).
+                    <strong>Motion blur:</strong>
+                    Hand shake and wind can blur fine textures like tiny fungal spots or leaf veins.
                 </li>
                 <li>
-                    <strong>Multi-View Video Opportunity:</strong>
-                    Continuous video streams capture consecutive frames as the operator moves around the plant, yielding multi-angle parallax that mitigates single-frame occlusions and specular glare <a href="references.html#ref-5">[5]</a>.
+                    <strong>Why video helps:</strong>
+                    A short video captures multiple frames from slightly different angles, helping overcome glare or blur that might ruin a single photo <a href="references.html#ref-5">[5]</a>.
                 </li>
             </ul>
         </section>
 
         <section id="preprocessing-pipeline">
-            <h2>Image Preprocessing and Leaf Normalization</h2>
+            <h2>Image Preprocessing Steps</h2>
             <p>
-                To mitigate input heterogeneity before feeding imagery to deep convolutional networks, systematic preprocessing steps are required.
-                These operations enhance signal-to-noise ratio, standardize geometric dimensions, and stabilize neural network gradient descent during inference and training.
+                Preprocessing helps clean and standardize raw phone images before passing them to a neural network:
             </p>
 
-            <h3>Essential Preprocessing Stages</h3>
+            <h3>Common Preprocessing Techniques</h3>
             <ul>
                 <li>
-                    <strong>Dimensional Resizing &amp; Aspect Ratio Handling:</strong>
-                    Modern deep convolutional architectures (e.g., ResNet, EfficientNet, YOLO) require fixed square or rectangular input tensors (e.g., 224&times;224, 416&times;416, 640&times;640).
-                    Direct resizing can cause non-uniform stretching; letterboxing (padding with neutral gray borders) preserves the true aspect ratio of leaves.
+                    <strong>Resizing:</strong>
+                    Neural networks like YOLO and ResNet require fixed input sizes (such as 224&times;224 or 640&times;640). Using letterbox padding preserves the leaf's true aspect ratio without stretching it.
                 </li>
                 <li>
-                    <strong>Channel Normalization:</strong>
-                    Raw integer pixel values $[0, 255]$ are converted to floating-point $[0.0, 1.0]$ and standardized via z-score normalization using channel-wise dataset means and standard deviations:
+                    <strong>Normalization:</strong>
+                    Pixel values from 0 to 255 are scaled to $[0.0, 1.0]$ and normalized using dataset channel means and standard deviations:
                     $$\hat{X}_{c} = \frac{X_c - \mu_c}{\sigma_c}$$
-                    This ensures numerical stability and rapid convergence of activation functions.
+                    This helps the model train and run more stably.
                 </li>
                 <li>
-                    <strong>Contrast Enhancement (CLAHE):</strong>
-                    Contrast Limited Adaptive Histogram Equalization (CLAHE) enhances local contrast in non-uniformly illuminated leaf images without over-amplifying background noise,
-                    making subtle fungal spots and bacterial spots clearly distinguishable from surrounding parenchyma tissue.
+                    <strong>Contrast enhancement (CLAHE):</strong>
+                    Contrast Limited Adaptive Histogram Equalization helps balance uneven lighting, making faint disease spots clearer.
                 </li>
                 <li>
-                    <strong>Color Space Transformations:</strong>
-                    While RGB is standard for visualization, alternative color spaces such as HSV (Hue-Saturation-Value) and CIE $L^*a^*b^*$ effectively decouple chromatic information from luminance variations,
-                    facilitating robust thresholding of chlorotic and necrotic lesions <a href="references.html#ref-3">[3]</a>.
+                    <strong>Color space conversion:</strong>
+                    Converting from RGB to HSV or CIE $L^*a^*b^*$ separates brightness from color, making it easier to spot yellowing (chlorosis) or browning (necrosis) regardless of lighting <a href="references.html#ref-3">[3]</a>.
                 </li>
                 <li>
-                    <strong>Edge-Preserving Noise Reduction:</strong>
-                    Bilateral filtering and median filtering suppress camera sensor shot noise while strictly maintaining the sharpness of lesion boundaries and leaf margins.
+                    <strong>Noise reduction:</strong>
+                    Filters like bilateral or median filtering reduce sensor noise while keeping leaf and lesion edges sharp.
                 </li>
                 <li>
-                    <strong>Robust Data Augmentation:</strong>
-                    During model training, synthetic transformations (random affine rotations, horizontal/vertical flips, color jittering, Gaussian blur, and CutMix/Mosaic)
-                    expose the neural network to realistic environmental variations, reducing overfitting.
+                    <strong>Data augmentation:</strong>
+                    Rotating, flipping, and slightly shifting colors during training helps models handle real-world variations without overfitting.
                 </li>
             </ul>
 
             <h3>Leaf Segmentation and Background Removal</h3>
             <p>
-                In cluttered natural scenes, segmenting the leaf blade away from surrounding soil, weeds, and neighboring branches allows downstream classification and detection networks
-                to focus computational attention entirely on pathological features rather than irrelevant background artifacts.
-                Traditional color thresholding (e.g., Otsu's thresholding on excess green index $2G - R - B$) can segment green leaves under controlled illumination,
-                but deep semantic segmentation models (such as U-Net or DeepLab) are required for resilient separation under complex outdoor illumination <a href="references.html#ref-3">[3]</a>, <a href="references.html#ref-5">[5]</a>.
+                Removing soil, weeds, and neighboring branches allows downstream models to focus only on the leaf blade.
+                While simple color rules (like excess green index $2G - R - B$) work in simple lighting, deep segmentation models (like U-Net) are much more reliable in complex outdoor scenes <a href="references.html#ref-3">[3]</a>, <a href="references.html#ref-5">[5]</a>.
             </p>
 
-            <h3>Visual Pathological Features</h3>
+            <h3>Visual Disease Symptoms</h3>
             <p>
-                Botanical pathogens induce distinct morphological changes across plant tissue:
+                Plant diseases produce visible visual changes:
             </p>
             <ul>
-                <li><strong>Chlorosis:</strong> Breakdown of chlorophyll manifesting as pale yellow patches along leaf veins or margins.</li>
-                <li><strong>Necrosis:</strong> Localized cell death causing dry brown or black dead tissue, often surrounded by concentric rings or yellow halos (e.g., <em>Alternaria solani</em>).</li>
-                <li><strong>Pustules &amp; Powdery Lesions:</strong> Textured spore deposits (e.g., rusts and powdery mildew) presenting distinct tactile textural signatures.</li>
+                <li><strong>Chlorosis:</strong> Loss of green chlorophyll, showing as yellow patches or halos.</li>
+                <li><strong>Necrosis:</strong> Dead plant tissue that appears brown or black.</li>
+                <li><strong>Pustules and powdery patches:</strong> Spores from rusts or powdery mildew that create distinct surface textures.</li>
             </ul>
             <p>
-                While traditional computer vision relied on handcrafted feature descriptors (such as Gray-Level Co-occurrence Matrices [GLCM], Color Moments, and Histograms of Oriented Gradients [HOG]) <a href="references.html#ref-3">[3]</a>,
-                modern deep learning models learn these multi-scale spatial representations automatically via hierarchical convolutional kernels.
+                Earlier computer vision systems measured these features by hand using color moments and texture formulas (GLCM) <a href="references.html#ref-3">[3]</a>.
+                Modern deep learning models learn these visual patterns automatically from labeled training images.
             </p>
         </section>
 
         <section id="why-preprocessing-matters">
-            <h2>Why Preprocessing Is Fundamental to Computer Vision Success</h2>
+            <h2>Why Preprocessing Matters</h2>
             <p>
-                Preprocessing does not eliminate all environmental noise, but it fundamentally conditions the input distribution.
-                A well-designed preprocessing pipeline prevents spurious gradient updates during training, narrows the domain gap between training sets and field deployments,
-                and maximizes the operational accuracy of subsequent classification, detection, and segmentation stages.
+                Preprocessing cannot fix every photo, but it helps make input data more consistent.
+                Proper sizing, normalization, and contrast adjustments help classification, detection, and segmentation models perform better in real-world use.
             </p>
         </section>
 

@@ -7,6 +7,14 @@
     <meta name="description" content="Principles of YOLO object detection for foliar leaf localization, multiple disease detection, and real-time agricultural monitoring.">
     <title>Object Detection - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 </head>
 
 <body>
@@ -35,117 +43,89 @@
     <main>
 
         <section id="detection-formulation">
-            <h2>Spatial Object Detection for Agricultural Diagnostics</h2>
+            <h2>Object Detection for Plant Diseases</h2>
             <p>
-                While classification answers the question <em>"Is there disease present in this image?"</em>, object detection resolves both
-                <strong>what</strong> pathogen is present and <strong>where</strong> it is spatially situated.
-                Instead of returning a single global label for the entire camera frame, object detection predicts rectangular bounding boxes
-                around individual targets—enabling simultaneous localization of multiple leaves, localized pustules, and discrete lesions across the canopy <a href="references.html#ref-1">[1]</a>.
+                While classification only tells us what disease might be in the image, object detection identifies both <strong>what</strong> the disease is and <strong>where</strong> it is located.
+                Instead of returning one overall label, an object detector draws bounding boxes around individual leaves or diseased spots <a href="references.html#ref-1">[1]</a>.
             </p>
 
             <div class="callout">
-                <h4>Why Localization Matters in the Field</h4>
+                <h4>Why Localization Matters</h4>
                 <p>
-                    Natural field captures rarely isolate a single, centered leaf. A typical smartphone snapshot or drone capture contains a cluster of overlapping leaves,
-                    some fully healthy, others exhibiting early-stage blight, and others suffering mechanical insect damage.
-                    Object detection enables automated systems to parse cluttered foliage into discrete, individual leaf instances for isolated evaluation.
+                    A real outdoor photo often includes several leaves, soil, and weeds. Object detection finds and isolates each leaf so it can be analyzed individually, even in crowded foliage.
                 </p>
             </div>
 
-            <h3>YOLO (You Only Look Once) Framework</h3>
+            <h3>How YOLO Detection Works</h3>
             <p>
-                In agricultural robotics and mobile monitoring, inference speed is critical. Two-stage detectors (such as Faster R-CNN) first generate region proposals
-                and then classify them, resulting in high latency. In contrast, <strong>YOLO (You Only Look Once)</strong> frames object detection as a single-stage
-                regression problem directly from full-image pixels to bounding box coordinates and class probabilities <a href="references.html#ref-1">[1]</a>.
+                <strong>YOLO (You Only Look Once)</strong> is a popular object detector because it processes images quickly in a single forward pass, making it well-suited for mobile and real-time use <a href="references.html#ref-1">[1]</a>:
             </p>
             <ul>
-                <li>
-                    <strong>Single Forward Pass:</strong>
-                    YOLO divides the input image into an $S \times S$ spatial grid. If an object center falls into a grid cell, that cell is responsible for predicting bounding box offsets.
-                </li>
-                <li>
-                    <strong>Bounding Box Tuple:</strong>
-                    For each candidate object, the network predicts five continuous values alongside class scores:
+                <li>The image is divided into a grid. If an object center falls within a grid cell, that cell predicts bounding box coordinates.</li>
+                <li>For each object, YOLO predicts coordinates $(x, y, w, h)$, an objectness confidence score, and class probabilities:
                     $$\mathbf{b} = (t_x, t_y, t_w, t_h, p_o)$$
-                    where $(t_x, t_y)$ represent center offsets relative to the cell, $(t_w, t_h)$ represent width and height scalings, and $p_o$ represents objectness confidence.
                 </li>
-                <li>
-                    <strong>Multi-Scale Feature Aggregation:</strong>
-                    Modern iterations (such as YOLOv8) utilize Path Aggregation Feature Pyramids (PANet) to merge high-resolution shallow spatial features
-                    with deep semantic features, allowing the network to detect tiny fungal lesions as well as large complete leaves simultaneously.
-                </li>
+                <li>Modern YOLO versions (like YOLOv8) combine features from multiple scales to detect both large leaves and small individual lesions.</li>
             </ul>
 
-            <h3>Core Elements of Object Detection Output</h3>
+            <h3>Detection Outputs</h3>
             <ul>
-                <li><strong>Bounding Box Coordinates:</strong> Explicit spatial coordinates $(x_{\min}, y_{\min}, x_{\max}, y_{\max})$ isolating the leaf or disease region.</li>
-                <li><strong>Categorical Class Label:</strong> Specific botanical pathology identified (e.g., <em>Early Blight</em> vs. <em>Healthy Leaf</em>).</li>
-                <li><strong>Confidence Score:</strong> Calibrated probability metric $[0.0, 1.0]$ quantifying the model's certainty that a target exists within the box and belongs to the predicted class.</li>
+                <li><strong>Bounding box:</strong> Shows where the leaf or spot is in pixel coordinates $(x_{\min}, y_{\min}, x_{\max}, y_{\max})$.</li>
+                <li><strong>Class label:</strong> The disease category (e.g., <em>Early Blight</em> or <em>Healthy Leaf</em>).</li>
+                <li><strong>Confidence score:</strong> A number between 0 and 1 indicating how confident the model is in its prediction.</li>
             </ul>
 
-            <!-- Semantic Figure with Figure Caption & AI Credit -->
             <figure class="figure-container">
                 <img src="images/object-detection-system.png"
                      alt="YOLO-based plant disease object detection system showing bounding box predictions, confidence scores, and multi-leaf handling">
                 <figcaption>
-                    <span class="figure-title">Figure 2: YOLO Object Detection Architecture for Foliar Disease Localization</span>
-                    Visual pipeline illustrating how single-stage YOLO detectors predict spatial bounding boxes, class labels, and confidence metrics across multiple overlapping leaves in natural agricultural scenes.
+                    <span class="figure-title">Figure 2: YOLO Object Detection Architecture</span>
+                    How YOLO detects and places bounding boxes around multiple leaves with disease labels and confidence scores.
                     <br>
                     <span class="author-credit">Image created by the author with AI-assisted visualization.</span>
                 </figcaption>
             </figure>
 
-            <h3>Comparative Evaluation: Classification vs. Object Detection</h3>
+            <h3>Classification vs. Object Detection</h3>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Dimension</th>
+                            <th>Feature</th>
                             <th>Image Classification</th>
                             <th>Object Detection (YOLO)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Output Format</strong></td>
-                            <td>Single global label &amp; probability vector</td>
-                            <td>Multiple bounding boxes $[x, y, w, h]$, labels, and confidence scores</td>
+                            <td><strong>Output</strong></td>
+                            <td>One global label for the whole image</td>
+                            <td>Bounding boxes, labels, and confidence scores</td>
                         </tr>
                         <tr>
-                            <td><strong>Spatial Precision</strong></td>
-                            <td>None (no coordinate or region information)</td>
-                            <td>Coarse rectangular localization</td>
+                            <td><strong>Location</strong></td>
+                            <td>No spatial coordinates</td>
+                            <td>Rectangular bounding box coordinates</td>
                         </tr>
                         <tr>
-                            <td><strong>Multi-Object Capability</strong></td>
-                            <td>Fails when healthy and infected leaves co-occur</td>
-                            <td>Detects and isolates multiple distinct leaves simultaneously</td>
+                            <td><strong>Multiple Leaves</strong></td>
+                            <td>Cannot distinguish multiple leaves</td>
+                            <td>Locates and labels multiple leaves separately</td>
                         </tr>
                         <tr>
-                            <td><strong>Background Robustness</strong></td>
-                            <td>High risk of background confounding</td>
-                            <td>Separates target foliage from background soil and weeds</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Annotation Cost</strong></td>
-                            <td>Low (single label per image)</td>
-                            <td>Moderate to High (requires manual bounding-box labeling)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Inference Complexity</strong></td>
-                            <td>Lowest (rapid forward pass)</td>
-                            <td>Fast (real-time capable: 30–60+ FPS on edge GPUs)</td>
+                            <td><strong>Speed</strong></td>
+                            <td>Very fast</td>
+                            <td>Fast (capable of real-time 30+ FPS)</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <h3>Remaining Limitations of Bounding-Box Detection</h3>
+            <h3>Limitation of Bounding Boxes</h3>
             <p>
-                While object detection solves the multi-leaf localization challenge, rectangular bounding boxes remain fundamentally coarse approximations.
-                Plant disease lesions possess irregular, non-convex boundaries. A rectangular box necessarily encompasses a mixture of healthy parenchyma tissue,
-                damaged spots, and background foliage. Consequently, bounding boxes cannot quantify the precise <em>percentage of diseased leaf area</em>.
-                To achieve accurate severity measurement, computer vision pipelines must advance to pixel-level semantic segmentation.
+                While bounding boxes are great for finding leaves, they are still just rectangles.
+                They include some healthy leaf tissue and background along with the disease spot.
+                To measure the exact percentage of damaged leaf area, we need pixel-level segmentation.
             </p>
         </section>
 
