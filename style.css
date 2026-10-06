@@ -72,3 +72,14 @@ nav a:hover {
     font-weight: bold;
     margin-top: 15px;
 }
+pre {
+    background-color: #f1f4f2;
+    padding: 18px;
+    border-radius: 8px;
+    overflow-x: auto;
+    border-left: 4px solid #2f6b3b;
+}
+
+code {
+    font-family: monospace;
+}
