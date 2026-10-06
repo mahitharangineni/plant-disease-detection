@@ -97,15 +97,38 @@
                 </em>
             </p>
 
+            <p>
+                <small>Image created by the author with AI-assisted visualization.</small>
+            </p>
+
 
             <h3>Important Mobile Considerations</h3>
 
             <ul>
-                <li><strong>Inference speed:</strong> Predictions should be generated quickly enough for practical use.</li>
-                <li><strong>Model size:</strong> Smaller models require less storage and memory.</li>
-                <li><strong>Battery usage:</strong> Continuous video processing can consume significant power.</li>
-                <li><strong>Connectivity:</strong> Cloud systems may not work well with unreliable internet access.</li>
-                <li><strong>Privacy:</strong> On-device processing can reduce the need to upload images or video.</li>
+                <li>
+                    <strong>Inference speed:</strong>
+                    Predictions should be generated quickly enough for practical use.
+                </li>
+
+                <li>
+                    <strong>Model size:</strong>
+                    Smaller models require less storage and memory.
+                </li>
+
+                <li>
+                    <strong>Battery usage:</strong>
+                    Continuous video processing can consume significant power.
+                </li>
+
+                <li>
+                    <strong>Connectivity:</strong>
+                    Cloud systems may not work well with unreliable internet access.
+                </li>
+
+                <li>
+                    <strong>Privacy:</strong>
+                    On-device processing can reduce the need to upload images or video.
+                </li>
             </ul>
 
         </section>
@@ -134,25 +157,50 @@
             <h3>Object Detection Metrics</h3>
 
             <ul>
-                <li><strong>IoU:</strong> Measures overlap between predicted and ground-truth bounding boxes.</li>
-                <li><strong>mAP:</strong> Summarizes object detection performance across classes and thresholds.</li>
+                <li>
+                    <strong>IoU:</strong>
+                    Measures overlap between predicted and ground-truth bounding boxes.
+                </li>
+
+                <li>
+                    <strong>mAP:</strong>
+                    Summarizes object detection performance across classes and thresholds.
+                </li>
             </ul>
 
 
             <h3>Segmentation Metrics</h3>
 
             <ul>
-                <li><strong>IoU:</strong> Measures overlap between predicted and true segmented regions.</li>
-                <li><strong>Dice Score:</strong> Measures similarity between predicted and actual segmentation masks.</li>
+                <li>
+                    <strong>IoU:</strong>
+                    Measures overlap between predicted and true segmented regions.
+                </li>
+
+                <li>
+                    <strong>Dice Score:</strong>
+                    Measures similarity between predicted and actual segmentation masks.
+                </li>
             </ul>
 
 
             <h3>Mobile and Video Performance</h3>
 
             <ul>
-                <li><strong>Inference time:</strong> Measures how quickly one image or frame is processed.</li>
-                <li><strong>Frames per second:</strong> Indicates whether video can be processed close to real time.</li>
-                <li><strong>Model size:</strong> Important for storage and deployment on mobile devices.</li>
+                <li>
+                    <strong>Inference time:</strong>
+                    Measures how quickly one image or frame is processed.
+                </li>
+
+                <li>
+                    <strong>Frames per second:</strong>
+                    Indicates whether video can be processed close to real time.
+                </li>
+
+                <li>
+                    <strong>Model size:</strong>
+                    Important for storage and deployment on mobile devices.
+                </li>
             </ul>
 
 
@@ -170,8 +218,8 @@
             </p>
 
             <p>
-                Video-based methods add temporal and multi-view information, but
-                they require more computation.
+                Video-based methods add temporal and multi-view information,
+                but they require more computation.
             </p>
 
         </section>
@@ -187,15 +235,97 @@
             </p>
 
             <ul>
-                <li><strong>Lighting variation:</strong> Bright sunlight, shadows, and low light can change symptom appearance.</li>
-                <li><strong>Complex backgrounds:</strong> Soil, branches, weeds, and nearby leaves can make detection more difficult.</li>
-                <li><strong>Occlusion:</strong> Leaves may overlap or partially hide diseased regions.</li>
-                <li><strong>Motion blur:</strong> Camera movement or wind can reduce image quality.</li>
-                <li><strong>Similar symptoms:</strong> Different diseases may create similar spots or discoloration.</li>
-                <li><strong>Limited datasets:</strong> Some plants and diseases have fewer labeled training examples.</li>
-                <li><strong>Generalization:</strong> A model trained on one crop or environment may not perform equally well on another.</li>
-                <li><strong>Mobile limitations:</strong> Real-time video analysis can require significant computation and battery power.</li>
+
+                <li>
+                    <strong>Lighting variation:</strong>
+                    Bright sunlight, shadows, and low light can change symptom appearance.
+                </li>
+
+                <li>
+                    <strong>Complex backgrounds:</strong>
+                    Soil, branches, weeds, and nearby leaves can make detection more difficult.
+                </li>
+
+                <li>
+                    <strong>Occlusion:</strong>
+                    Leaves may overlap or partially hide diseased regions.
+                </li>
+
+                <li>
+                    <strong>Motion blur:</strong>
+                    Camera movement or wind can reduce image quality.
+                </li>
+
+                <li>
+                    <strong>Similar symptoms:</strong>
+                    Different diseases may create similar spots or discoloration.
+                </li>
+
+                <li>
+                    <strong>Limited datasets:</strong>
+                    Some plants and diseases have fewer labeled training examples.
+                </li>
+
+                <li>
+                    <strong>Generalization:</strong>
+                    A model trained on one crop or environment may not perform equally
+                    well on another.
+                </li>
+
+                <li>
+                    <strong>Mobile limitations:</strong>
+                    Real-time video analysis can require significant computation
+                    and battery power.
+                </li>
+
             </ul>
+
+        </section>
+
+
+        <section>
+
+            <h2>Researcher Interview Request</h2>
+
+            <p>
+                As part of this tutorial, I contacted Professor Shinjiro Umezu of
+                Waseda University, one of the authors of the Plant Doctor study,
+                to request additional insight into the challenges of real-world
+                plant disease monitoring.
+            </p>
+
+            <p>
+                <strong>Questions sent:</strong>
+            </p>
+
+            <ol>
+
+                <li>
+                    Your segmentation model achieved high IoU for leaves but lower
+                    IoU for damaged regions. What do you think is the main reason
+                    for this difference, and how could damage segmentation be improved?
+                </li>
+
+                <li>
+                    Video processing currently takes much longer than real time.
+                    Do you see a realistic path toward running a system like
+                    Plant Doctor on a smartphone or drone in real time?
+                </li>
+
+                <li>
+                    What do you think is the biggest challenge for plant disease
+                    detection in real-world environments today: limited data,
+                    lighting and complex backgrounds, or computational requirements?
+                </li>
+
+            </ol>
+
+            <p>
+                <em>
+                    Interview request sent to Professor Shinjiro Umezu.
+                    Response pending.
+                </em>
+            </p>
 
         </section>
 
@@ -229,17 +359,26 @@
             <p>
                 Research on plant disease detection connects computer vision,
                 machine learning, agriculture, robotics, and mobile computing.
-                Universities and research laboratories working in precision
-                agriculture often study crop monitoring, plant phenotyping,
-                disease recognition, drone imaging, and automated field inspection.
+                Universities and research laboratories working in precision agriculture
+                often study crop monitoring, plant phenotyping, disease recognition,
+                drone imaging, and automated field inspection.
             </p>
 
             <p>
                 These research groups are important because they can combine
-                computer vision algorithms with real agricultural data and
-                field experiments. Future systems may be developed through
-                collaboration between computer science laboratories,
-                agricultural researchers, and industry partners.
+                computer vision algorithms with real agricultural data and field
+                experiments. Future systems may be developed through collaboration
+                between computer science laboratories, agricultural researchers,
+                and industry partners.
+            </p>
+
+            <p>
+                One example is the
+                <strong>Umezu Lab at Waseda University in Tokyo</strong>.
+                The research group involved in developing Plant Doctor works on
+                bioengineering and plant-monitoring systems that combine engineering,
+                sensing, and computer vision for real-world applications.
+                <a href="references.html">[5]</a>
             </p>
 
         </section>
@@ -275,17 +414,21 @@
 
             <form id="quizForm">
 
-                <p><strong>1. What is the main limitation of image classification?</strong></p>
+                <p>
+                    <strong>1. What is the main limitation of image classification?</strong>
+                </p>
 
                 <label>
                     <input type="radio" name="q1" value="a">
                     It cannot process images
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q1" value="b">
                     It gives one label for the whole image
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q1" value="c">
@@ -293,17 +436,21 @@
                 </label>
 
 
-                <p><strong>2. What does object detection provide?</strong></p>
+                <p>
+                    <strong>2. What does object detection provide?</strong>
+                </p>
 
                 <label>
                     <input type="radio" name="q2" value="a">
                     Bounding boxes, labels, and confidence scores
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q2" value="b">
                     Only image resizing
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q2" value="c">
@@ -311,17 +458,21 @@
                 </label>
 
 
-                <p><strong>3. What is segmentation useful for?</strong></p>
+                <p>
+                    <strong>3. What is segmentation useful for?</strong>
+                </p>
 
                 <label>
                     <input type="radio" name="q3" value="a">
                     Finding the exact diseased region at pixel level
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q3" value="b">
                     Increasing internet speed
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q3" value="c">
@@ -329,17 +480,21 @@
                 </label>
 
 
-                <p><strong>4. Why can video be useful for plant disease detection?</strong></p>
+                <p>
+                    <strong>4. Why can video be useful for plant disease detection?</strong>
+                </p>
 
                 <label>
                     <input type="radio" name="q4" value="a">
                     It provides multiple frames and viewing angles
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q4" value="b">
                     It removes the need for a model
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q4" value="c">
@@ -347,17 +502,21 @@
                 </label>
 
 
-                <p><strong>5. What is an advantage of on-device processing?</strong></p>
+                <p>
+                    <strong>5. What is an advantage of on-device processing?</strong>
+                </p>
 
                 <label>
                     <input type="radio" name="q5" value="a">
                     It always uses larger models than cloud servers
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q5" value="b">
                     It can work without a continuous internet connection
-                </label><br>
+                </label>
+                <br>
 
                 <label>
                     <input type="radio" name="q5" value="c">
@@ -402,7 +561,9 @@
             for (let question in answers) {
 
                 const selected =
-                    document.querySelector('input[name="' + question + '"]:checked');
+                    document.querySelector(
+                        'input[name="' + question + '"]:checked'
+                    );
 
                 if (selected && selected.value === answers[question]) {
                     score++;
