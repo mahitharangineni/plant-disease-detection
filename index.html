@@ -402,6 +402,57 @@
         <li><strong>Challenge:</strong> Mobile devices have limited processing power and battery capacity.</li>
     </ul>
 </section>
+        <section id="mobile-deployment">
+    <h2>Mobile Deployment</h2>
+
+    <p>
+        For plant disease detection to be useful in real-world settings, the system
+        should work efficiently on mobile devices. A mobile application may capture
+        an image or video, process it locally on the device, or send the data to a
+        cloud server for analysis.
+    </p>
+
+    <h3>On-Device Processing</h3>
+
+    <p>
+        In on-device processing, the computer vision model runs directly on the
+        smartphone. This can provide faster response times and does not require a
+        continuous internet connection. However, mobile devices have limited memory,
+        processing power, and battery capacity compared with desktop computers or
+        cloud servers.
+    </p>
+
+    <h3>Cloud-Based Processing</h3>
+
+    <p>
+        In cloud-based processing, the mobile device captures the image or video and
+        sends it to a remote server. The server can run larger and more computationally
+        expensive models. The result is then sent back to the mobile application.
+    </p>
+
+    <p>
+        Cloud processing can support more complex models, but it depends on network
+        connectivity and may introduce additional delay.
+    </p>
+
+    <h3>Lightweight Models</h3>
+
+    <p>
+        Lightweight neural network architectures are designed to reduce computation
+        while maintaining useful accuracy. Models such as MobileNet are commonly used
+        when deep learning must run on devices with limited resources.
+    </p>
+
+    <h3>Important Mobile Considerations</h3>
+
+    <ul>
+        <li><strong>Inference speed:</strong> Predictions should be generated quickly enough for practical use.</li>
+        <li><strong>Model size:</strong> Smaller models require less storage and memory.</li>
+        <li><strong>Battery usage:</strong> Continuous video processing can consume significant power.</li>
+        <li><strong>Connectivity:</strong> Cloud-based systems may not work well in areas with unreliable internet access.</li>
+        <li><strong>Privacy:</strong> On-device processing can reduce the need to upload images or video to external servers.</li>
+    </ul>
+</section>
 
     </main>
 
