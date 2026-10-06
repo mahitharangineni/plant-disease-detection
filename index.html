@@ -275,6 +275,68 @@
         localization is required.
     </p>
 </section>
+        <section id="segmentation">
+    <h2>Disease Region Segmentation and Severity Estimation</h2>
+
+    <p>
+        Object detection uses bounding boxes to show where a diseased area is located,
+        but a bounding box does not precisely describe the shape of the damaged tissue.
+        Image segmentation provides a more detailed result by assigning a label to
+        individual pixels in the image.
+    </p>
+
+    <h3>What Segmentation Does</h3>
+
+    <p>
+        A segmentation model can separate healthy leaf tissue from diseased tissue.
+        This makes it possible to identify the exact shape and size of infected regions
+        instead of only drawing a rectangle around them.
+    </p>
+
+    <h3>Common Segmentation Models</h3>
+
+    <ul>
+        <li>
+            <strong>U-Net:</strong>
+            A popular encoder-decoder architecture that is widely used for pixel-level
+            image segmentation.
+        </li>
+
+        <li>
+            <strong>DeepLab:</strong>
+            A semantic segmentation approach that can capture detailed object boundaries
+            and is useful for identifying irregular disease regions.
+        </li>
+    </ul>
+
+    <h3>Disease Severity Estimation</h3>
+
+    <p>
+        After the diseased region has been segmented, the system can estimate disease
+        severity by comparing the number of diseased pixels with the total leaf area.
+        A simple severity measure can be written as:
+    </p>
+
+    <p>
+        <strong>Disease Severity (%) =
+        (Diseased Leaf Area / Total Leaf Area) × 100</strong>
+    </p>
+
+    <p>
+        Severity estimation can provide more useful information than a disease label
+        alone. For example, two leaves may have the same disease, but one leaf may have
+        only a small infected area while another may be heavily damaged.
+    </p>
+
+    <h3>Why Segmentation Matters</h3>
+
+    <p>
+        Segmentation is especially useful when symptoms have irregular shapes or when
+        accurate measurement of the affected area is needed. However, segmentation
+        generally requires more detailed training labels and can require more
+        computation than classification or basic object detection.
+    </p>
+</section>
 
     </main>
 
