@@ -110,6 +110,67 @@
         only on clean, centered leaf images.
     </p>
 </section>
+        <section id="preprocessing">
+    <h2>Image Preprocessing and Leaf Analysis</h2>
+
+    <p>
+        Images captured with mobile devices may contain variations in size,
+        lighting, background, and image quality. Preprocessing helps reduce
+        these variations before the image is provided to a computer vision model.
+    </p>
+
+    <h3>Common Preprocessing Steps</h3>
+
+    <ul>
+        <li>
+            <strong>Image resizing:</strong>
+            Images are resized to a fixed resolution so they can be processed
+            efficiently by a neural network.
+        </li>
+
+        <li>
+            <strong>Normalization:</strong>
+            Pixel values are scaled to a smaller numerical range to make model
+            training and inference more stable.
+        </li>
+
+        <li>
+            <strong>Noise reduction:</strong>
+            Filters can reduce unwanted image noise while preserving important
+            disease patterns such as spots and lesions.
+        </li>
+
+        <li>
+            <strong>Contrast and color adjustment:</strong>
+            Improving contrast can make disease symptoms more visible when images
+            are captured under uneven lighting.
+        </li>
+
+        <li>
+            <strong>Data augmentation:</strong>
+            Training images can be rotated, flipped, cropped, or adjusted in
+            brightness to help the model handle real-world variations.
+        </li>
+    </ul>
+
+    <h3>Leaf Segmentation and Background Removal</h3>
+
+    <p>
+        In real-world images, the leaf may appear together with soil, branches,
+        other leaves, or surrounding objects. Segmentation can separate the leaf
+        or diseased region from the background. This allows later stages of the
+        system to focus on the most relevant visual information.
+    </p>
+
+    <h3>Important Visual Features</h3>
+
+    <p>
+        Plant diseases can create visible changes in leaf color, texture, shape,
+        spots, lesions, and damaged areas. Traditional computer vision approaches
+        often analyze these features directly. Deep learning models such as CNNs
+        can instead learn useful visual features automatically from training data.
+    </p>
+</section>
 
     </main>
 
