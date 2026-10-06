@@ -510,6 +510,65 @@
         video analysis to improve reliability across multiple views.
     </p>
 </section>
+        <section id="challenges">
+    <h2>Challenges and Limitations</h2>
+
+    <p>
+        Plant disease detection in real-world environments is more difficult than
+        working with clean laboratory images. A system that performs well on a
+        controlled dataset may still struggle when used in farms, gardens, or other
+        outdoor environments.
+    </p>
+
+    <ul>
+        <li><strong>Lighting variation:</strong> Bright sunlight, shadows, and low light can change the appearance of symptoms.</li>
+        <li><strong>Complex backgrounds:</strong> Soil, branches, weeds, and nearby leaves can make detection more difficult.</li>
+        <li><strong>Occlusion:</strong> Leaves may overlap or partially hide diseased regions.</li>
+        <li><strong>Motion blur:</strong> Camera movement or wind can reduce image quality.</li>
+        <li><strong>Similar symptoms:</strong> Different diseases may create similar spots, discoloration, or texture changes.</li>
+        <li><strong>Limited datasets:</strong> Some plants and diseases have fewer labeled training examples.</li>
+        <li><strong>Generalization:</strong> A model trained on one crop or environment may not perform equally well on another.</li>
+        <li><strong>Mobile limitations:</strong> Real-time detection and video analysis can require significant computation and battery power.</li>
+    </ul>
+
+    <h2>Future Research</h2>
+
+    <p>
+        Future systems can improve plant disease detection by combining object
+        detection, segmentation, tracking, and multi-view video analysis.
+        Lightweight models may make it possible to perform more processing directly
+        on mobile devices.
+    </p>
+
+    <p>
+        Another important direction is the development of larger real-world datasets
+        that include different lighting conditions, plant varieties, backgrounds,
+        viewing angles, and disease stages. These datasets can help models generalize
+        better outside controlled laboratory environments.
+    </p>
+
+    <p>
+        Future research may also explore how predictions from multiple video frames
+        can be combined more effectively to reduce incorrect classifications and
+        improve disease severity estimation.
+    </p>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        Computer vision can support plant disease detection by analyzing visual
+        symptoms from mobile images and video. Classification provides a disease
+        label, object detection identifies where symptoms appear, and segmentation
+        can measure the exact affected area.
+    </p>
+
+    <p>
+        For real-world applications, using video and multiple views provides more
+        information than a single image alone. A practical mobile plant disease
+        system may therefore combine detection, segmentation, tracking, and
+        multi-frame analysis to produce more reliable results.
+    </p>
+</section>
 
     </main>
 
