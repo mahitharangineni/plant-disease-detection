@@ -171,6 +171,55 @@
         can instead learn useful visual features automatically from training data.
     </p>
 </section>
+        <section id="classification">
+    <h2>Plant Disease Classification</h2>
+
+    <p>
+        Classification assigns an entire leaf image to a disease category.
+        For example, a model may predict that a leaf is healthy or that it belongs
+        to a specific disease class such as early blight, late blight, or leaf spot.
+    </p>
+
+    <h3>How CNN-Based Classification Works</h3>
+
+    <p>
+        Convolutional Neural Networks, or CNNs, are widely used for image
+        classification because they can automatically learn visual patterns from
+        training images. Early layers usually learn simple features such as edges
+        and color changes, while deeper layers learn more complex patterns such as
+        lesions, texture changes, and disease-specific shapes.
+    </p>
+
+    <p>
+        During training, the model is shown many labeled examples of healthy and
+        diseased leaves. The network adjusts its internal weights so that the output
+        probability for the correct class becomes higher.
+    </p>
+
+    <h3>Transfer Learning</h3>
+
+    <p>
+        Instead of training a deep model completely from scratch, many plant disease
+        systems use transfer learning. A model that was already trained on a large
+        image dataset can be adapted to plant disease images. This is useful when the
+        plant dataset is smaller and can reduce training time.
+    </p>
+
+    <h3>Limitation of Classification</h3>
+
+    <p>
+        Classification is useful when the image already contains a clear view of a
+        single leaf, but it does not show where the disease is located. It also becomes
+        less reliable when an image contains multiple leaves, complex backgrounds,
+        overlapping plants, or only a small diseased region.
+    </p>
+
+    <p>
+        For real-world mobile images, object detection and segmentation can provide
+        more detailed information by locating the leaf or diseased area instead of
+        returning only one label for the whole image.
+    </p>
+</section>
 
     </main>
 
