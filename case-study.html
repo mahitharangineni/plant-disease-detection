@@ -115,7 +115,7 @@
         <section id="reported-results">
             <h2>Reported Results</h2>
             <p>
-                Here are the verified experimental metrics reported in the paper:
+                Here are the main results reported in the paper:
             </p>
 
             <div class="table-wrapper">
@@ -206,9 +206,61 @@
             </p>
             <ul>
                 <li><strong>Separate the tasks:</strong> Run lightweight leaf detection on the mobile device and send selected frames to a server for segmentation.</li>
-                <li><strong>Downsample frames:</strong> Instead of processing every frame, sampling a few frames per second can significantly reduce DeepSORT computational load while still tracking leaves reliably.</li>
+                <li><strong>Downsample frames:</strong> Instead of processing every frame, sampling a few frames per second can significantly reduce DeepSORT's computational load while still tracking leaves reliably.</li>
                 <li><strong>Model optimization:</strong> Quantizing models to INT8 can speed up inference on mobile chips.</li>
             </ul>
+        </section>
+
+        <section id="research-comparison">
+            <h2>Comparison with Other Research</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Iftikhar et al. 2024 <a href="references.html#ref-2">[2]</a></th>
+                            <th>Plant Doctor 2025 <a href="references.html#ref-5">[5]</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Input</strong></td>
+                            <td>Single image</td>
+                            <td>Video</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Method</strong></td>
+                            <td>Enhanced CNN (classification)</td>
+                            <td>YOLOv8 + DeepSORT + DeepLabV3+</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data</strong></td>
+                            <td>PlantVillage (apple, corn, potato)</td>
+                            <td>4,595 images (mostly smartphone)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Result</strong></td>
+                            <td>98.17% accuracy</td>
+                            <td>mAP@0.5 &asymp; 0.99, damage IoU 0.76</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Speed</strong></td>
+                            <td>&sim;10 s per image in mobile app</td>
+                            <td>&sim;50 min per 1-minute video</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Location / severity?</strong></td>
+                            <td>No</td>
+                            <td>Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                The single-image CNN from Iftikhar et al. <a href="references.html#ref-2">[2]</a> is fast and very accurate on clean lab images, but it only gives one label per photo.
+                Plant Doctor <a href="references.html#ref-5">[5]</a> works on real-world video and measures how much of each leaf is damaged.
+                However, it is much slower and is not yet fast enough for real-time use.
+            </p>
         </section>
 
         <section id="why-it-matters">
@@ -225,7 +277,7 @@
                 <span class="audio-badge">Audio Guide</span>
                 <h3>Module Narration</h3>
             </div>
-            <p class="audio-description">A 1–2 minute audio breakdown of the Plant Doctor case study, verified metrics, and latency bottlenecks.</p>
+            <p class="audio-description">A 1–2 minute audio breakdown of the Plant Doctor case study, reported results, and processing-time bottlenecks.</p>
             <div class="audio-player-container">
                 <audio controls preload="metadata" class="page-audio" style="display: none;">
                     <source src="audio/case-study-audio.mp3" type="audio/mpeg">

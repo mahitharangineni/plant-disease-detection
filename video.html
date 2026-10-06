@@ -61,7 +61,7 @@
                 </li>
                 <li>
                     <strong>Tracking leaves with DeepSORT:</strong>
-                    When moving a phone or drone across a plant, the same leaf appears in many frames.
+                    When a phone or drone moves across a plant, the same leaf appears in many frames.
                     Without tracking, the system would count that leaf repeatedly.
                     DeepSORT combines a Kalman filter (predicting position) and deep appearance features (leaf re-identification) to assign a consistent ID to each leaf <a href="references.html#ref-5">[5]</a>.
                 </li>
@@ -103,7 +103,7 @@
                         <tr>
                             <td><strong>Reliability</strong></td>
                             <td>Can fail due to single-frame blur or glare</td>
-                            <td>Robust; uses consensus across multiple frames</td>
+                            <td>More reliable; combines results from multiple frames</td>
                         </tr>
                         <tr>
                             <td><strong>Occlusion</strong></td>
@@ -195,7 +195,7 @@ print("Final prediction:", final_prediction)</code></pre>
                 <span class="audio-badge">Audio Guide</span>
                 <h3>Module Narration</h3>
             </div>
-            <p class="audio-description">A 1–2 minute audio discussion on temporal frame processing, DeepSORT tracking, and multi-frame majority voting.</p>
+            <p class="audio-description">A 1–2 minute audio discussion of frame processing, DeepSORT tracking, and multi-frame majority voting.</p>
             <div class="audio-player-container">
                 <audio controls preload="metadata" class="page-audio" style="display: none;">
                     <source src="audio/video-audio.mp3" type="audio/mpeg">
