@@ -619,6 +619,41 @@
         multi-frame analysis to produce more reliable results.
     </p>
 </section>
+        <section id="quiz">
+    <h2>Quick Knowledge Check</h2>
+
+    <form id="quizForm">
+
+        <p><strong>1. What is the main limitation of image classification?</strong></p>
+        <label><input type="radio" name="q1" value="a"> It cannot process images</label><br>
+        <label><input type="radio" name="q1" value="b"> It gives one label for the whole image</label><br>
+        <label><input type="radio" name="q1" value="c"> It always requires video</label><br><br>
+
+        <p><strong>2. What does object detection provide?</strong></p>
+        <label><input type="radio" name="q2" value="a"> Bounding boxes, labels, and confidence scores</label><br>
+        <label><input type="radio" name="q2" value="b"> Only image resizing</label><br>
+        <label><input type="radio" name="q2" value="c"> Only a disease severity percentage</label><br><br>
+
+        <p><strong>3. What is segmentation useful for?</strong></p>
+        <label><input type="radio" name="q3" value="a"> Finding the exact diseased region at pixel level</label><br>
+        <label><input type="radio" name="q3" value="b"> Increasing internet speed</label><br>
+        <label><input type="radio" name="q3" value="c"> Reducing camera resolution</label><br><br>
+
+        <p><strong>4. Why can video be useful for plant disease detection?</strong></p>
+        <label><input type="radio" name="q4" value="a"> It provides multiple frames and viewing angles</label><br>
+        <label><input type="radio" name="q4" value="b"> It removes the need for a model</label><br>
+        <label><input type="radio" name="q4" value="c"> It guarantees perfect accuracy</label><br><br>
+
+        <p><strong>5. What is an advantage of on-device processing?</strong></p>
+        <label><input type="radio" name="q5" value="a"> It always uses larger models than cloud servers</label><br>
+        <label><input type="radio" name="q5" value="b"> It can work without a continuous internet connection</label><br>
+        <label><input type="radio" name="q5" value="c"> It requires more network delay</label><br><br>
+
+        <button type="button" onclick="checkQuiz()">Check Answers</button>
+
+        <p id="quizResult"></p>
+    </form>
+</section>
 
     </main>
 
