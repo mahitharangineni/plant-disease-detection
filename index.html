@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Plant Disease Detection Using Mobile Images and Video</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,730 +17,156 @@
         <p>Computer Vision Research Tutorial</p>
         <p>By Mahitha Rangineni</p>
     </header>
+
+
     <nav>
-    <a href="#introduction">Introduction</a>
-    <a href="#capture">Mobile Capture</a>
-    <a href="#preprocessing">Preprocessing</a>
-    <a href="#classification">Classification</a>
-    <a href="#detection">Object Detection</a>
-    <a href="#segmentation">Segmentation</a>
-    <a href="#video">Video Analysis</a>
-    <a href="#challenges">Challenges</a>
-    <a href="references.html">References</a>
-</nav>
+        <a href="index.html">Home</a>
+        <a href="capture.html">Capture & Preprocessing</a>
+        <a href="classification.html">Classification</a>
+        <a href="detection.html">Object Detection</a>
+        <a href="segmentation.html">Segmentation</a>
+        <a href="video.html">Video Analysis</a>
+        <a href="case-study.html">Case Study</a>
+        <a href="deployment.html">Deployment</a>
+        <a href="references.html">References</a>
+    </nav>
+
 
     <main>
 
-        <section id="introduction">
+        <section>
+
             <h2>Introduction</h2>
 
             <p>
                 Plant diseases can significantly affect crop health and agricultural
                 productivity. Detecting diseases visually can be difficult because
-                symptoms may look similar and real-world images can vary due to
+                symptoms may look similar and real-world images can vary because of
                 lighting, background, camera angle, image quality, and leaf position.
             </p>
 
             <p>
-                This tutorial explores how computer vision can be used to detect
-                plant diseases using mobile images and video. It reviews techniques
-                including image preprocessing, classification, object detection,
-                segmentation, and video-based multi-view analysis.
+                This tutorial explores how computer vision can be used to detect plant
+                diseases using mobile images and video. It covers image preprocessing,
+                classification, object detection, segmentation, disease severity
+                estimation, video tracking, multi-view analysis, and mobile deployment.
             </p>
+
         </section>
 
+
         <section>
-            <h2>Tutorial Topics</h2>
+
+            <h2>Why Use Video?</h2>
+
+            <p>
+                A single image may not capture all disease symptoms clearly.
+                Video allows the same plant or leaf to be observed from multiple
+                angles and across multiple frames.
+            </p>
+
+            <p>
+                This provides more visual information and may improve the reliability
+                of plant disease detection in real-world environments.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>Tutorial Sections</h2>
 
             <ul>
-                <li>Mobile Image and Video Capture</li>
-                <li>Image Preprocessing and Leaf Analysis</li>
-                <li>Plant Disease Classification</li>
-                <li>Object Detection for Plant Diseases</li>
-                <li>Disease Region Segmentation</li>
-                <li>Disease Severity Estimation</li>
-                <li>Video and Multi-View Analysis</li>
-                <li>Mobile Deployment</li>
-                <li>Evaluation of Existing Approaches</li>
-                <li>Challenges and Limitations</li>
-                <li>Future Research</li>
+                <li>
+                    <a href="capture.html">
+                        Mobile Image & Video Capture and Preprocessing
+                    </a>
+                </li>
+
+                <li>
+                    <a href="classification.html">
+                        Plant Disease Classification
+                    </a>
+                </li>
+
+                <li>
+                    <a href="detection.html">
+                        Object Detection
+                    </a>
+                </li>
+
+                <li>
+                    <a href="segmentation.html">
+                        Disease Segmentation and Severity Estimation
+                    </a>
+                </li>
+
+                <li>
+                    <a href="video.html">
+                        Video and Multi-View Analysis
+                    </a>
+                </li>
+
+                <li>
+                    <a href="case-study.html">
+                        Case Study: Plant Doctor
+                    </a>
+                </li>
+
+                <li>
+                    <a href="deployment.html">
+                        Mobile Deployment, Evaluation, Challenges and Quiz
+                    </a>
+                </li>
+
+                <li>
+                    <a href="references.html">
+                        Annotated Bibliography
+                    </a>
+                </li>
             </ul>
+
         </section>
 
+
         <section>
-    <h2>Why Use Video?</h2>
 
-    <p>
-        A single image may not capture all disease symptoms clearly.
-        Video allows the same plant or leaf to be observed from multiple
-        angles and across multiple frames. This can provide more visual
-        information and may improve the reliability of disease detection
-        in real-world environments.
-    </p>
-</section>
+            <h2>Project Goal</h2>
 
-<section id="capture">
-    <h2>Mobile Image and Video Capture</h2>
+            <p>
+                The goal of this tutorial is to show how plant disease detection
+                can move beyond simple single-image classification.
+            </p>
 
-    <p>
-        Mobile devices make plant disease detection more accessible because users
-        can capture leaf images directly in farms, gardens, or outdoor environments.
-        Recent research has also explored mobile applications that run deep learning
-        models for plant disease recognition and detection.
-        <a href="references.html">[2]</a>
-    </p>
+            <p>
+                A more complete real-world system can combine:
+            </p>
 
-    <p>
-        However, real-world mobile images are more difficult to analyze than images
-        collected under controlled laboratory conditions. Changes in lighting,
-        camera distance, viewing angle, background objects, shadows, and motion blur
-        can affect how clearly disease symptoms appear.
-    </p>
+            <ul>
+                <li>Image preprocessing</li>
+                <li>CNN-based classification</li>
+                <li>YOLO object detection</li>
+                <li>Pixel-level segmentation</li>
+                <li>Disease severity estimation</li>
+                <li>Leaf tracking across video frames</li>
+                <li>Multi-frame decision making</li>
+                <li>Mobile or cloud deployment</li>
+            </ul>
 
-    <h3>Important Capture Factors</h3>
+        </section>
 
-    <ul>
-        <li><strong>Lighting:</strong> Bright sunlight, shadows, or low light can change leaf color and hide disease symptoms.</li>
-        <li><strong>Camera angle:</strong> Different angles may show different portions of the infected region.</li>
-        <li><strong>Distance:</strong> Images taken too far away may lose small visual details such as spots or lesions.</li>
-        <li><strong>Background:</strong> Soil, other leaves, branches, and objects may make leaf detection more difficult.</li>
-        <li><strong>Motion blur:</strong> Movement of the phone or plant can reduce image quality.</li>
-        <li><strong>Multiple views:</strong> Video provides several frames and viewing angles instead of relying on only one image.</li>
-    </ul>
 
-    <p>
-        Because of these variations, a real-world plant disease system should be
-        designed to work with changing environmental conditions rather than relying
-        only on clean, centered leaf images.
-    </p>
-</section>
-        <section id="preprocessing">
-    <h2>Image Preprocessing and Leaf Analysis</h2>
+        <!-- Audio summary will be added here later -->
 
-    <p>
-        Images captured with mobile devices may contain variations in size,
-        lighting, background, and image quality. Preprocessing helps reduce
-        these variations before the image is provided to a computer vision model.
-    </p>
-
-    <h3>Common Preprocessing Steps</h3>
-
-    <ul>
-        <li>
-            <strong>Image resizing:</strong>
-            Images are resized to a fixed resolution so they can be processed
-            efficiently by a neural network.
-        </li>
-
-        <li>
-            <strong>Normalization:</strong>
-            Pixel values are scaled to a smaller numerical range to make model
-            training and inference more stable.
-        </li>
-
-        <li>
-            <strong>Noise reduction:</strong>
-            Filters can reduce unwanted image noise while preserving important
-            disease patterns such as spots and lesions.
-        </li>
-
-        <li>
-            <strong>Contrast and color adjustment:</strong>
-            Improving contrast can make disease symptoms more visible when images
-            are captured under uneven lighting.
-        </li>
-
-        <li>
-            <strong>Data augmentation:</strong>
-            Training images can be rotated, flipped, cropped, or adjusted in
-            brightness to help the model handle real-world variations.
-        </li>
-    </ul>
-
-    <h3>Leaf Segmentation and Background Removal</h3>
-
-    <p>
-        In real-world images, the leaf may appear together with soil, branches,
-        other leaves, or surrounding objects. Segmentation can separate the leaf
-        or diseased region from the background. This allows later stages of the
-        system to focus on the most relevant visual information.
-    </p>
-
-    <h3>Important Visual Features</h3>
-
-    <p>
-        Plant diseases can create visible changes in leaf color, texture, shape,
-        spots, lesions, and damaged areas. Traditional computer vision approaches
-        often analyze these features directly. Deep learning models such as CNNs
-        can instead learn useful visual features automatically from training data.
-        <a href="references.html">[3]</a>
-    </p>
-</section>
-        <section id="classification">
-    <h2>Plant Disease Classification</h2>
-
-    <p>
-        Classification assigns an entire leaf image to a disease category.
-        For example, a model may predict that a leaf is healthy or that it belongs
-        to a specific disease class such as early blight, late blight, or leaf spot.
-    </p>
-
-    <h3>How CNN-Based Classification Works</h3>
-
-    <p>
-        Convolutional Neural Networks, or CNNs, are widely used for image
-        classification because they can automatically learn visual patterns from
-        training images. Early layers usually learn simple features such as edges
-        and color changes, while deeper layers learn more complex patterns such as
-        lesions, texture changes, and disease-specific shapes.
-    </p>
-
-    <p>
-        During training, the model is shown many labeled examples of healthy and
-        diseased leaves. The network adjusts its internal weights so that the output
-        probability for the correct class becomes higher.
-    </p>
-
-    <h3>Transfer Learning</h3>
-
-    <p>
-        Instead of training a deep model completely from scratch, many plant disease
-        systems use transfer learning. A model that was already trained on a large
-        image dataset can be adapted to plant disease images. This is useful when the
-        plant dataset is smaller and can reduce training time.
-        <a href="references.html">[2]</a>
-    </p>
-            <img src="classification-system.png"
-     alt="CNN-based plant disease classification system"
-     style="width:100%; max-width:900px; display:block; margin:20px auto;">
-
-<p>
-    <em>
-        Figure: CNN-based plant disease classification showing feature extraction,
-        transfer learning, classification output, and limitations in real-world field images.
-    </em>
-</p>
-
-    <h3>Limitation of Classification</h3>
-
-    <p>
-        Classification is useful when the image already contains a clear view of a
-        single leaf, but it does not show where the disease is located. It also becomes
-        less reliable when an image contains multiple leaves, complex backgrounds,
-        overlapping plants, or only a small diseased region.
-    </p>
-
-    <p>
-        For real-world mobile images, object detection and segmentation can provide
-        more detailed information by locating the leaf or diseased area instead of
-        returning only one label for the whole image.
-    </p>
-</section>
-        <section id="detection">
-    <h2>Object Detection for Plant Diseases</h2>
-
-    <p>
-        Object detection goes beyond classification by identifying both
-        <strong>what</strong> is present in an image and <strong>where</strong>
-        it is located. Instead of assigning one label to the entire image,
-        an object detection model places bounding boxes around leaves or
-        diseased regions and assigns a class label to each detected area.
-    </p>
-
-    <h3>Why Object Detection Is Useful</h3>
-
-    <p>
-        In real-world mobile images, a scene may contain several leaves,
-        overlapping plants, soil, branches, or other background objects.
-        Object detection can first locate individual leaves or visible disease
-        regions before further analysis is performed.
-    </p>
-
-    <h3>YOLO-Based Detection</h3>
-
-    <p>
-        YOLO, which stands for <em>You Only Look Once</em>, is a popular
-        object detection approach because it can detect multiple objects in a
-        single image quickly. The model processes the image and predicts
-        bounding boxes, class labels, and confidence scores.
-        <a href="references.html">[1]</a>
-    </p>
-
-    <p>
-        For plant disease analysis, a YOLO-based model can be trained to detect
-        symptoms such as spots, lesions, discoloration, or damaged regions.
-        Because YOLO models are designed for fast inference, they are useful
-        for real-time or mobile applications.
-    </p>
-
-    <h3>Typical Detection Output</h3>
-
-    <ul>
-        <li><strong>Bounding box:</strong> Shows where the leaf or disease region is located.</li>
-        <li><strong>Class label:</strong> Identifies the detected disease category.</li>
-        <li><strong>Confidence score:</strong> Indicates how confident the model is in its prediction.</li>
-    </ul>
-            <img src="object-detection-system.png"
-     alt="YOLO-based plant disease object detection system"
-     style="width:100%; max-width:900px; display:block; margin:20px auto;">
-
-<p>
-    <em>
-        Figure: YOLO-based plant disease detection showing bounding boxes,
-        disease labels, confidence scores, and comparison with image classification.
-    </em>
-</p>
-
-    <h3>Advantages Over Classification</h3>
-
-    <p>
-        Object detection is more suitable for complex real-world scenes because
-        it can handle multiple leaves in one image and identify where disease
-        symptoms occur. However, a bounding box still covers a rectangular area
-        and does not precisely show the exact shape of the damaged region.
-        For that reason, segmentation can be used when more detailed disease
-        localization is required.
-    </p>
-</section>
-        <section id="segmentation">
-    <h2>Disease Region Segmentation and Severity Estimation</h2>
-
-    <p>
-        Object detection uses bounding boxes to show where a diseased area is located,
-        but a bounding box does not precisely describe the shape of the damaged tissue.
-        Image segmentation provides a more detailed result by assigning a label to
-        individual pixels in the image.
-    </p>
-
-    <h3>What Segmentation Does</h3>
-
-    <p>
-        A segmentation model can separate healthy leaf tissue from diseased tissue.
-        This makes it possible to identify the exact shape and size of infected regions
-        instead of only drawing a rectangle around them.
-    </p>
-
-    <h3>Common Segmentation Models</h3>
-
-    <ul>
-        <li>
-            <strong>U-Net:</strong>
-            A popular encoder-decoder architecture that is widely used for pixel-level
-            image segmentation.
-        </li>
-
-        <li>
-            <strong>DeepLab:</strong>
-            A semantic segmentation approach that can capture detailed object boundaries
-            and is useful for identifying irregular disease regions.
-        </li>
-    </ul>
-
-    <h3>Disease Severity Estimation</h3>
-
-    <p>
-        After the diseased region has been segmented, the system can estimate disease
-        severity by comparing the number of diseased pixels with the total leaf area.
-        A simple severity measure can be written as:
-    </p>
-
-    <p>
-        <strong>Disease Severity (%) =
-        (Diseased Leaf Area / Total Leaf Area) × 100</strong>
-    </p>
-
-    <p>
-        Severity estimation can provide more useful information than a disease label
-        alone. For example, two leaves may have the same disease, but one leaf may have
-        only a small infected area while another may be heavily damaged.
-        <a href="references.html">[4]</a>
-    </p>
-            <img src="segmentation-severity.png"
-     alt="Plant disease segmentation and severity estimation"
-     style="width:100%; max-width:900px; display:block; margin:20px auto;">
-
-<p>
-    <em>
-        Figure: Plant disease segmentation showing pixel-level disease masks,
-        highlighted infected regions, and disease severity estimation.
-    </em>
-</p>
-
-    <h3>Why Segmentation Matters</h3>
-
-    <p>
-        Segmentation is especially useful when symptoms have irregular shapes or when
-        accurate measurement of the affected area is needed. However, segmentation
-        generally requires more detailed training labels and can require more
-        computation than classification or basic object detection.
-    </p>
-</section>
-        <section id="video">
-    <h2>Video and Multi-View Plant Disease Analysis</h2>
-
-    <p>
-        Single-image analysis uses only one view of a leaf. In real-world conditions,
-        however, disease symptoms may be partially hidden, affected by lighting, or visible
-        only from certain angles. Video provides multiple frames and views of the same plant,
-        giving the system more visual information.
-    </p>
-
-    <h3>Processing Video Frames</h3>
-
-    <p>
-        A video can be divided into individual frames. Each frame can be processed using
-        object detection or segmentation to identify leaves and diseased regions. Instead of
-        making a decision from one image, the system can compare results across several frames.
-    </p>
-
-    <h3>Tracking Leaves Across Frames</h3>
-
-    <p>
-        Object tracking can be used to follow the same leaf as the camera moves. Tracking
-        helps prevent the system from treating the same leaf as a completely new object in
-        every frame.
-    </p>
-
-    <p>
-        Tracking methods such as DeepSORT can associate detections across consecutive frames
-        and assign an identity to each tracked leaf.
-        <a href="references.html">[5]</a>
-    </p>
-
-    <h3>Multi-View Analysis</h3>
-
-    <p>
-        Different frames may show different portions of the same leaf. One frame may contain
-        glare or blur, while another may provide a clearer view of the disease symptoms.
-        Combining predictions from several frames can make the final result more reliable than
-        relying on a single image.
-    </p>
-
-    <h3>Example Video Pipeline</h3>
-
-    <p>
-        A possible real-world pipeline is:
-    </p>
-
-    <p>
-        <strong>
-        Mobile Video → Frame Extraction → Leaf or Disease Detection →
-        Tracking Across Frames → Disease Classification or Segmentation →
-        Combine Multi-Frame Predictions → Final Result
-            <a href="references.html">[5]</a>
-        </strong>
-    </p>
-            <img src="video-pipeline.png"
-     alt="Video-based plant disease analysis pipeline"
-     style="width:100%; max-width:900px; display:block; margin:20px auto;">
-
-<p>
-    <em>
-        Figure: Example pipeline for plant disease analysis using mobile video,
-        object detection, tracking, segmentation, and final disease diagnosis.
-    </em>
-</p>
-
-    <h3>Benefits and Challenges</h3>
-
-    <ul>
-        <li><strong>Benefit:</strong> More views of the same plant can improve disease visibility.</li>
-        <li><strong>Benefit:</strong> Tracking can maintain information about the same leaf over time.</li>
-        <li><strong>Challenge:</strong> Video requires more computation than processing one image.</li>
-        <li><strong>Challenge:</strong> Fast camera movement can introduce motion blur.</li>
-        <li><strong>Challenge:</strong> Leaves may become hidden behind other leaves or objects.</li>
-        <li><strong>Challenge:</strong> Mobile devices have limited processing power and battery capacity.</li>
-    </ul>
-</section>
-        <section id="mobile-deployment">
-    <h2>Mobile Deployment</h2>
-
-    <p>
-        For plant disease detection to be useful in real-world settings, the system
-        should work efficiently on mobile devices. A mobile application may capture
-        an image or video, process it locally on the device, or send the data to a
-        cloud server for analysis.
-    </p>
-
-    <h3>On-Device Processing</h3>
-
-    <p>
-        In on-device processing, the computer vision model runs directly on the
-        smartphone. This can provide faster response times and does not require a
-        continuous internet connection. However, mobile devices have limited memory,
-        processing power, and battery capacity compared with desktop computers or
-        cloud servers.
-    </p>
-
-    <h3>Cloud-Based Processing</h3>
-
-    <p>
-        In cloud-based processing, the mobile device captures the image or video and
-        sends it to a remote server. The server can run larger and more computationally
-        expensive models. The result is then sent back to the mobile application.
-    </p>
-
-    <p>
-        Cloud processing can support more complex models, but it depends on network
-        connectivity and may introduce additional delay.
-    </p>
-
-    <h3>Lightweight Models</h3>
-
-    <p>
-        Lightweight neural network architectures are designed to reduce computation
-        while maintaining useful accuracy. Models such as MobileNet are commonly used
-        when deep learning must run on devices with limited resources.
-        <a href="references.html">[2]</a>
-    </p>
-            <img src="mobile-deployment.png"
-     alt="Comparison of on-device and cloud-based plant disease detection"
-     style="width:100%; max-width:900px; display:block; margin:20px auto;">
-
-<p>
-    <em>
-        Figure: Comparison of on-device and cloud-based plant disease detection,
-        including speed, connectivity, computation, and deployment trade-offs.
-    </em>
-</p>
-
-    <h3>Important Mobile Considerations</h3>
-
-    <ul>
-        <li><strong>Inference speed:</strong> Predictions should be generated quickly enough for practical use.</li>
-        <li><strong>Model size:</strong> Smaller models require less storage and memory.</li>
-        <li><strong>Battery usage:</strong> Continuous video processing can consume significant power.</li>
-        <li><strong>Connectivity:</strong> Cloud-based systems may not work well in areas with unreliable internet access.</li>
-        <li><strong>Privacy:</strong> On-device processing can reduce the need to upload images or video to external servers.</li>
-    </ul>
-</section>
-        <section id="evaluation">
-    <h2>Evaluation and Comparison of Existing Approaches</h2>
-
-    <p>
-        Different plant disease detection methods should be evaluated using metrics
-        that match the type of computer vision task being performed. Classification,
-        object detection, segmentation, and video analysis each use different measures
-        of performance.
-    </p>
-
-    <h3>Classification Metrics</h3>
-
-    <ul>
-        <li><strong>Accuracy:</strong> Measures how many predictions are correct overall.</li>
-        <li><strong>Precision:</strong> Measures how many predicted positive cases are actually correct.</li>
-        <li><strong>Recall:</strong> Measures how many true disease cases are successfully detected.</li>
-        <li><strong>F1-score:</strong> Combines precision and recall into one measure.</li>
-    </ul>
-
-    <h3>Object Detection Metrics</h3>
-
-    <ul>
-        <li><strong>IoU:</strong> Intersection over Union measures how much the predicted bounding box overlaps with the ground-truth box.</li>
-        <li><strong>mAP:</strong> Mean Average Precision summarizes object detection performance across classes and confidence thresholds.</li>
-    </ul>
-
-    <h3>Segmentation Metrics</h3>
-
-    <ul>
-        <li><strong>IoU:</strong> Measures overlap between predicted and true segmented regions.</li>
-        <li><strong>Dice Score:</strong> Measures similarity between predicted and actual segmentation masks.</li>
-    </ul>
-
-    <h3>Mobile and Video Performance</h3>
-
-    <ul>
-        <li><strong>Inference time:</strong> Measures how quickly one image or frame can be processed.</li>
-        <li><strong>Frames per second:</strong> Indicates whether video can be processed close to real time.</li>
-        <li><strong>Model size:</strong> Important for storage and deployment on mobile devices.</li>
-    </ul>
-
-    <h3>Comparison of Approaches</h3>
-
-    <p>
-        Classification is usually simpler and faster, but it only provides one label
-        for the entire image. Object detection provides both a class and location.
-        Segmentation gives more precise pixel-level information and can support
-        disease severity estimation. Video-based methods add temporal and multi-view
-        information, but they require more computation.
-    </p>
-
-    <p>
-        A real-world mobile plant disease system may therefore combine several methods,
-        using detection to locate leaves, segmentation to measure diseased areas, and
-        video analysis to improve reliability across multiple views.
-    </p>
-</section>
-        <section id="challenges">
-    <h2>Challenges and Limitations</h2>
-
-    <p>
-        Plant disease detection in real-world environments is more difficult than
-        working with clean laboratory images. A system that performs well on a
-        controlled dataset may still struggle when used in farms, gardens, or other
-        outdoor environments.
-    </p>
-
-    <ul>
-        <li><strong>Lighting variation:</strong> Bright sunlight, shadows, and low light can change the appearance of symptoms.</li>
-        <li><strong>Complex backgrounds:</strong> Soil, branches, weeds, and nearby leaves can make detection more difficult.</li>
-        <li><strong>Occlusion:</strong> Leaves may overlap or partially hide diseased regions.</li>
-        <li><strong>Motion blur:</strong> Camera movement or wind can reduce image quality.</li>
-        <li><strong>Similar symptoms:</strong> Different diseases may create similar spots, discoloration, or texture changes.</li>
-        <li><strong>Limited datasets:</strong> Some plants and diseases have fewer labeled training examples.</li>
-        <li><strong>Generalization:</strong> A model trained on one crop or environment may not perform equally well on another.</li>
-        <li><strong>Mobile limitations:</strong> Real-time detection and video analysis can require significant computation and battery power.</li>
-    </ul>
-
-    <h2>Future Research</h2>
-
-    <p>
-        Future systems can improve plant disease detection by combining object
-        detection, segmentation, tracking, and multi-view video analysis.
-        Lightweight models may make it possible to perform more processing directly
-        on mobile devices.
-    </p>
-
-    <p>
-        Another important direction is the development of larger real-world datasets
-        that include different lighting conditions, plant varieties, backgrounds,
-        viewing angles, and disease stages. These datasets can help models generalize
-        better outside controlled laboratory environments.
-    </p>
-
-    <p>
-        Future research may also explore how predictions from multiple video frames
-        can be combined more effectively to reduce incorrect classifications and
-        improve disease severity estimation.
-    </p>
-
-    <h2>Conclusion</h2>
-
-    <p>
-        Computer vision can support plant disease detection by analyzing visual
-        symptoms from mobile images and video. Classification provides a disease
-        label, object detection identifies where symptoms appear, and segmentation
-        can measure the exact affected area.
-    </p>
-
-    <p>
-        For real-world applications, using video and multiple views provides more
-        information than a single image alone. A practical mobile plant disease
-        system may therefore combine detection, segmentation, tracking, and
-        multi-frame analysis to produce more reliable results.
-    </p>
-</section>
-        <section id="algorithm">
-    <h2>Example Algorithm: Disease Severity Calculation</h2>
-
-    <p>
-        After segmentation identifies the diseased pixels and the complete leaf
-        area, disease severity can be estimated by calculating the percentage
-        of the leaf affected by disease.
-    </p>
-
-    <p>
-        <strong>
-            Disease Severity (%) =
-            (Diseased Pixels / Total Leaf Pixels) × 100
-        </strong>
-    </p>
-
-    <h3>Python Example</h3>
-
-    <pre><code>
-diseased_pixels = 2340
-total_leaf_pixels = 10000
-
-severity = (diseased_pixels / total_leaf_pixels) * 100
-
-print(f"Disease Severity: {severity:.2f}%")
-    </code></pre>
-
-    <p>
-        In this example, 2,340 of the 10,000 leaf pixels are classified as
-        diseased. Therefore, the estimated disease severity is
-        <strong>23.4%</strong>.
-    </p>
-
-    <h3>Algorithm Steps</h3>
-
-    <ol>
-        <li>Segment the complete leaf from the background.</li>
-        <li>Identify pixels belonging to diseased regions.</li>
-        <li>Count the total number of leaf pixels.</li>
-        <li>Count the number of diseased pixels.</li>
-        <li>Divide diseased pixels by total leaf pixels.</li>
-        <li>Multiply the result by 100 to obtain the severity percentage.</li>
-    </ol>
-</section>
-        <section id="quiz">
-    <h2>Quick Knowledge Check</h2>
-
-    <form id="quizForm">
-
-        <p><strong>1. What is the main limitation of image classification?</strong></p>
-        <label><input type="radio" name="q1" value="a"> It cannot process images</label><br>
-        <label><input type="radio" name="q1" value="b"> It gives one label for the whole image</label><br>
-        <label><input type="radio" name="q1" value="c"> It always requires video</label><br><br>
-
-        <p><strong>2. What does object detection provide?</strong></p>
-        <label><input type="radio" name="q2" value="a"> Bounding boxes, labels, and confidence scores</label><br>
-        <label><input type="radio" name="q2" value="b"> Only image resizing</label><br>
-        <label><input type="radio" name="q2" value="c"> Only a disease severity percentage</label><br><br>
-
-        <p><strong>3. What is segmentation useful for?</strong></p>
-        <label><input type="radio" name="q3" value="a"> Finding the exact diseased region at pixel level</label><br>
-        <label><input type="radio" name="q3" value="b"> Increasing internet speed</label><br>
-        <label><input type="radio" name="q3" value="c"> Reducing camera resolution</label><br><br>
-
-        <p><strong>4. Why can video be useful for plant disease detection?</strong></p>
-        <label><input type="radio" name="q4" value="a"> It provides multiple frames and viewing angles</label><br>
-        <label><input type="radio" name="q4" value="b"> It removes the need for a model</label><br>
-        <label><input type="radio" name="q4" value="c"> It guarantees perfect accuracy</label><br><br>
-
-        <p><strong>5. What is an advantage of on-device processing?</strong></p>
-        <label><input type="radio" name="q5" value="a"> It always uses larger models than cloud servers</label><br>
-        <label><input type="radio" name="q5" value="b"> It can work without a continuous internet connection</label><br>
-        <label><input type="radio" name="q5" value="c"> It requires more network delay</label><br><br>
-
-        <button type="button" onclick="checkQuiz()">Check Answers</button>
-
-        <p id="quizResult"></p>
-    </form>
-</section>
 
     </main>
+
 
     <footer>
         <p>CS 663 Computer Vision - Project 1</p>
     </footer>
-    <script>
-function checkQuiz() {
-    let score = 0;
-
-    const answers = {
-        q1: "b",
-        q2: "a",
-        q3: "a",
-        q4: "a",
-        q5: "b"
-    };
-
-    for (let question in answers) {
-        const selected = document.querySelector(
-            'input[name="' + question + '"]:checked'
-        );
-
-        if (selected && selected.value === answers[question]) {
-            score++;
-        }
-    }
-
-    document.getElementById("quizResult").innerHTML =
-        "You scored " + score + " out of 5.";
-}
-</script>
 
 </body>
+
 </html>
