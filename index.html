@@ -660,6 +660,32 @@
     <footer>
         <p>CS 663 Computer Vision - Project 1</p>
     </footer>
+    <script>
+function checkQuiz() {
+    let score = 0;
+
+    const answers = {
+        q1: "b",
+        q2: "a",
+        q3: "a",
+        q4: "a",
+        q5: "b"
+    };
+
+    for (let question in answers) {
+        const selected = document.querySelector(
+            'input[name="' + question + '"]:checked'
+        );
+
+        if (selected && selected.value === answers[question]) {
+            score++;
+        }
+    }
+
+    document.getElementById("quizResult").innerHTML =
+        "You scored " + score + " out of 5.";
+}
+</script>
 
 </body>
 </html>
