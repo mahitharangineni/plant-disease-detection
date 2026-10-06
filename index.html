@@ -453,6 +453,63 @@
         <li><strong>Privacy:</strong> On-device processing can reduce the need to upload images or video to external servers.</li>
     </ul>
 </section>
+        <section id="evaluation">
+    <h2>Evaluation and Comparison of Existing Approaches</h2>
+
+    <p>
+        Different plant disease detection methods should be evaluated using metrics
+        that match the type of computer vision task being performed. Classification,
+        object detection, segmentation, and video analysis each use different measures
+        of performance.
+    </p>
+
+    <h3>Classification Metrics</h3>
+
+    <ul>
+        <li><strong>Accuracy:</strong> Measures how many predictions are correct overall.</li>
+        <li><strong>Precision:</strong> Measures how many predicted positive cases are actually correct.</li>
+        <li><strong>Recall:</strong> Measures how many true disease cases are successfully detected.</li>
+        <li><strong>F1-score:</strong> Combines precision and recall into one measure.</li>
+    </ul>
+
+    <h3>Object Detection Metrics</h3>
+
+    <ul>
+        <li><strong>IoU:</strong> Intersection over Union measures how much the predicted bounding box overlaps with the ground-truth box.</li>
+        <li><strong>mAP:</strong> Mean Average Precision summarizes object detection performance across classes and confidence thresholds.</li>
+    </ul>
+
+    <h3>Segmentation Metrics</h3>
+
+    <ul>
+        <li><strong>IoU:</strong> Measures overlap between predicted and true segmented regions.</li>
+        <li><strong>Dice Score:</strong> Measures similarity between predicted and actual segmentation masks.</li>
+    </ul>
+
+    <h3>Mobile and Video Performance</h3>
+
+    <ul>
+        <li><strong>Inference time:</strong> Measures how quickly one image or frame can be processed.</li>
+        <li><strong>Frames per second:</strong> Indicates whether video can be processed close to real time.</li>
+        <li><strong>Model size:</strong> Important for storage and deployment on mobile devices.</li>
+    </ul>
+
+    <h3>Comparison of Approaches</h3>
+
+    <p>
+        Classification is usually simpler and faster, but it only provides one label
+        for the entire image. Object detection provides both a class and location.
+        Segmentation gives more precise pixel-level information and can support
+        disease severity estimation. Video-based methods add temporal and multi-view
+        information, but they require more computation.
+    </p>
+
+    <p>
+        A real-world mobile plant disease system may therefore combine several methods,
+        using detection to locate leaves, segmentation to measure diseased areas, and
+        video analysis to improve reliability across multiple views.
+    </p>
+</section>
 
     </main>
 
