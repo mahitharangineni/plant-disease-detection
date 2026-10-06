@@ -4,227 +4,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mobile Capture and Preprocessing - Plant Disease Detection</title>
-
+    <meta name="description" content="In-depth analysis of mobile image and video capture factors and preprocessing techniques for plant disease detection.">
+    <title>Mobile Capture &amp; Preprocessing - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <header>
+        <span class="header-badge">CS 663 Computer Vision &bull; Project 1</span>
         <h1>Plant Disease Detection Using Mobile Images and Video</h1>
-        <p>Computer Vision Research Tutorial</p>
-        <p>By Mahitha Rangineni</p>
+        <p class="header-meta">Module 1: Mobile Data Acquisition and Preprocessing Pipeline</p>
+        <p class="header-author">By Mahitha Rangineni &bull; M.S. Computer Science &bull; California State University, East Bay</p>
     </header>
 
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="capture.html">Capture & Preprocessing</a>
-        <a href="classification.html">Classification</a>
-        <a href="detection.html">Object Detection</a>
-        <a href="segmentation.html">Segmentation</a>
-        <a href="video.html">Video Analysis</a>
-        <a href="case-study.html">Case Study</a>
-        <a href="deployment.html">Deployment</a>
-        <a href="references.html">References</a>
+    <nav aria-label="Main Navigation">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="capture.html" class="active" aria-current="page">Capture &amp; Preprocessing</a>
+            <a href="classification.html">Classification</a>
+            <a href="detection.html">Object Detection</a>
+            <a href="segmentation.html">Segmentation</a>
+            <a href="video.html">Video Analysis</a>
+            <a href="case-study.html">Case Study</a>
+            <a href="deployment.html">Deployment</a>
+            <a href="references.html">References</a>
+        </div>
     </nav>
-
 
     <main>
 
-        <section>
-
-            <h2>Mobile Image and Video Capture</h2>
-
+        <section id="mobile-capture">
+            <h2>Mobile Image and Video Capture in the Field</h2>
             <p>
-                Mobile devices make plant disease detection more accessible
-                because users can capture leaf images directly in farms,
-                gardens, or outdoor environments. Recent research has also
-                explored mobile applications that run deep learning models
-                for plant disease recognition and detection.
-                <a href="references.html">[2]</a>
+                Mobile devices have democratized precision agriculture by providing farmers and agronomists with high-resolution digital cameras,
+                onboard GPU/NPU acceleration, and internet connectivity right at the field edge. Recent literature emphasizes the potential of
+                integrating deep learning models into accessible smartphone applications for early diagnosis of foliar diseases <a href="references.html#ref-2">[2]</a>.
+            </p>
+            <p>
+                However, moving computer vision models from pristine laboratory environments to outdoor agricultural fields introduces severe domain shift.
+                Laboratory datasets (such as standard subsets of PlantVillage) typically depict excised single leaves flattened on uniform gray or black backgrounds
+                under diffuse artificial lighting. In contrast, in-situ smartphone photography exhibits extreme visual variability.
             </p>
 
-            <p>
-                However, real-world mobile images are more difficult to analyze
-                than images collected under controlled laboratory conditions.
-                Changes in lighting, camera distance, viewing angle, background
-                objects, shadows, and motion blur can affect how clearly
-                disease symptoms appear.
-            </p>
+            <div class="callout">
+                <h4>Core Acquisition Challenges</h4>
+                <p>
+                    A real-world mobile plant pathology system must be robust against uncontrolled natural illumination, complex canopy clutter, and variable camera handling
+                    rather than expecting studio-quality captures.
+                </p>
+            </div>
 
-
-            <h3>Important Capture Factors</h3>
-
+            <h3>Critical Field Acquisition Factors</h3>
             <ul>
-
                 <li>
-                    <strong>Lighting:</strong>
-                    Bright sunlight, shadows, or low light can change leaf color
-                    and hide disease symptoms.
+                    <strong>Dynamic Lighting &amp; Direct Sunlight:</strong>
+                    Direct solar illumination produces harsh specular highlights, washed-out highlights, and deep shadows across leaf surfaces.
+                    These non-uniform lighting conditions can alter perceived leaf pigmentation, mask chlorotic halos, or cause healthy shiny leaves to be misclassified as necrotic.
                 </li>
-
                 <li>
-                    <strong>Camera angle:</strong>
-                    Different angles may show different portions of the infected region.
+                    <strong>Viewing Angle &amp; Leaf Pose:</strong>
+                    Leaves naturally curl, droop, and orient themselves unpredictably relative to the sun. Off-angle perspectives introduce perspective distortion,
+                    compressing lesions into narrow slivers and concealing symptoms present on the abaxial (underside) leaf surface.
                 </li>
-
                 <li>
-                    <strong>Distance:</strong>
-                    Images taken too far away may lose small visual details
-                    such as spots or lesions.
+                    <strong>Sensor Distance &amp; Spatial Resolution:</strong>
+                    Capturing imagery from too far away results in tiny symptomatic lesions occupying only a handful of pixels, precluding reliable feature extraction.
+                    Conversely, extreme macro close-ups lose spatial context such as leaf margin boundaries and distribution of lesions across the blade.
                 </li>
-
                 <li>
-                    <strong>Background:</strong>
-                    Soil, other leaves, branches, and objects may make leaf
-                    detection more difficult.
+                    <strong>Complex Background Clutter:</strong>
+                    Natural scenes feature fertile soil, weed growth, overlapping canopies, trellis wires, and mulch. Without effective background isolation,
+                    deep networks can easily suffer from "shortcut learning"—mistakenly associating soil color or background texture with disease presence.
                 </li>
-
                 <li>
-                    <strong>Motion blur:</strong>
-                    Movement of the phone or plant can reduce image quality.
+                    <strong>Camera Motion Blur &amp; Wind:</strong>
+                    Hand tremor and wind gusts induce severe motion blur in field captures, smoothing out high-frequency texture details (e.g., fungal pustules and fine veinal chlorosis).
                 </li>
-
                 <li>
-                    <strong>Multiple views:</strong>
-                    Video provides several frames and viewing angles instead
-                    of relying on only one image.
+                    <strong>Multi-View Video Opportunity:</strong>
+                    Continuous video streams capture consecutive frames as the operator moves around the plant, yielding multi-angle parallax that mitigates single-frame occlusions and specular glare <a href="references.html#ref-5">[5]</a>.
                 </li>
-
             </ul>
-
-            <p>
-                Because of these variations, a real-world plant disease system
-                should be designed to work with changing environmental
-                conditions rather than relying only on clean, centered leaf images.
-            </p>
-
         </section>
 
-
-
-        <section>
-
-            <h2>Image Preprocessing and Leaf Analysis</h2>
-
+        <section id="preprocessing-pipeline">
+            <h2>Image Preprocessing and Leaf Normalization</h2>
             <p>
-                Images captured with mobile devices may contain variations in
-                size, lighting, background, and image quality. Preprocessing
-                helps reduce these variations before the image is provided
-                to a computer vision model.
+                To mitigate input heterogeneity before feeding imagery to deep convolutional networks, systematic preprocessing steps are required.
+                These operations enhance signal-to-noise ratio, standardize geometric dimensions, and stabilize neural network gradient descent during inference and training.
             </p>
 
-
-            <h3>Common Preprocessing Steps</h3>
-
+            <h3>Essential Preprocessing Stages</h3>
             <ul>
-
                 <li>
-                    <strong>Image resizing:</strong>
-                    Images are resized to a fixed resolution so they can be
-                    processed efficiently by a neural network.
+                    <strong>Dimensional Resizing &amp; Aspect Ratio Handling:</strong>
+                    Modern deep convolutional architectures (e.g., ResNet, EfficientNet, YOLO) require fixed square or rectangular input tensors (e.g., 224&times;224, 416&times;416, 640&times;640).
+                    Direct resizing can cause non-uniform stretching; letterboxing (padding with neutral gray borders) preserves the true aspect ratio of leaves.
                 </li>
-
                 <li>
-                    <strong>Normalization:</strong>
-                    Pixel values are scaled to a smaller numerical range to make
-                    model training and inference more stable.
+                    <strong>Channel Normalization:</strong>
+                    Raw integer pixel values $[0, 255]$ are converted to floating-point $[0.0, 1.0]$ and standardized via z-score normalization using channel-wise dataset means and standard deviations:
+                    $$\hat{X}_{c} = \frac{X_c - \mu_c}{\sigma_c}$$
+                    This ensures numerical stability and rapid convergence of activation functions.
                 </li>
-
                 <li>
-                    <strong>Noise reduction:</strong>
-                    Filters can reduce unwanted image noise while preserving
-                    important disease patterns such as spots and lesions.
+                    <strong>Contrast Enhancement (CLAHE):</strong>
+                    Contrast Limited Adaptive Histogram Equalization (CLAHE) enhances local contrast in non-uniformly illuminated leaf images without over-amplifying background noise,
+                    making subtle fungal spots and bacterial spots clearly distinguishable from surrounding parenchyma tissue.
                 </li>
-
                 <li>
-                    <strong>Contrast and color adjustment:</strong>
-                    Improving contrast can make disease symptoms more visible
-                    when images are captured under uneven lighting.
+                    <strong>Color Space Transformations:</strong>
+                    While RGB is standard for visualization, alternative color spaces such as HSV (Hue-Saturation-Value) and CIE $L^*a^*b^*$ effectively decouple chromatic information from luminance variations,
+                    facilitating robust thresholding of chlorotic and necrotic lesions <a href="references.html#ref-3">[3]</a>.
                 </li>
-
                 <li>
-                    <strong>Data augmentation:</strong>
-                    Training images can be rotated, flipped, cropped, or adjusted
-                    in brightness to help the model handle real-world variations.
+                    <strong>Edge-Preserving Noise Reduction:</strong>
+                    Bilateral filtering and median filtering suppress camera sensor shot noise while strictly maintaining the sharpness of lesion boundaries and leaf margins.
                 </li>
-
+                <li>
+                    <strong>Robust Data Augmentation:</strong>
+                    During model training, synthetic transformations (random affine rotations, horizontal/vertical flips, color jittering, Gaussian blur, and CutMix/Mosaic)
+                    expose the neural network to realistic environmental variations, reducing overfitting.
+                </li>
             </ul>
-
 
             <h3>Leaf Segmentation and Background Removal</h3>
-
             <p>
-                In real-world images, the leaf may appear together with soil,
-                branches, other leaves, or surrounding objects. Segmentation
-                can separate the leaf or diseased region from the background.
-                This allows later stages of the system to focus on the most
-                relevant visual information.
+                In cluttered natural scenes, segmenting the leaf blade away from surrounding soil, weeds, and neighboring branches allows downstream classification and detection networks
+                to focus computational attention entirely on pathological features rather than irrelevant background artifacts.
+                Traditional color thresholding (e.g., Otsu's thresholding on excess green index $2G - R - B$) can segment green leaves under controlled illumination,
+                but deep semantic segmentation models (such as U-Net or DeepLab) are required for resilient separation under complex outdoor illumination <a href="references.html#ref-3">[3]</a>, <a href="references.html#ref-5">[5]</a>.
             </p>
 
-
-            <h3>Important Visual Features</h3>
-
+            <h3>Visual Pathological Features</h3>
             <p>
-                Plant diseases can create visible changes in leaf color,
-                texture, shape, spots, lesions, and damaged areas.
-                Traditional computer vision approaches often analyze these
-                features directly. Deep learning models such as CNNs can
-                instead learn useful visual features automatically from
-                training data.
-                <a href="references.html">[3]</a>
+                Botanical pathogens induce distinct morphological changes across plant tissue:
             </p>
-
+            <ul>
+                <li><strong>Chlorosis:</strong> Breakdown of chlorophyll manifesting as pale yellow patches along leaf veins or margins.</li>
+                <li><strong>Necrosis:</strong> Localized cell death causing dry brown or black dead tissue, often surrounded by concentric rings or yellow halos (e.g., <em>Alternaria solani</em>).</li>
+                <li><strong>Pustules &amp; Powdery Lesions:</strong> Textured spore deposits (e.g., rusts and powdery mildew) presenting distinct tactile textural signatures.</li>
+            </ul>
+            <p>
+                While traditional computer vision relied on handcrafted feature descriptors (such as Gray-Level Co-occurrence Matrices [GLCM], Color Moments, and Histograms of Oriented Gradients [HOG]) <a href="references.html#ref-3">[3]</a>,
+                modern deep learning models learn these multi-scale spatial representations automatically via hierarchical convolutional kernels.
+            </p>
         </section>
 
-
-
-        <section>
-
-            <h2>Why Preprocessing Matters</h2>
-
+        <section id="why-preprocessing-matters">
+            <h2>Why Preprocessing Is Fundamental to Computer Vision Success</h2>
             <p>
-                Preprocessing helps make images more consistent before
-                classification, object detection, or segmentation is performed.
-                It can reduce the effect of lighting variation, background
-                clutter, and image quality differences.
+                Preprocessing does not eliminate all environmental noise, but it fundamentally conditions the input distribution.
+                A well-designed preprocessing pipeline prevents spurious gradient updates during training, narrows the domain gap between training sets and field deployments,
+                and maximizes the operational accuracy of subsequent classification, detection, and segmentation stages.
             </p>
-
-            <p>
-                Good preprocessing does not completely solve real-world
-                challenges, but it can improve the quality of the input data
-                given to a computer vision model.
-            </p>
-
         </section>
 
-
-        <!--
-        We will add the required 1–2 minute audio recording here later.
-
-        Example:
-
-        <section>
-            <h2>Audio Summary</h2>
-
-            <audio controls>
-                <source src="capture-audio.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
+        <!-- Condition-safe Audio Support Section -->
+        <section class="audio-section" id="audio-capture">
+            <div class="audio-section-header">
+                <span class="audio-badge">Audio Guide</span>
+                <h3>Module Narration</h3>
+            </div>
+            <p class="audio-description">A 1–2 minute audio walkthrough of mobile acquisition challenges and preprocessing techniques.</p>
+            <div class="audio-player-container">
+                <audio controls preload="metadata" class="page-audio" style="display: none;">
+                    <source src="audio/capture-audio.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="audio-placeholder">
+                    <span class="audio-placeholder-icon">&#127911;</span>
+                    <div>
+                        <strong>Audio Narration (audio/capture-audio.mp3)</strong>
+                        <span>Audio recording scheduled. The media player will activate automatically once the audio file is uploaded to the repository.</span>
+                    </div>
+                </div>
+            </div>
         </section>
-        -->
 
+        <!-- Tutorial Pagination Navigation -->
+        <nav class="tutorial-nav" aria-label="Tutorial Step Navigation">
+            <a href="index.html" class="tutorial-nav-btn prev">
+                <span class="tutorial-nav-label">&larr; Previous Section</span>
+                <span class="tutorial-nav-title">Home &bull; Overview</span>
+            </a>
+            <a href="classification.html" class="tutorial-nav-btn next">
+                <span class="tutorial-nav-label">Next Section &rarr;</span>
+                <span class="tutorial-nav-title">Plant Disease Classification</span>
+            </a>
+        </nav>
 
     </main>
 
-
     <footer>
-        <p>CS 663 Computer Vision - Project 1</p>
+        <p class="footer-academic">CS 663 Computer Vision &bull; Project 1 &bull; California State University, East Bay</p>
+        <p>Student: Mahitha Rangineni &bull; Master of Science in Computer Science</p>
+        <p>&copy; 2025&ndash;2026 Academic Research Tutorial. All rights reserved.</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 
 </html>

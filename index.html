@@ -4,169 +4,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Plant Disease Detection Using Mobile Images and Video</title>
-
+    <meta name="description" content="Graduate-level computer vision research tutorial on plant disease detection using mobile images and video analysis.">
+    <title>Plant Disease Detection Using Mobile Images and Video - Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <header>
+        <span class="header-badge">CS 663 Computer Vision &bull; Project 1</span>
         <h1>Plant Disease Detection Using Mobile Images and Video</h1>
-        <p>Computer Vision Research Tutorial</p>
-        <p>By Mahitha Rangineni</p>
+        <p class="header-meta">A Comprehensive Graduate-Level Computer Vision Tutorial</p>
+        <p class="header-author">By Mahitha Rangineni &bull; M.S. Computer Science &bull; California State University, East Bay</p>
     </header>
 
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="capture.html">Capture & Preprocessing</a>
-        <a href="classification.html">Classification</a>
-        <a href="detection.html">Object Detection</a>
-        <a href="segmentation.html">Segmentation</a>
-        <a href="video.html">Video Analysis</a>
-        <a href="case-study.html">Case Study</a>
-        <a href="deployment.html">Deployment</a>
-        <a href="references.html">References</a>
+    <nav aria-label="Main Navigation">
+        <div class="nav-container">
+            <a href="index.html" class="active" aria-current="page">Home</a>
+            <a href="capture.html">Capture &amp; Preprocessing</a>
+            <a href="classification.html">Classification</a>
+            <a href="detection.html">Object Detection</a>
+            <a href="segmentation.html">Segmentation</a>
+            <a href="video.html">Video Analysis</a>
+            <a href="case-study.html">Case Study</a>
+            <a href="deployment.html">Deployment</a>
+            <a href="references.html">References</a>
+        </div>
     </nav>
-
 
     <main>
 
-        <section>
-
-            <h2>Introduction</h2>
-
+        <section id="overview">
+            <h2>Project Overview</h2>
             <p>
-                Plant diseases can significantly affect crop health and agricultural
-                productivity. Detecting diseases visually can be difficult because
-                symptoms may look similar and real-world images can vary because of
-                lighting, background, camera angle, image quality, and leaf position.
+                Plant diseases represent a persistent threat to global food security, crop yield, and agricultural sustainability.
+                While early diagnosis is crucial for mitigating crop loss, visual inspection by human agronomists is labor-intensive,
+                expensive, and often inaccessible to smallholder farmers in remote regions.
             </p>
-
             <p>
-                This tutorial explores how computer vision can be used to detect plant
-                diseases using mobile images and video. It covers image preprocessing,
-                classification, object detection, segmentation, disease severity
-                estimation, video tracking, multi-view analysis, and mobile deployment.
+                Recent advances in computer vision have made automated leaf inspection feasible using consumer smartphones.
+                However, moving from pristine laboratory datasets (such as static, centered leaves on plain backgrounds) to
+                uncontrolled field environments introduces profound computer vision challenges: dynamic lighting, complex foliage backgrounds,
+                partial occlusions, camera motion blur, and subtle inter-class visual similarities between disease symptoms <a href="references.html#ref-1">[1]</a>.
             </p>
-
+            <div class="callout">
+                <h4>Tutorial Objective</h4>
+                <p>
+                    This tutorial bridges the gap between basic single-image classification and robust, real-world field systems.
+                    It provides an in-depth investigation into end-to-end computer vision pipelines incorporating mobile capture,
+                    convolutional neural networks (CNNs), YOLO-based object detection, pixel-level semantic segmentation for severity quantification,
+                    DeepSORT temporal tracking, multi-view frame fusion, and edge deployment trade-offs.
+                </p>
+            </div>
         </section>
 
-
-        <section>
-
-            <h2>Why Use Video?</h2>
-
+        <section id="why-video">
+            <h2>Why Video and Multi-View Analysis Matters</h2>
             <p>
-                A single image may not capture all disease symptoms clearly.
-                Video allows the same plant or leaf to be observed from multiple
-                angles and across multiple frames.
+                Traditional automated inspection systems rely primarily on single isolated leaf images. In real-world agricultural conditions,
+                this single-view assumption frequently fails:
             </p>
-
-            <p>
-                This provides more visual information and may improve the reliability
-                of plant disease detection in real-world environments.
-            </p>
-
-        </section>
-
-
-        <section>
-
-            <h2>Tutorial Sections</h2>
-
             <ul>
-                <li>
-                    <a href="capture.html">
-                        Mobile Image & Video Capture and Preprocessing
-                    </a>
-                </li>
-
-                <li>
-                    <a href="classification.html">
-                        Plant Disease Classification
-                    </a>
-                </li>
-
-                <li>
-                    <a href="detection.html">
-                        Object Detection
-                    </a>
-                </li>
-
-                <li>
-                    <a href="segmentation.html">
-                        Disease Segmentation and Severity Estimation
-                    </a>
-                </li>
-
-                <li>
-                    <a href="video.html">
-                        Video and Multi-View Analysis
-                    </a>
-                </li>
-
-                <li>
-                    <a href="case-study.html">
-                        Case Study: Plant Doctor
-                    </a>
-                </li>
-
-                <li>
-                    <a href="deployment.html">
-                        Mobile Deployment, Evaluation, Challenges and Quiz
-                    </a>
-                </li>
-
-                <li>
-                    <a href="references.html">
-                        Annotated Bibliography
-                    </a>
-                </li>
+                <li><strong>Overcoming Occlusion and Glare:</strong> A specular reflection, dew drop, or shadow in a single frame can obscure characteristic lesions or trigger false positives. Video streams provide dozens of views from varying angles, allowing genuine pathological patterns to emerge.</li>
+                <li><strong>Temporal Redundancy:</strong> Instead of trusting an isolated, potentially blurry snapshot, temporal multi-frame aggregation (such as majority voting or confidence fusion) produces significantly higher diagnostic reliability.</li>
+                <li><strong>Spatial Context and Plant Tracking:</strong> Tracking algorithms like DeepSORT enable systems to monitor specific leaves or canopies across camera passes (e.g., handheld walk-throughs or drone sweeps), preventing duplicate counts and providing longitudinal health tracking <a href="references.html#ref-5">[5]</a>.</li>
             </ul>
-
         </section>
 
-
-        <section>
-
-            <h2>Project Goal</h2>
-
+        <section id="learning-objectives">
+            <h2>What You Will Learn</h2>
             <p>
-                The goal of this tutorial is to show how plant disease detection
-                can move beyond simple single-image classification.
+                By working through this research tutorial, you will gain hands-on theoretical and practical understanding of:
             </p>
-
-            <p>
-                A more complete real-world system can combine:
-            </p>
-
             <ul>
-                <li>Image preprocessing</li>
-                <li>CNN-based classification</li>
-                <li>YOLO object detection</li>
-                <li>Pixel-level segmentation</li>
-                <li>Disease severity estimation</li>
-                <li>Leaf tracking across video frames</li>
-                <li>Multi-frame decision making</li>
-                <li>Mobile or cloud deployment</li>
+                <li><strong>Mobile Data Capture &amp; Preprocessing:</strong> Strategies for handling adverse field illuminations, color constancy, normalization, and noise suppression in smartphone imagery <a href="references.html#ref-2">[2]</a>, <a href="references.html#ref-3">[3]</a>.</li>
+                <li><strong>CNN Feature Extraction &amp; Transfer Learning:</strong> How deep convolutional backbones extract visual patterns (lesions, chlorosis, necrosis) and adapt from ImageNet pretraining to specialized agricultural datasets.</li>
+                <li><strong>YOLO Object Detection:</strong> Formulating bounding-box localization to detect multiple infected leaves and disease centers within cluttered foliage <a href="references.html#ref-1">[1]</a>.</li>
+                <li><strong>Pixel-Level Segmentation &amp; Severity Estimation:</strong> Utilizing architectures such as U-Net and DeepLabV3+ to isolate diseased tissue and mathematically compute percentage severity indices <a href="references.html#ref-4">[4]</a>.</li>
+                <li><strong>Video Tracking &amp; Multi-View Aggregation:</strong> Implementing DeepSORT object tracking alongside temporal consensus algorithms (such as frame-wise majority voting).</li>
+                <li><strong>Empirical Case Study Analysis:</strong> Dissecting the peer-reviewed <em>Plant Doctor</em> architecture <a href="references.html#ref-5">[5]</a>, its verified metrics, and its critical 50-minute video latency bottleneck.</li>
+                <li><strong>Mobile Edge vs. Cloud Deployment:</strong> Evaluating on-device inference latency, memory footprint, model quantization, and hybrid cloud architectures.</li>
             </ul>
-
         </section>
 
+        <section id="roadmap">
+            <h2>Tutorial Roadmap</h2>
+            <p>
+                The tutorial is structured into a logical, cumulative pipeline reflecting an authentic computer vision engineering workflow:
+            </p>
+            <div class="roadmap-container">
+                <div class="roadmap-steps">
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">1</div>
+                        <div class="roadmap-content">
+                            <h4>Mobile Capture &amp; Preprocessing</h4>
+                            <p>Sensors, optical factors, illumination challenges, and color space transformations.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">2</div>
+                        <div class="roadmap-content">
+                            <h4>Plant Disease Classification</h4>
+                            <p>Global CNN architectures, transfer learning techniques, and classification limitations.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">3</div>
+                        <div class="roadmap-content">
+                            <h4>Object Detection (YOLO)</h4>
+                            <p>Spatial bounding-box localization of leaves and lesions in multi-object scenes.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">4</div>
+                        <div class="roadmap-content">
+                            <h4>Semantic Segmentation &amp; Severity Estimation</h4>
+                            <p>Pixel-level masking with DeepLabV3+/U-Net and mathematical severity percentage calculation.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">5</div>
+                        <div class="roadmap-content">
+                            <h4>Video &amp; Multi-View Analysis</h4>
+                            <p>Temporal frame extraction, DeepSORT tracking, and multi-frame majority voting.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">6</div>
+                        <div class="roadmap-content">
+                            <h4>Case Study: Plant Doctor</h4>
+                            <p>In-depth examination of the Montagut Marques et al. (2025) hybrid system and its real-world latency bottleneck.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">7</div>
+                        <div class="roadmap-content">
+                            <h4>Deployment, Evaluation, Challenges &amp; Quiz</h4>
+                            <p>Edge vs. cloud benchmarks, research lab survey, expert interview, and knowledge check quiz.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-step-item">
+                        <div class="roadmap-badge">8</div>
+                        <div class="roadmap-content">
+                            <h4>Annotated Bibliography</h4>
+                            <p>Formal academic references [1]–[5] with synopses, methodological utility, and DOI links.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <!-- Audio summary will be added here later -->
+        <section id="tutorial-modules">
+            <h2>Explore Tutorial Modules</h2>
+            <div class="card-grid">
 
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 1</span>
+                        <h3>Capture &amp; Preprocessing</h3>
+                        <p>Analyze how environmental factors, illumination, shadows, and blur affect smartphone capture, and review preprocessing solutions.</p>
+                    </div>
+                    <a href="capture.html" class="card-link">Start Module &rarr;</a>
+                </div>
+
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 2</span>
+                        <h3>CNN Classification</h3>
+                        <p>Learn how convolutional neural networks and transfer learning categorize diseased leaves, and identify where classification falls short.</p>
+                    </div>
+                    <a href="classification.html" class="card-link">Explore Classification &rarr;</a>
+                </div>
+
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 3</span>
+                        <h3>YOLO Object Detection</h3>
+                        <p>Discover real-time bounding-box detection with YOLO to locate multiple symptomatic leaves simultaneously in cluttered foliage.</p>
+                    </div>
+                    <a href="detection.html" class="card-link">Explore Detection &rarr;</a>
+                </div>
+
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 4</span>
+                        <h3>Segmentation &amp; Severity</h3>
+                        <p>Extract pixel-level disease masks with semantic segmentation and compute quantitative leaf damage percentages in Python.</p>
+                    </div>
+                    <a href="segmentation.html" class="card-link">Explore Segmentation &rarr;</a>
+                </div>
+
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 5</span>
+                        <h3>Video &amp; Multi-View Analysis</h3>
+                        <p>Examine temporal frame processing, DeepSORT leaf tracking, and multi-frame majority voting algorithms for robust field diagnosis.</p>
+                    </div>
+                    <a href="video.html" class="card-link">Explore Video Analysis &rarr;</a>
+                </div>
+
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 6</span>
+                        <h3>Case Study: Plant Doctor</h3>
+                        <p>Deep-dive into the hybrid YOLOv8 + DeepSORT + DeepLabV3+ video pipeline and analyze its critical 50-minute processing limitation.</p>
+                    </div>
+                    <a href="case-study.html" class="card-link">Read Case Study &rarr;</a>
+                </div>
+
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 7</span>
+                        <h3>Deployment &amp; Quiz</h3>
+                        <p>Evaluate mobile on-device vs. cloud architectures, review research labs and the Umezu interview, and test your knowledge.</p>
+                    </div>
+                    <a href="deployment.html" class="card-link">View Deployment &rarr;</a>
+                </div>
+
+                <div class="tutorial-card">
+                    <div>
+                        <span class="card-step">Module 8</span>
+                        <h3>Annotated References</h3>
+                        <p>Review the 5 foundational academic papers underpinning this tutorial with detailed annotations, synopses, and DOI sources.</p>
+                    </div>
+                    <a href="references.html" class="card-link">View References &rarr;</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Condition-safe Audio Support Section -->
+        <section class="audio-section" id="audio-overview">
+            <div class="audio-section-header">
+                <span class="audio-badge">Audio Guide</span>
+                <h3>Module Narration</h3>
+            </div>
+            <p class="audio-description">A 1–2 minute audio summary introducing the research scope and objectives of this tutorial.</p>
+            <div class="audio-player-container">
+                <audio controls preload="metadata" class="page-audio" style="display: none;">
+                    <source src="audio/home-audio.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="audio-placeholder">
+                    <span class="audio-placeholder-icon">&#127911;</span>
+                    <div>
+                        <strong>Audio Narration (audio/home-audio.mp3)</strong>
+                        <span>Audio recording scheduled. The media player will activate automatically once the audio file is uploaded to the repository.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tutorial Pagination Navigation -->
+        <nav class="tutorial-nav" aria-label="Tutorial Step Navigation">
+            <div></div>
+            <a href="capture.html" class="tutorial-nav-btn next">
+                <span class="tutorial-nav-label">Next Section &rarr;</span>
+                <span class="tutorial-nav-title">Capture &amp; Preprocessing</span>
+            </a>
+        </nav>
 
     </main>
 
-
     <footer>
-        <p>CS 663 Computer Vision - Project 1</p>
+        <p class="footer-academic">CS 663 Computer Vision &bull; Project 1 &bull; California State University, East Bay</p>
+        <p>Student: Mahitha Rangineni &bull; Master of Science in Computer Science</p>
+        <p>&copy; 2025&ndash;2026 Academic Research Tutorial. All rights reserved.</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 
 </html>

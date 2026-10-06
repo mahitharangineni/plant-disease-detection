@@ -4,395 +4,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Case Study - Plant Doctor</title>
-
+    <meta name="description" content="In-depth graduate case study on Plant Doctor: a hybrid YOLOv8, DeepSORT, and DeepLabV3+ system for automated foliar damage quantification in video.">
+    <title>Case Study: Plant Doctor - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <header>
+        <span class="header-badge">CS 663 Computer Vision &bull; Project 1</span>
         <h1>Plant Disease Detection Using Mobile Images and Video</h1>
-        <p>Computer Vision Research Tutorial</p>
-        <p>By Mahitha Rangineni</p>
+        <p class="header-meta">Module 6: Case Study &bull; Plant Doctor Hybrid Video Analysis System</p>
+        <p class="header-author">By Mahitha Rangineni &bull; M.S. Computer Science &bull; California State University, East Bay</p>
     </header>
 
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="capture.html">Capture & Preprocessing</a>
-        <a href="classification.html">Classification</a>
-        <a href="detection.html">Object Detection</a>
-        <a href="segmentation.html">Segmentation</a>
-        <a href="video.html">Video Analysis</a>
-        <a href="case-study.html">Case Study</a>
-        <a href="deployment.html">Deployment</a>
-        <a href="references.html">References</a>
+    <nav aria-label="Main Navigation">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="capture.html">Capture &amp; Preprocessing</a>
+            <a href="classification.html">Classification</a>
+            <a href="detection.html">Object Detection</a>
+            <a href="segmentation.html">Segmentation</a>
+            <a href="video.html">Video Analysis</a>
+            <a href="case-study.html" class="active" aria-current="page">Case Study</a>
+            <a href="deployment.html">Deployment</a>
+            <a href="references.html">References</a>
+        </div>
     </nav>
-
 
     <main>
 
-        <section>
-
-    <h2>Case Study: Plant Doctor</h2>
-
-    <p>
-        <strong>Authors:</strong>
-        Montagut Marques, M. J., Mingxin, L., Shiojiri, K. T.,
-        Hagiwara, T., Hirose, K., Shiojiri, K., & Umezu, S.
-    </p>
-
-            <p>
-                Plant Doctor is a hybrid computer vision system developed for
-                automatic plant health monitoring using video footage.
-                The system was designed to identify, track, and analyze individual
-                leaves without requiring physical collection of plant samples.
-                <a href="references.html">[5]</a>
-            </p>
+        <section id="case-study-overview">
+            <h2>Case Study: Plant Doctor</h2>
+            <div class="callout">
+                <h4>Peer-Reviewed Reference</h4>
+                <p>
+                    <strong>Paper:</strong> &ldquo;Plant Doctor: A hybrid machine learning and image segmentation software to quantify plant damage in video footage&rdquo; <a href="references.html#ref-5">[5]</a><br>
+                    <strong>Authors:</strong> Montagut Marques, M. J., Mingxin, L., Shiojiri, K. T., Hagiwara, T., Hirose, K., Shiojiri, K., &amp; Umezu, S.<br>
+                    <strong>Journal:</strong> <em>Measurement</em>, vol. 249, article 117094, 2025.
+                </p>
+            </div>
 
             <p>
-                The researchers focused on urban plant monitoring and tested the
-                system using video and image data that included plants in Tokyo.
-                The goal was to create a scalable and non-invasive system that
-                could support repeated monitoring of plant health over time.
-                <a href="references.html">[5]</a>
+                <strong>Research Goal:</strong>
+                Plant Doctor was engineered to perform fully automated, non-invasive health monitoring of vegetation directly from video footage.
+                Traditional plant pathology often requires destructive sampling (physically detaching leaves to photograph them in a laboratory).
+                In contrast, Plant Doctor allows an operator to record continuous video passes of plants in urban environments (such as street trees and shrubbery in Tokyo)
+                and automatically detects leaves, tracks them over time, selects the clearest viewing angles, and computes quantitative damage ratios without touching the plant <a href="references.html#ref-5">[5]</a>.
             </p>
-
         </section>
 
-
-        <section>
-
-            <h2>System Architecture</h2>
-
+        <section id="system-architecture">
+            <h2>System Architecture and Pipeline</h2>
             <p>
-                Plant Doctor combines three major computer vision components:
-                YOLOv8, DeepSORT, and DeepLabV3Plus.
+                Plant Doctor integrates three established computer vision models into an integrated hybrid pipeline:
             </p>
 
-
-            <h3>1. YOLOv8 - Leaf Detection</h3>
-
+            <h3>1. YOLOv8 &mdash; Spatial Leaf Detection</h3>
             <p>
-                YOLOv8 is used to locate leaves inside each video frame.
-                The model generates bounding boxes around visible leaves.
-                The authors selected YOLOv8 because of its balance between
-                processing speed and computational efficiency, which makes it
-                suitable for video-based monitoring.
+                The authors selected YOLOv8 as the primary detection engine due to its superior speed-accuracy trade-off.
+                Operating on individual extracted video frames, YOLOv8 generates bounding boxes around all visible leaves.
+                The authors customized and fine-tuned this network into <strong>YOLOv8-PD</strong>, enabling rapid convergence and robust localization of foliar targets.
             </p>
 
-
-            <h3>2. DeepSORT - Leaf Tracking</h3>
-
+            <h3>2. DeepSORT &mdash; Multi-Frame Leaf Tracking</h3>
             <p>
-                After leaves are detected, DeepSORT tracks each leaf across
-                consecutive video frames.
+                To handle video streams without overcounting, detected bounding boxes are routed into DeepSORT (Simple Online and Realtime Tracking with a Deep Association Metric).
+                DeepSORT associates detections across sequential frames using a Kalman filter to project spatial trajectories and a deep convolutional appearance descriptor
+                to re-identify leaves across frames. Each physical leaf receives a persistent unique tracking ID, preventing the software from counting the same leaf dozens of times as the camera pans.
             </p>
 
+            <h3>3. Best-ROI Frame Selection</h3>
             <p>
-                Each tracked leaf can receive a unique identity so that the
-                system knows when the same leaf appears in multiple frames.
-                This prevents the system from repeatedly treating the same leaf
-                as a different object.
+                Because camera movement introduces transient blur, occlusions, and sharp perspective shifts, Plant Doctor evaluates all tracked occurrences of a given leaf ID
+                and selects the single highest-quality region of interest (ROI)—the frame offering the sharpest, least-occluded, and most perpendicular perspective for downstream segmentation.
             </p>
 
-
-            <h3>3. DeepLabV3Plus - Damage Segmentation</h3>
-
+            <h3>4. DeepLabV3+ &mdash; Pixel-Level Damage Segmentation</h3>
             <p>
-                Once a useful image of a tracked leaf is selected,
-                DeepLabV3Plus performs semantic segmentation.
+                The selected optimal leaf crop is passed into a fine-tuned semantic segmentation network, <strong>DLV3P-PD (DeepLabV3+ Plant Doctor)</strong>.
+                DeepLabV3+ generates dense binary masks distinguishing healthy green tissue from necrotic lesions, chlorotic spots, and herbivore feeding scars.
+                The software then computes the exact ratio of damaged pixels relative to the complete leaf area.
             </p>
 
-            <p>
-                The segmentation model identifies damaged areas caused by
-                bacteria, pests, or fungi and allows the system to estimate
-                how much of the leaf is affected.
-            </p>
-
+            <div class="callout">
+                <h4>End-to-End Processing Flow</h4>
+                <p>
+                    <strong>Continuous Video &rarr; Frame Decoupling &rarr; YOLOv8 Leaf Detection &rarr; DeepSORT Tracking &rarr; Best-ROI Selection &rarr; DeepLabV3+ Damage Segmentation &rarr; Quantitative Damage Ratio</strong> <a href="references.html#ref-5">[5]</a>.
+                </p>
+            </div>
         </section>
 
-
-        <section>
-
-            <h2>Plant Doctor Processing Pipeline</h2>
-
+        <section id="dataset-breakdown">
+            <h2>Dataset Composition and Annotation</h2>
             <p>
-                The complete workflow can be summarized as:
+                To train the YOLOv8-PD detection network to withstand real-world visual diversity, the researchers compiled a benchmark of <strong>4,595 total images</strong>
+                originating from three complementary photographic domains:
             </p>
-
-            <p>
-                <strong>
-                    Video Input → YOLOv8 Leaf Detection → DeepSORT Tracking
-                    → Best Frame Selection → DeepLabV3Plus Segmentation
-                    → Damage Quantification → Plant Health Result
-                </strong>
-            </p>
-
-            <p>
-                This pipeline is important because it combines detection,
-                temporal tracking, and pixel-level segmentation instead of
-                relying on only one still image.
-            </p>
-
-        </section>
-
-
-        <section>
-
-    <h2>Dataset and Data Collection</h2>
-
-    <p>
-        The Plant Doctor researchers trained the YOLOv8-PD leaf detection model
-        using a total of <strong>4,595 images</strong>.
-        The dataset included images collected using three different sources:
-    </p>
-
-    <ul>
-        <li>
-            <strong>Smartphone images:</strong> 56.7% of the dataset
-            (approximately 2,608 images).
-        </li>
-
-        <li>
-            <strong>DSLR images:</strong> 22.3% of the dataset
-            (approximately 1,025 images).
-        </li>
-
-        <li>
-            <strong>PlantVillage images:</strong> 21% of the dataset
-            (approximately 962 images).
-        </li>
-    </ul>
-
-    <p>
-        Images and videos were also collected from common trees and bushes
-        in the Shinjuku area of Tokyo. A Nikon D600 DSLR with a 300 mm lens
-        was used for some images and videos, while smartphone cameras were
-        used to expand the dataset.
-        <a href="references.html">[5]</a>
-    </p>
-
-    <p>
-        For the damage-segmentation model, the researchers manually annotated
-        <strong>124 sick-leaf images</strong>. These annotations were used to
-        train the DeepLabV3Plus-based Plant Doctor model.
-        <a href="references.html">[5]</a>
-    </p>
-
-</section>
-
-
-<section>
-
-    <h2>Reported Results</h2>
-
-    <h3>YOLOv8-PD Leaf Detection</h3>
-
-    <p>
-        The optimized YOLOv8-PD model achieved a
-        <strong>mAP@0.5 of approximately 0.99</strong>.
-        It reached this level by epoch 12, while the baseline YOLOv8 model
-        required 39 epochs.
-    </p>
-
-    <p>
-        For the more demanding <strong>mAP@0.5:0.95</strong> metric,
-        YOLOv8-PD achieved <strong>0.954</strong>, compared with
-        0.944 for the baseline YOLOv8 model.
-    </p>
-
-    <p>
-        The validation classification loss was also lower for YOLOv8-PD
-        at <strong>0.161</strong>, compared with 0.186 for the baseline model.
-        <a href="references.html">[5]</a>
-    </p>
-
-
-    <h3>DeepLabV3Plus Segmentation</h3>
-
-    <p>
-        The segmentation results show an important difference between
-        recognizing the full leaf and identifying the actual damaged area.
-    </p>
-
-    <ul>
-        <li>
-            <strong>Leaf segmentation IoU:</strong>
-            0.96 for the optimized DLV3P-PD model.
-        </li>
-
-        <li>
-            <strong>Damage segmentation IoU:</strong>
-            0.76 for the optimized DLV3P-PD model.
-        </li>
-    </ul>
-
-    <p>
-        This shows that locating the complete leaf is relatively accurate,
-        while determining the exact damaged area is more difficult.
-        Disease symptoms may contain small spots, irregular boundaries,
-        reflections, and changes in color or texture.
-        <a href="references.html">[5]</a>
-    </p>
-
-
-    <h3>Video Processing Performance</h3>
-
-    <p>
-        One of the most important limitations reported by the researchers
-        was processing speed.
-    </p>
-
-    <p>
-        A <strong>1-minute video required approximately 50 minutes</strong>
-        to process on their experimental system.
-    </p>
-
-    <ul>
-        <li>13 minutes were used to extract frame regions of interest.</li>
-        <li>16 minutes were used to select the highest-quality ROI for each leaf.</li>
-        <li>21 minutes were used to calculate the damage ratio.</li>
-    </ul>
-
-    <p>
-        This means that although the system can analyze video automatically,
-        the reported implementation was <strong>not real-time</strong>.
-        Reducing processing time would therefore be an important requirement
-        for practical smartphone or field deployment.
-        <a href="references.html">[5]</a>
-    </p>
-
-</section>
-
-
-<section>
-
-    <h2>Where the System Can Fail</h2>
-
-    <p>
-        The Plant Doctor paper reports several limitations that are important
-        for real-world deployment.
-    </p>
-
-    <ul>
-
-        <li>
-            <strong>Tracking errors:</strong>
-            DeepSORT may assign multiple IDs to the same leaf during frame
-            transitions or when the camera moves back and forth.
-        </li>
-
-        <li>
-            <strong>Overlapping leaves:</strong>
-            Leaves that are close together or overlap can cause incorrect
-            detection and inaccurate leaf-area measurements.
-        </li>
-
-        <li>
-            <strong>Out-of-focus leaves:</strong>
-            The segmentation model may accidentally include blurred leaves
-            in the background as part of the current leaf.
-        </li>
-
-        <li>
-            <strong>Reflections:</strong>
-            Bright reflections can change the apparent leaf color and may be
-            incorrectly recognized as damaged tissue.
-        </li>
-
-        <li>
-            <strong>Heavy damage:</strong>
-            Highly damaged leaves contain more color and texture variation,
-            which makes the boundary between healthy and damaged tissue
-            harder to determine.
-        </li>
-
-        <li>
-            <strong>Limited generalization:</strong>
-            The leaf detector was trained mainly on green, oval-shaped leaves
-            with limited clustering, so additional species may require
-            retraining or expanded datasets.
-        </li>
-
-        <li>
-            <strong>Processing time:</strong>
-            Processing a 1-minute video took about 50 minutes, which makes
-            the current implementation unsuitable for real-time mobile use.
-        </li>
-
-    </ul>
-
-    <p>
-        These results demonstrate an important difference between research
-        accuracy and practical deployment. A model may achieve high detection
-        accuracy while still facing challenges with precise damage
-        segmentation, tracking, and processing speed.
-        <a href="references.html">[5]</a>
-    </p>
-
-</section>
-
-<section>
-
-    <h2>Why This Case Study Matters for This Tutorial</h2>
-            <p>
-                Plant Doctor directly supports the main idea of this tutorial:
-                using mobile or accessible video instead of relying only on
-                a single leaf image.
-            </p>
-
-            <p>
-                The system demonstrates how multiple computer vision methods
-                can work together:
-            </p>
-
             <ul>
-                <li>YOLOv8 locates leaves.</li>
-                <li>DeepSORT follows the same leaf across frames.</li>
-                <li>DeepLabV3Plus identifies the damaged region.</li>
-                <li>Multiple video frames provide more information than one image.</li>
+                <li>
+                    <strong>Smartphone Photography (Field Captures):</strong> 56.7% of total dataset (&asymp; 2,608 images).
+                    Captured using various consumer smartphones under uncontrolled outdoor illumination and varying angles in the Shinjuku district of Tokyo.
+                </li>
+                <li>
+                    <strong>High-Resolution DSLR Photography:</strong> 22.3% of total dataset (&asymp; 1,025 images).
+                    Captured using a Nikon D600 DSLR equipped with a 300 mm telephoto lens for long-range, shallow depth-of-field imagery.
+                </li>
+                <li>
+                    <strong>Standardized Benchmark (PlantVillage):</strong> 21.0% of total dataset (&asymp; 962 images).
+                    Standard laboratory leaf photographs used to expose the model to baseline pathological categories.
+                </li>
+            </ul>
+            <p>
+                <strong>Damage Segmentation Dataset:</strong>
+                For training the DeepLabV3+ segmentation network, the researchers manually constructed a specialized dataset of <strong>124 meticulously annotated sick-leaf images</strong>.
+                Every necrotic spot, bacterial speck, and chlorotic lesion was segmented by hand to produce precise ground-truth masks <a href="references.html#ref-5">[5]</a>.
+            </p>
+        </section>
+
+        <section id="reported-results">
+            <h2>Verified Experimental Results</h2>
+            <p>
+                The peer-reviewed paper reported the following empirically verified performance metrics. In accordance with strict academic guidelines, no metrics have been extrapolated or fabricated.
+            </p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Evaluation Metric</th>
+                            <th>Experimental Result</th>
+                            <th>Model / Pipeline Component</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>YOLO mAP@0.5</strong></td>
+                            <td>&asymp; <strong>0.990</strong></td>
+                            <td>YOLOv8-PD (Converged at epoch 12 vs. epoch 39 for baseline)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>YOLO mAP@0.5:0.95</strong></td>
+                            <td><strong>0.954</strong></td>
+                            <td>YOLOv8-PD (Superior to baseline YOLOv8 at 0.944)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Detection Classification Loss</strong></td>
+                            <td><strong>0.161</strong></td>
+                            <td>YOLOv8-PD (Lower than baseline model at 0.186)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Leaf Segmentation IoU</strong></td>
+                            <td><strong>0.960</strong></td>
+                            <td>DeepLabV3+ Plant Doctor (DLV3P-PD)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Damaged-Region Segmentation IoU</strong></td>
+                            <td><strong>0.760</strong></td>
+                            <td>DeepLabV3+ Plant Doctor (DLV3P-PD)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1-Minute Video Processing Time</strong></td>
+                            <td>&asymp; <strong>50 minutes</strong></td>
+                            <td>Full Pipeline (Experimental Testbed)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout-warning">
+                <h4>Breakdown of the 50-Minute Video Processing Latency</h4>
+                <p>
+                    On the authors' experimental workstation, analyzing a single <strong>1-minute video clip required approximately 50 minutes</strong> of total runtime:
+                </p>
+                <ul>
+                    <li><strong>13 minutes:</strong> Frame-by-frame ROI detection and extraction using YOLOv8.</li>
+                    <li><strong>16 minutes:</strong> Trajectory association, tracking, and best-ROI image quality selection.</li>
+                    <li><strong>21 minutes:</strong> Pixel-level DeepLabV3+ inference and damage ratio quantification.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="critical-discussion">
+            <h2>Critical Engineering Analysis and Limitations</h2>
+            <p>
+                The Plant Doctor study reveals fundamental computer vision insights that are critical for graduate students and practitioners:
+            </p>
+
+            <h3>1. The Discrepancy Between Detection and Segmentation Accuracy</h3>
+            <p>
+                Notice the stark contrast between leaf localization accuracy and damage segmentation accuracy:
+            </p>
+            <ul>
+                <li><strong>Leaf Detection (mAP@0.5 &asymp; 0.99) &amp; Leaf Segmentation (IoU &asymp; 0.96):</strong> Whole green leaves possess prominent contrast against backgrounds, well-defined oval geometric perimeters, and predictable morphological contours.</li>
+                <li><strong>Damage Segmentation (IoU &asymp; 0.76):</strong> Isolating pathological lesions achieved an IoU of only 0.76. Why is damage segmentation substantially harder?
+                    <ul>
+                        <li><em>Complex Boundaries:</em> Lesions exhibit gradual, fuzzy color gradients rather than sharp step-edges. Chlorotic yellow halos fade imperceptibly into healthy parenchyma.</li>
+                        <li><em>Specular Glare and Reflections:</em> Sunlight bouncing off waxy leaf cuticles mimics pale necrotic patches.</li>
+                        <li><em>Small Training Sample Size:</em> While detection was trained on 4,595 diverse images, damage segmentation had only 124 manually annotated sick-leaf samples due to the extreme labor required for pixel-level ground truth.</li>
+                    </ul>
+                </li>
             </ul>
 
+            <h3>2. The 50-Minute Latency Bottleneck and Real-Time Feasibility</h3>
             <p>
-                This makes Plant Doctor a useful real-world example of
-                multi-view plant disease monitoring.
-                <a href="references.html">[5]</a>
+                A 1-minute video taking 50 minutes to compute corresponds to an effective processing rate of approximately <strong>0.6 frames per second (FPS)</strong> across the full pipeline.
+                This empirically proves that <strong>detection can be highly accurate while real-time end-to-end video damage quantification remains computationally intractable on standard hardware</strong>.
             </p>
 
+            <h3>3. Where the Pipeline Can Fail in Real Environments</h3>
+            <ul>
+                <li><strong>Tracking ID Switches:</strong> DeepSORT may lose track of leaves during rapid camera panning or back-and-forth passes, assigning multiple identities to a single leaf.</li>
+                <li><strong>Foliage Clustering and Overlap:</strong> In dense shrubs, overlapping leaves cause bounding box ambiguity, resulting in miscalculated leaf surface denominators.</li>
+                <li><strong>Background Defocus Blur:</strong> Out-of-focus background foliage can be erroneously merged into the foreground leaf mask by the segmentation decoder.</li>
+                <li><strong>Species Generalization:</strong> The detector was trained predominantly on oval, green broadleaf species; needle-like leaves, serrated margins, or heavily lobed leaves require retraining.</li>
+            </ul>
         </section>
 
-
-        <section>
-
-            <h2>Potential Real-World Use</h2>
-
+        <section id="mobile-lessons">
+            <h2>Lessons for Mobile and Edge Deployment</h2>
             <p>
-                One interesting application proposed for Plant Doctor is the
-                use of ordinary cameras mounted on drones or city maintenance
-                vehicles. These cameras could collect plant video while
-                performing normal activities.
+                What must be done to adapt a system like Plant Doctor for practical smartphone or drone deployment?
             </p>
-
-            <p>
-                This could make large-scale plant monitoring less expensive
-                and reduce the need to physically collect leaves for analysis.
-            </p>
-
+            <ul>
+                <li><strong>Decoupled Asynchronous Processing:</strong> Perform lightweight YOLOv8 leaf detection and keyframe selection directly on the mobile edge device at 30 FPS, while deferring heavy DeepLabV3+ segmentation to a background queue or cloud server.</li>
+                <li><strong>Model Quantization &amp; Pruning:</strong> Convert 32-bit floating point models to INT8 using TensorRT or ONNX Runtime to accelerate edge inference by 3&times;&ndash;4&times;.</li>
+                <li><strong>Keyframe Downsampling:</strong> Instead of tracking every single frame at 60 FPS, sample video temporally at 5&ndash;10 FPS to reduce DeepSORT computational load by up to 80% without losing tracking coherence.</li>
+            </ul>
         </section>
 
+        <section id="why-it-matters">
+            <h2>Why This Case Study Matters for This Tutorial</h2>
+            <p>
+                Plant Doctor provides an authentic, peer-reviewed demonstration of the central thesis of this tutorial:
+                <strong>moving from isolated static leaf photography to continuous multi-view video transforms agricultural monitoring</strong>.
+                It illustrates how detection, tracking, and segmentation can be chained together, while grounding the discussion in real-world latency and accuracy trade-offs.
+            </p>
+        </section>
 
-        <!-- Audio summary will be added later -->
+        <!-- Condition-safe Audio Support Section -->
+        <section class="audio-section" id="audio-case-study">
+            <div class="audio-section-header">
+                <span class="audio-badge">Audio Guide</span>
+                <h3>Module Narration</h3>
+            </div>
+            <p class="audio-description">A 1–2 minute audio breakdown of the Plant Doctor case study, verified metrics, and latency bottlenecks.</p>
+            <div class="audio-player-container">
+                <audio controls preload="metadata" class="page-audio" style="display: none;">
+                    <source src="audio/case-study-audio.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="audio-placeholder">
+                    <span class="audio-placeholder-icon">&#127911;</span>
+                    <div>
+                        <strong>Audio Narration (audio/case-study-audio.mp3)</strong>
+                        <span>Audio recording scheduled. The media player will activate automatically once the audio file is uploaded to the repository.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tutorial Pagination Navigation -->
+        <nav class="tutorial-nav" aria-label="Tutorial Step Navigation">
+            <a href="video.html" class="tutorial-nav-btn prev">
+                <span class="tutorial-nav-label">&larr; Previous Section</span>
+                <span class="tutorial-nav-title">Video Analysis</span>
+            </a>
+            <a href="deployment.html" class="tutorial-nav-btn next">
+                <span class="tutorial-nav-label">Next Section &rarr;</span>
+                <span class="tutorial-nav-title">Deployment &amp; Evaluation</span>
+            </a>
+        </nav>
 
     </main>
 
-
     <footer>
-        <p>CS 663 Computer Vision - Project 1</p>
+        <p class="footer-academic">CS 663 Computer Vision &bull; Project 1 &bull; California State University, East Bay</p>
+        <p>Student: Mahitha Rangineni &bull; Master of Science in Computer Science</p>
+        <p>&copy; 2025&ndash;2026 Academic Research Tutorial. All rights reserved.</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 
 </html>

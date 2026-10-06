@@ -4,199 +4,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>References - Plant Disease Detection</title>
+    <meta name="description" content="Annotated bibliography of foundational computer vision research papers on plant disease monitoring, mobile deployment, and video tracking.">
+    <title>Annotated Bibliography &amp; References - Plant Disease Detection</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-    <h1>Annotated Bibliography</h1>
-    <p>Plant Disease Detection Using Mobile Images and Video</p>
-</header>
+    <header>
+        <span class="header-badge">CS 663 Computer Vision &bull; Project 1</span>
+        <h1>Plant Disease Detection Using Mobile Images and Video</h1>
+        <p class="header-meta">Module 8: Annotated Academic Bibliography &amp; Literature Review</p>
+        <p class="header-author">By Mahitha Rangineni &bull; M.S. Computer Science &bull; California State University, East Bay</p>
+    </header>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="references.html">References</a>
-</nav>
+    <nav aria-label="Main Navigation">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="capture.html">Capture &amp; Preprocessing</a>
+            <a href="classification.html">Classification</a>
+            <a href="detection.html">Object Detection</a>
+            <a href="segmentation.html">Segmentation</a>
+            <a href="video.html">Video Analysis</a>
+            <a href="case-study.html">Case Study</a>
+            <a href="deployment.html">Deployment</a>
+            <a href="references.html" class="active" aria-current="page">References</a>
+        </div>
+    </nav>
 
-<main>
+    <main>
 
-    <section id="references">
+        <section id="references-intro">
+            <h2>Annotated Bibliography</h2>
+            <p>
+                The theoretical foundations, experimental architectures, and empirical benchmarks presented in this tutorial
+                are derived from peer-reviewed computer vision literature. Below is the annotated bibliography detailing the five
+                core references, their methodological contributions, and their specific utility to agricultural computer vision systems.
+            </p>
+        </section>
 
-        <h2>References</h2>
+        <section id="reference-list">
 
-        <h3>[1] Ding et al. (2024)</h3>
+            <!-- Reference 1 -->
+            <article class="reference-entry" id="ref-1">
+                <h3>[1] Ding et al. (2024)</h3>
+                <p class="reference-citation">
+                    W. Ding, M. Abdel-Basset, I. Alrashdi, and H. Hawash,
+                    &ldquo;Next generation of computer vision for plant disease monitoring in precision agriculture: A contemporary survey, taxonomy, experiments, and future direction,&rdquo;
+                    <em>Information Sciences</em>, vol. 665, article 120338, 2024.
+                </p>
+                <div class="reference-meta">
+                    <p><strong>Synopsis:</strong> This survey provides a comprehensive contemporary taxonomy of modern computer vision techniques applied to precision agriculture, examining deep convolutional neural networks, YOLO object detection models, vision transformers (ViTs), and lightweight edge networks. It discusses key real-world challenges including extreme illumination changes, background foliage clutter, and low-latency edge deployment.</p>
+                    <p><strong>Why this source is useful:</strong> Establishes the foundational computer vision taxonomy and framing for this tutorial, justifying the transition from standard image classification to spatial object detection and lightweight edge deployment in agricultural settings.</p>
+                </div>
+                <a href="https://doi.org/10.1016/j.ins.2024.120338" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
+                    View Journal Source (DOI: 10.1016/j.ins.2024.120338) &rarr;
+                </a>
+            </article>
 
-        <p>
-            W. Ding, M. Abdel-Basset, I. Alrashdi, and H. Hawash,
-            “Next generation of computer vision for plant disease monitoring
-            in precision agriculture: A contemporary survey, taxonomy,
-            experiments, and future direction,”
-            <em>Information Sciences</em>, vol. 665, 120338, 2024.
-        </p>
+            <!-- Reference 2 -->
+            <article class="reference-entry" id="ref-2">
+                <h3>[2] Iftikhar et al. (2024)</h3>
+                <p class="reference-citation">
+                    M. Iftikhar, I. A. Kandhro, N. Kausar, et al.,
+                    &ldquo;Plant disease management: a fine-tuned enhanced CNN approach with mobile app integration for early detection and classification,&rdquo;
+                    <em>Artificial Intelligence Review</em>, vol. 57, article 167, 2024.
+                </p>
+                <div class="reference-meta">
+                    <p><strong>Synopsis:</strong> This study develops a fine-tuned convolutional neural network architecture coupled with transfer learning for automated crop disease diagnosis, integrated into a functional smartphone application. The authors evaluate real-world crop pathologies (apple, corn, and potato) and analyze edge inference efficiency.</p>
+                    <p><strong>Why this source is useful:</strong> Directly informs the mobile image capture, CNN transfer learning, and on-device deployment modules of this tutorial, validating practical smartphone integration for field farmers.</p>
+                </div>
+                <a href="https://doi.org/10.1007/s10462-024-10809-z" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
+                    View Journal Source (DOI: 10.1007/s10462-024-10809-z) &rarr;
+                </a>
+            </article>
 
-        <p>
-            <strong>Synopsis:</strong>
-            This paper surveys modern computer vision techniques for plant
-            disease monitoring, including CNNs, vision transformers, and
-            other recent deep learning architectures. It also discusses
-            challenges such as limited data, computational efficiency,
-            explainability, and real-world deployment.
-        </p>
+            <!-- Reference 3 -->
+            <article class="reference-entry" id="ref-3">
+                <h3>[3] Javidan et al. (2024)</h3>
+                <p class="reference-citation">
+                    S. M. Javidan, A. Banakar, K. Rahnama, K. Asefpour Vakilian, and Y. Ampatzidis,
+                    &ldquo;Feature engineering to identify plant diseases using image processing and artificial intelligence: A comprehensive review,&rdquo;
+                    <em>Smart Agricultural Technology</em>, vol. 8, article 100480, 2024.
+                </p>
+                <div class="reference-meta">
+                    <p><strong>Synopsis:</strong> A comprehensive technical investigation into morphological, textural (GLCM), and chromatic feature representations used to identify foliar plant diseases. The paper details image preprocessing routines, color space transformations (HSV, CIE $L^*a^*b^*$), and disease-area segmentation methodologies.</p>
+                    <p><strong>Why this source is useful:</strong> Underpins the image preprocessing, color space conversion, and visual feature extraction sections of this tutorial, providing the mathematical rationale for decoupling luminance from chrominance in outdoor photography.</p>
+                </div>
+                <a href="https://doi.org/10.1016/j.atech.2024.100480" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
+                    View Journal Source (DOI: 10.1016/j.atech.2024.100480) &rarr;
+                </a>
+            </article>
 
-        <p>
-            <strong>Why this source is useful:</strong>
-            This source supports the overall background of this tutorial and
-            provides a recent overview of computer vision methods used in
-            plant disease monitoring.
-        </p>
+            <!-- Reference 4 -->
+            <article class="reference-entry" id="ref-4">
+                <h3>[4] Leite et al. (2024)</h3>
+                <p class="reference-citation">
+                    D. Leite, A. Brito, and G. Faccioli,
+                    &ldquo;Advancements and outlooks in utilizing Convolutional Neural Networks for plant disease severity assessment: A comprehensive review,&rdquo;
+                    <em>Smart Agricultural Technology</em>, vol. 9, article 100573, 2024.
+                </p>
+                <div class="reference-meta">
+                    <p><strong>Synopsis:</strong> This review examines how deep learning and semantic segmentation models transcend categorical disease classification to perform quantitative disease severity assessment. It analyzes mathematical severity indices, pixel-level loss functions, and automated phenotyping benchmarks.</p>
+                    <p><strong>Why this source is useful:</strong> Formulates the theoretical foundation for Module 4 (Segmentation &amp; Severity Estimation), justifying the quantitative percentage severity formula: $\text{Severity} = (\text{Diseased Pixels} / \text{Total Leaf Pixels}) \times 100$.</p>
+                </div>
+                <a href="https://doi.org/10.1016/j.atech.2024.100573" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
+                    View Journal Source (DOI: 10.1016/j.atech.2024.100573) &rarr;
+                </a>
+            </article>
 
-        <p>
-            <a href="https://doi.org/10.1016/j.ins.2024.120338" target="_blank">
-                View Source
+            <!-- Reference 5 -->
+            <article class="reference-entry" id="ref-5">
+                <h3>[5] Montagut Marques et al. (2025)</h3>
+                <p class="reference-citation">
+                    M. J. Montagut Marques, L. Mingxin, K. T. Shiojiri, T. Hagiwara, K. Hirose, K. Shiojiri, and S. Umezu,
+                    &ldquo;Plant Doctor: A hybrid machine learning and image segmentation software to quantify plant damage in video footage,&rdquo;
+                    <em>Measurement</em>, vol. 249, article 117094, 2025.
+                </p>
+                <div class="reference-meta">
+                    <p><strong>Synopsis:</strong> Introduces the <em>Plant Doctor</em> framework—a multi-stage computer vision system combining YOLOv8 for spatial leaf detection, DeepSORT for multi-frame temporal leaf tracking, and DeepLabV3+ for pixel-level damage segmentation across continuous video. The authors report experimental benchmarks ($0.99$ mAP@0.5 for YOLO, $0.96$ leaf IoU, $0.76$ damage IoU) alongside the critical limitation that a 1-minute video required approximately 50 minutes of processing time.</p>
+                    <p><strong>Why this source is useful:</strong> Serves as the central case study (Module 6) and primary motivation for multi-view video tracking (Module 5), providing concrete real-world empirical performance numbers and highlighting current computational bottlenecks in video-based precision agriculture.</p>
+                </div>
+                <a href="https://doi.org/10.1016/j.measurement.2025.117094" target="_blank" rel="noopener noreferrer" class="reference-link-btn">
+                    View Journal Source (DOI: 10.1016/j.measurement.2025.117094) &rarr;
+                </a>
+            </article>
+
+        </section>
+
+        <!-- Condition-safe Audio Support Section -->
+        <section class="audio-section" id="audio-references">
+            <div class="audio-section-header">
+                <span class="audio-badge">Audio Guide</span>
+                <h3>Module Narration</h3>
+            </div>
+            <p class="audio-description">A 1–2 minute audio overview of the academic literature and foundational references underpinning this tutorial.</p>
+            <div class="audio-player-container">
+                <audio controls preload="metadata" class="page-audio" style="display: none;">
+                    <source src="audio/references-audio.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="audio-placeholder">
+                    <span class="audio-placeholder-icon">&#127911;</span>
+                    <div>
+                        <strong>Audio Narration (audio/references-audio.mp3)</strong>
+                        <span>Audio recording scheduled. The media player will activate automatically once the audio file is uploaded to the repository.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tutorial Pagination Navigation -->
+        <nav class="tutorial-nav" aria-label="Tutorial Step Navigation">
+            <a href="deployment.html" class="tutorial-nav-btn prev">
+                <span class="tutorial-nav-label">&larr; Previous Section</span>
+                <span class="tutorial-nav-title">Deployment &amp; Evaluation</span>
             </a>
-        </p>
-
-        <hr>
-
-
-        <h3>[2] Iftikhar et al. (2024)</h3>
-
-        <p>
-            M. Iftikhar, I. A. Kandhro, N. Kausar, et al.,
-            “Plant disease management: a fine-tuned enhanced CNN approach
-            with mobile app integration for early detection and classification,”
-            <em>Artificial Intelligence Review</em>, vol. 57, article 167, 2024.
-        </p>
-
-        <p>
-            <strong>Synopsis:</strong>
-            This study proposes an enhanced CNN-based system for detecting
-            plant diseases and integrates the model with a mobile application.
-            The work focuses on diseases affecting crops such as apple, corn,
-            and potato.
-        </p>
-
-        <p>
-            <strong>Why this source is useful:</strong>
-            This source directly supports the mobile deployment and CNN
-            classification sections of this tutorial.
-        </p>
-
-        <p>
-            <a href="https://doi.org/10.1007/s10462-024-10809-z" target="_blank">
-                View Source
+            <a href="index.html" class="tutorial-nav-btn next">
+                <span class="tutorial-nav-label">Return to Start &rarr;</span>
+                <span class="tutorial-nav-title">Home &bull; Overview</span>
             </a>
-        </p>
+        </nav>
 
-        <hr>
+    </main>
 
+    <footer>
+        <p class="footer-academic">CS 663 Computer Vision &bull; Project 1 &bull; California State University, East Bay</p>
+        <p>Student: Mahitha Rangineni &bull; Master of Science in Computer Science</p>
+        <p>&copy; 2025&ndash;2026 Academic Research Tutorial. All rights reserved.</p>
+    </footer>
 
-        <h3>[3] Javidan et al. (2024)</h3>
-
-<p>
-    S. M. Javidan, A. Banakar, K. Rahnama, K. Asefpour Vakilian,
-    and Y. Ampatzidis,
-    “Feature engineering to identify plant diseases using image processing
-    and artificial intelligence: A comprehensive review,”
-    <em>Smart Agricultural Technology</em>, vol. 8, 100480, 2024.
-</p>
-
-        <p>
-            <strong>Synopsis:</strong>
-            This review examines visual features used for plant disease
-            identification, including color, texture, and shape. It also
-            discusses image processing, feature extraction, and disease-area
-            segmentation techniques.
-        </p>
-
-        <p>
-            <strong>Why this source is useful:</strong>
-            This source supports the preprocessing, visual feature analysis,
-            segmentation, and disease-area measurement sections of the tutorial.
-        </p>
-
-        <p>
-            <a href="https://doi.org/10.1016/j.atech.2024.100480" target="_blank">
-                View Source
-            </a>
-        </p>
-
-        <hr>
-
-
-        <h3>[4] Leite et al. (2024)</h3>
-
-<p>
-    D. Leite, A. Brito, and G. Faccioli,
-    “Advancements and outlooks in utilizing Convolutional Neural Networks
-    for plant disease severity assessment: A comprehensive review,”
-    <em>Smart Agricultural Technology</em>, vol. 9, 100573, 2024.
-</p>
-
-        <p>
-            <strong>Synopsis:</strong>
-            This review examines how CNN-based methods are used not only to
-            identify plant diseases but also to estimate disease severity.
-            It discusses current methods, limitations, and future research
-            directions.
-        </p>
-
-        <p>
-            <strong>Why this source is useful:</strong>
-            This paper supports the disease severity estimation section and
-            explains why measuring affected leaf area can provide more useful
-            information than classification alone.
-        </p>
-
-        <p>
-            <a href="https://doi.org/10.1016/j.atech.2024.100573" target="_blank">
-                View Source
-            </a>
-        </p>
-
-        <hr>
-
-
-       <h3>[5] Montagut Marques et al. (2025)</h3>
-
-<p>
-    M. J. Montagut Marques, L. Mingxin, K. T. Shiojiri,
-    T. Hagiwara, K. Hirose, K. Shiojiri, and S. Umezu,
-    “Plant Doctor: A hybrid machine learning and image segmentation
-    software to quantify plant damage in video footage,”
-    <em>Measurement</em>, vol. 249, 117094, 2025.
-</p>
-
-        <p>
-            <strong>Synopsis:</strong>
-            This study introduces a video-based plant health system using
-            YOLOv8 for leaf detection, DeepSORT for tracking leaves across
-            video frames, and DeepLabV3+ for segmentation and damage
-            quantification.
-        </p>
-
-        <p>
-            <strong>Why this source is useful:</strong>
-            This is one of the most important references for this project
-            because it directly supports the expanded video and multi-view
-            analysis component suggested in the project feedback.
-        </p>
-
-        <p>
-            <a href="https://doi.org/10.1016/j.measurement.2025.117094" target="_blank">
-                View Source
-            </a>
-        </p>
-
-    </section>
-
-</main>
-
-<footer>
-    <p>CS 663 Computer Vision - Project 1</p>
-</footer>
-
+    <script src="script.js"></script>
 </body>
+
 </html>
